@@ -1,0 +1,21 @@
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Build directories
+dist/
+build/
+
+# Coverage directory
+coverage/
+
+# IDE specific files
+.idea/
+.vscode/
+.DS_Store
