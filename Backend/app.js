@@ -6,7 +6,10 @@ const userRoute = require('./src/routes/userRoute');
 const app = express();
 const PORT = 8000;
 
+
+
 connectDB();
+
 app.use(bodyParser.json());
 app.use('/user',userRoute);
 

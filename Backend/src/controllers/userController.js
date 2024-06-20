@@ -68,8 +68,19 @@ const student = (req, res) => {
     res.status(200).json({ message: 'Student function accessed successfully' });
 };
 
+
+const get_All_Users = async (req , res) => {
+    try {
+        const users = await User.find(); 
+        res.json(users); 
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 module.exports = {
     register,
     login,
-    student
+    student,
+    get_All_Users,
 }
