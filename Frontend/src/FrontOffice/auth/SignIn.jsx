@@ -1,7 +1,46 @@
 import InputField from "components/fields/InputField";
-
+import authService from "../../services/authServices";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function SignIn() {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [usernameState, setUsernameState] = useState('');
+  const [passwordState, setPasswordState] = useState('');
+  const navigate = useNavigate();
+  const handleUsernameChange = (value) => {
+    setUsername(value);
+    setUsernameState('');
+  };
+
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+    setPasswordState('');
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log(username, password)
+      const { token } = await authService.login(username, password);
+      localStorage.setItem('token', token);
+      console.log(token)
+      setUsernameState('success');
+      setPasswordState('success');
+      setTimeout(() => {
+        navigate('/admin/default');
+      }, 1000);
+    } catch (error) {
+      setError(error.message || 'An error occurred during login');
+      setUsernameState('error'); // Set state to error
+      setPasswordState('error');
+    }
+  };
+
   return (
     <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       {/* Sign in section */}
@@ -12,39 +51,47 @@ export default function SignIn() {
         <p className="mb-9 ml-1 text-base text-gray-600">
           Entrer Votre Nom d'Utilisateur et votre Mot de Passe!
         </p>
-        {/* Email */}
-        <InputField
-          variant="auth"
-          extra="mb-3"
-          label="Nom d'Utilisateur"
-          placeholder="AaZz12"
-          id="email"
-          type="text"
-        />
+        <form onSubmit={handleSubmit} className="w-full">
+          {/* Username Input */}
+          <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Username*"
+              placeholder="username..."
+              id="username"
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+              state={usernameState}
+          />
 
-        {/* Password */}
-        <InputField
-          variant="auth"
-          extra="mb-3"
-          label="Mot de Passe"
-          placeholder="Min. 8 caracteres"
-          id="password"
-          type="password"
-        />
-        {/* Checkbox */}
-        <div className="mb-4 flex items-center justify-between px-2">
-          <a
-            className="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
-            href=" "
-          >
-            Mot de Passe oublié?
-          </a>
-        </div>
-        <button className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
-        S'identifier
-        </button>
-       
+          {/* Password Input */}
+          <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Password*"
+              placeholder="Min. 8 characters"
+              id="password"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              state={passwordState}
+          />
+          {error && <p className="text-red-500">{error}</p>}
+          <div className="mb-4 flex items-center justify-between px-2">
+            <a
+                className="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
+                href=" "
+            >
+              Forgot Password?
+            </a>
+          </div>
+          <button
+              className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
+            Sign In
+          </button>
+        </form>
       </div>
     </div>
-  );
+);
 }
