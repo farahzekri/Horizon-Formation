@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const userRoute = require('./src/routes/userRoute');
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 connectDB();
 app.use(bodyParser.json());
