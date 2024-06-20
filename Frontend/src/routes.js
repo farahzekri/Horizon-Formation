@@ -18,6 +18,7 @@ import {
   MdPerson,
   MdLock,
 } from "react-icons/md";
+import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 
 const routes = [
   {
@@ -48,6 +49,13 @@ const routes = [
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
+  },
+  {
+    name: "CreateSubAdmin",
+    layout: "/admin",
+    path: "CreateSubAdmin",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <CreateSubAdmin />,
   },
   {
     name: "Sign In",

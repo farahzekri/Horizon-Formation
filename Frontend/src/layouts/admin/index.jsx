@@ -6,7 +6,7 @@ import Footer from "components/footer/Footer";
 import routes from "routes.js";
 
 export default function Admin(props) {
-  const { ...rest } = props;
+  const {  ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
@@ -84,6 +84,7 @@ export default function Admin(props) {
                   element={<Navigate to="/admin/default" replace />}
                 />
               </Routes>
+                 
             </div>
             <div className="p-3">
               <Footer />
