@@ -46,10 +46,10 @@ export default function SignIn() {
       {/* Sign in section */}
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
         <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
-          Sign In
+        S'identifier
         </h4>
         <p className="mb-9 ml-1 text-base text-gray-600">
-          Enter your username and password to sign in!
+          Entrer Votre Nom d'Utilisateur et votre Mot de Passe!
         </p>
         <form onSubmit={handleSubmit} className="w-full">
           {/* Username Input */}

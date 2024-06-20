@@ -1,18 +1,18 @@
 import MiniCalendar from "components/calendar/MiniCalendar";
-import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
-import TotalSpent from "views/admin/default/components/TotalSpent";
-import PieChartCard from "views/admin/default/components/PieChartCard";
+import WeeklyRevenue from "BackOffice/admin/default/components/WeeklyRevenue";
+import TotalSpent from "BackOffice/admin/default/components/TotalSpent";
+import PieChartCard from "BackOffice/admin/default/components/PieChartCard";
 import { IoMdHome } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDashboard } from "react-icons/md";
 
 import { columnsDataCheck, columnsDataComplex } from "./variables/columnsData";
 
-import Widget from "views/rtl/default/components/Widget";
-import CheckTable from "views/rtl/default/components/CheckTable";
-import ComplexTable from "views/rtl/default/components/ComplexTable";
-import DailyTraffic from "views/rtl/default/components/DailyTraffic";
-import TaskCard from "views/rtl/default/components/TaskCard";
+import Widget from "components/widget/Widget";
+import CheckTable from "BackOffice/admin/default/components/CheckTable";
+import ComplexTable from "BackOffice/admin/default/components/ComplexTable";
+import DailyTraffic from "BackOffice/admin/default/components/DailyTraffic";
+import TaskCard from "BackOffice/admin/default/components/TaskCard";
 import tableDataCheck from "./variables/tableDataCheck.json";
 import tableDataComplex from "./variables/tableDataComplex.json";
 

@@ -1,14 +1,14 @@
 import React from "react";
 
 // Admin Imports
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
-import RTLDefault from "views/rtl/default";
+import MainDashboard from "BackOffice/admin/default";
+import NFTMarketplace from "BackOffice/admin/marketplace";
+import Profile from "BackOffice/admin/profile";
+import DataTables from "BackOffice/admin/tables";
+
 
 // Auth Imports
-import SignIn from "views/auth/SignIn";
+import SignIn from "FrontOffice/auth/SignIn";
 
 // Icon Imports
 import {
@@ -56,12 +56,6 @@ const routes = [
     icon: <MdLock className="h-6 w-6" />,
     component: <SignIn />,
   },
-  {
-    name: "RTL Admin",
-    layout: "/rtl",
-    path: "rtl",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
-  },
+  
 ];
 export default routes;
