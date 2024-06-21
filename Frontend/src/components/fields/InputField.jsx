@@ -4,6 +4,7 @@ function InputField(props) {
     const {
         label,
         id,
+        name,
         extra,
         type,
         placeholder,
@@ -16,7 +17,7 @@ function InputField(props) {
 
     const handleChange = (event) => {
         if (onChange) {
-            onChange(event.target.value);
+            onChange(event);
         }
     };
 
@@ -34,9 +35,10 @@ function InputField(props) {
                 disabled={disabled}
                 type={type}
                 id={id}
+                name={name} // Added name attribute
                 placeholder={placeholder}
                 value={value} // Controlled by the value prop
-                onChange={handleChange} // Passes the value to parent component
+                onChange={handleChange} // Passes the event to the parent component
                 className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
                     disabled === true
                         ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"

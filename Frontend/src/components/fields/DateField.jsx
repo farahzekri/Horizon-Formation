@@ -14,10 +14,12 @@ function DateField(props) {
     } = props;
 
     const handleChange = (event) => {
+        const selectedDate = event.target.value; // or event.target.valueAsDate if using Date object
         if (onChange) {
-            onChange(event.target.value);
+            onChange(selectedDate); // Pass selectedDate to parent component
         }
     };
+
 
     return (
         <div className={`${extra}`}>
