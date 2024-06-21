@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     const { username, password, email, role, permissions, firstName,
-        lastName, dob, gender, phone, address } = req.body;
+        lastName, dob, gender, phone, address,status } = req.body;
 
     try {
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -25,7 +25,8 @@ const register = async (req, res) => {
             dob,
             gender,
             phone,
-            address
+            address,
+            status
         });
 
         await newUser.save();
@@ -45,6 +46,11 @@ const login = async (req, res) => {
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ message: 'Invalid username or password' });
+        }
+
+        // Check if the user is active
+        if (user.status === 'inactive') {
+            return res.status(403).json({ message: 'Your account is inactive. Please contact support.' });
         }
 
         // Check if the password is correct
@@ -68,8 +74,44 @@ const student = (req, res) => {
     res.status(200).json({ message: 'Student function accessed successfully' });
 };
 
+
+const get_All_Users = async (req , res) => {
+    try {
+        const users = await User.find({ role: { $ne: 'admin' } }); 
+        res.json(users); 
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+const Update_Status = async (req, res) => {
+    const { userId } = req.params;
+    const { newStatus } = req.body;
+
+    try {
+        // Verify if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the user's status
+        user.status = newStatus;
+        await user.save();
+
+        res.status(200).json({ message: 'User status updated successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+
+
 module.exports = {
     register,
     login,
-    student
+    student,
+    get_All_Users,
+    Update_Status
 }

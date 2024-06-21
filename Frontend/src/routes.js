@@ -5,6 +5,7 @@ import MainDashboard from "BackOffice/admin/default";
 import NFTMarketplace from "BackOffice/admin/marketplace";
 import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
+import UserTable from "BackOffice/admin/DashbordTables/UserTable";
 
 
 // Auth Imports
@@ -17,6 +18,7 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdTableChart,
 } from "react-icons/md";
 
 const routes = [
@@ -48,6 +50,13 @@ const routes = [
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
+  },
+  {
+    name: "Table des Utilisateurs",
+    layout: "/admin",
+    path: "TableUtilisateurs",
+    icon: <MdTableChart className="h-6 w-6" />,
+    component: <UserTable />,
   },
   {
     name: "Sign In",

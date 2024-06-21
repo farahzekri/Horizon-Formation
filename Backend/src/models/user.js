@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    username: {type: String, required: true, unique: true},
+    'username': {type: String, required: true, unique: true},
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     role: {type: String, enum: ['admin', 'sub-admin'], default:'sub-admin', required: true},
@@ -21,6 +21,8 @@ const UserSchema = new Schema({
         zipCode: { type: String },
         country: { type: String }
     },
+
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
 
     // Administrative Metadata
     dateCreated: { type: Date, default: Date.now },

@@ -8,7 +8,10 @@ const userRoute = require('./src/routes/userRoute');
 const app = express();
 const PORT = 3000;
 
+
+
 connectDB();
+
 app.use(cors({ origin: 'http://localhost:4000' }));
 app.use(bodyParser.json());
 app.use('/user',userRoute);
