@@ -22,6 +22,8 @@ const UserSchema = new Schema({
         country: { type: String }
     },
 
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+
     // Administrative Metadata
     dateCreated: { type: Date, default: Date.now },
 });

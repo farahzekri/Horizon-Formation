@@ -8,4 +8,6 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/student', auth, checkPermissions('manage:students'), userController.student);
 router.get('/get_All_Users', userController.get_All_Users);
+router.put('/Update_Status/:userId', userController.Update_Status);
+
 module.exports = router;
