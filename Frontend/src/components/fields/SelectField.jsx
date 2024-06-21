@@ -11,14 +11,16 @@ function SelectField(props) {
         disabled,
         value,
         onChange,
-        options, // Expecting an array of options
+        options,
     } = props;
 
     const handleChange = (event) => {
+        const selectedValue = event.target.value; // Ensure event.target is defined
         if (onChange) {
-            onChange(event.target.value);
+            onChange(selectedValue); // Pass selectedValue to parent component
         }
     };
+
 
     return (
         <div className={`${extra}`}>
