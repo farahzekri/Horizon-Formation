@@ -20,6 +20,8 @@ import {
   MdLock,
   MdTableChart,
 } from "react-icons/md";
+import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
+import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 
 const routes = [
   {
@@ -52,12 +54,25 @@ const routes = [
     component: <Profile />,
   },
   {
-    name: "Table des Utilisateurs",
+    name: "Sub Admins",
     layout: "/admin",
-    path: "TableUtilisateurs",
-    icon: <MdTableChart className="h-6 w-6" />,
-    component: <UserTable />,
+    path: "AjouterSub/*",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <AjouterSub />,
   },
+  {
+    name: "Create Sub Admin",
+    layout: "/admin",
+    path: "AjouterSub/CreateSubAdmin",
+    component: <CreateSubAdmin />,
+  },
+    {
+        name: "Table des Utilisateurs",
+        layout: "/admin",
+        path: "TableUtilisateurs",
+        icon: <MdTableChart className="h-6 w-6" />,
+        component: <UserTable />,
+    },
   {
     name: "Sign In",
     layout: "/auth",

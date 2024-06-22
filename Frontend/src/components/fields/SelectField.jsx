@@ -1,25 +1,26 @@
 import React from "react";
 
-function InputField(props) {
+function SelectField(props) {
     const {
         label,
         id,
-        name,
         extra,
-        type,
         placeholder,
         variant,
         state,
         disabled,
         value,
         onChange,
+        options,
     } = props;
 
     const handleChange = (event) => {
+        const selectedValue = event.target.value; // Ensure event.target is defined
         if (onChange) {
-            onChange(event);
+            onChange(selectedValue); // Pass selectedValue to parent component
         }
     };
+
 
     return (
         <div className={`${extra}`}>
@@ -31,14 +32,11 @@ function InputField(props) {
             >
                 {label}
             </label>
-            <input
+            <select
                 disabled={disabled}
-                type={type}
                 id={id}
-                name={name} // Added name attribute
-                placeholder={placeholder}
-                value={value} // Controlled by the value prop
-                onChange={handleChange} // Passes the event to the parent component
+                value={value}
+                onChange={handleChange}
                 className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
                     disabled === true
                         ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
@@ -48,9 +46,16 @@ function InputField(props) {
                                 ? "border-green-500 text-green-500 placeholder:text-green-500 dark:!border-green-400 dark:!text-green-400 dark:placeholder:!text-green-400"
                                 : "border-gray-200 dark:!border-white/10 dark:text-white"
                 }`}
-            />
+            >
+                {placeholder && <option value="">{placeholder}</option>}
+                {options.map((option, index) => (
+                    <option key={index} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
         </div>
     );
 }
 
-export default InputField;
+export default SelectField;

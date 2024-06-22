@@ -3,12 +3,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-    const { username, password, email, role, permissions, firstName,
-        lastName, dob, gender, phone, address,status } = req.body;
+    const { username, password, email, permissions, firstName,
+        lastName, dob, gender, phone, address } = req.body;
+
+    console.log("Received registration request:", req.body); // Log the received request body
 
     try {
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
         if (existingUser) {
+            console.log("User already exists:", existingUser); // Log if user already exists
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
@@ -18,7 +21,6 @@ const register = async (req, res) => {
             username,
             password: hashedPassword,
             email,
-            role,
             permissions,
             firstName,
             lastName,
@@ -29,10 +31,15 @@ const register = async (req, res) => {
             status
         });
 
+        console.log("New user data:", newUser); // Log the new user data before saving
+
         await newUser.save();
+
+        console.log("User registered successfully");
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
+        console.error("Error registering user:", error); // Log any errors that occur
         res.status(500).json({ message: 'Server error', error });
     }
 };
@@ -77,8 +84,8 @@ const student = (req, res) => {
 
 const get_All_Users = async (req , res) => {
     try {
-        const users = await User.find({ role: { $ne: 'admin' } }); 
-        res.json(users); 
+        const users = await User.find({ role: { $ne: 'admin' } });
+        res.json(users);
     } catch (err) {
         res.status(500).json({ message: 'Internal server error' });
     }

@@ -1,12 +1,10 @@
 import React from "react";
 
-function InputField(props) {
+function DateField(props) {
     const {
         label,
         id,
-        name,
         extra,
-        type,
         placeholder,
         variant,
         state,
@@ -16,10 +14,12 @@ function InputField(props) {
     } = props;
 
     const handleChange = (event) => {
+        const selectedDate = event.target.value; // or event.target.valueAsDate if using Date object
         if (onChange) {
-            onChange(event);
+            onChange(selectedDate); // Pass selectedDate to parent component
         }
     };
+
 
     return (
         <div className={`${extra}`}>
@@ -33,12 +33,11 @@ function InputField(props) {
             </label>
             <input
                 disabled={disabled}
-                type={type}
+                type="date" // Specifying the input type as date
                 id={id}
-                name={name} // Added name attribute
                 placeholder={placeholder}
                 value={value} // Controlled by the value prop
-                onChange={handleChange} // Passes the event to the parent component
+                onChange={handleChange} // Passes the value to parent component
                 className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
                     disabled === true
                         ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
@@ -53,4 +52,4 @@ function InputField(props) {
     );
 }
 
-export default InputField;
+export default DateField;

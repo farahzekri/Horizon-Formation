@@ -11,15 +11,13 @@ const UserSchema = new Schema({
     firstName: { type: String},
     lastName: { type: String },
     dob: { type: Date },
-    gender: { type: String, enum: ['Male', 'Female', 'Other'] },
+    gender: { type: String, enum: ['Mâle', 'Femelle', 'Autre'] },
 
     phone: { type: String },
     address: {
-        street: { type: String },
         city: { type: String },
         state: { type: String },
-        zipCode: { type: String },
-        country: { type: String }
+        zip: { type: String },
     },
 
     status: { type: String, enum: ['active', 'inactive'], default: 'active' },
