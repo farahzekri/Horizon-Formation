@@ -74,9 +74,28 @@ const login = async (req, res) => {
 const student = (req, res) => {
     res.status(200).json({ message: 'Student function accessed successfully' });
 };
+const getUsers = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
 
+    if (!user || user.role !== "sub-admin") {
+      return res
+        .status(403)
+        .json({
+          message: "Forbidden: You do not have access to this resource",
+        });
+    }
+   
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
 module.exports = {
     register,
     login,
-    student
+    student,
+    getUsers
 }

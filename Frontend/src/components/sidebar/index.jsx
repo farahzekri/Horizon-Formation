@@ -3,7 +3,6 @@
 import { HiX } from "react-icons/hi";
 import Links from "./components/Links";
 
-
 import routes from "routes.js";
 import {MdBarChart, MdHome, MdLock, MdOutlineShoppingCart, MdPerson} from "react-icons/md";
 import AjouterSub from "../../BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
@@ -76,7 +75,7 @@ const Sidebar = ({ open, onClose }) => {
       </ul>
 
       {/* Free Horizon Card */}
-  
+
       {/* Nav item end */}
     </div>
   );

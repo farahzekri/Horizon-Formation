@@ -4,6 +4,7 @@ require('dotenv').config();
 const connectDB = require("./src/configs/database");
 const bodyParser = require('body-parser');
 const userRoute = require('./src/routes/userRoute');
+const logApiUsage = require("./src/middlewares/logApiUsage");
 
 const app = express();
 const PORT = 3000;
@@ -11,6 +12,7 @@ const PORT = 3000;
 connectDB();
 app.use(cors({ origin: 'http://localhost:4000' }));
 app.use(bodyParser.json());
+app.use(logApiUsage);
 app.use('/user',userRoute);
 
 app.listen(PORT, (error) =>{
