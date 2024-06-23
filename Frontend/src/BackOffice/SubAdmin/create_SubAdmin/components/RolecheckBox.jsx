@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import Checkbox from "components/checkbox"; // Importez le composant Checkbox approprié
 import Card from "components/card"; // Importez le composant Card ou utilisez un autre composant pour la mise en page
 
@@ -51,6 +51,7 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('add', e.target.checked)}
           />
           <span>Ajouter</span>
+          <p className="text-sm text-gray-500 mt-1 ml-6">Autoriser l'ajout pour les {role}.</p> 
         </div>
         <div className="flex items-center mt-2">
           <Checkbox
@@ -61,6 +62,7 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('edit', e.target.checked)}
           />
           <span>Modifier</span>
+          <p className="text-sm text-gray-500 mt-1 ml-6">Autoriser la Modification pour les {role}.</p> 
         </div>
         <div className="flex items-center mt-2">
           <Checkbox
@@ -71,6 +73,7 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('delete', e.target.checked)}
           />
           <span>Supprimer</span>
+          <p className="text-sm text-gray-500 mt-1 ml-6">Autoriser la supprission pour les  {role}.</p> 
         </div>
       </div>
     </Card>
