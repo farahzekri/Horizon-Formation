@@ -57,7 +57,7 @@ const routes = [
   {
     name: "Create Sub Admin",
     layout: "/admin",
-    path: "AjouterSub/CreateSubAdmin",
+    path: "Utilisateurs/CreateSubAdmin",
     component: <CreateSubAdmin />,
   },
   {
