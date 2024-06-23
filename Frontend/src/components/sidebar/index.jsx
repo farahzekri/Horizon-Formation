@@ -39,6 +39,12 @@ const Sidebar = ({ open, onClose }) => {
       icon: <MdPerson className="h-6 w-6" />,
     },
     {
+      name: "Profil",
+      layout: "/admin",
+      path: `Profil/:username`,
+      icon: <MdPerson className="h-6 w-6" />,
+    },
+    {
       name: "Utilisateurs",
       layout: "/admin",
       path: "Utilisateurs/*",
@@ -58,6 +64,7 @@ const Sidebar = ({ open, onClose }) => {
       path: "sign-in",
       icon: <MdLock className="h-6 w-6" />,
     },
+
   ];
   return (
     <div
