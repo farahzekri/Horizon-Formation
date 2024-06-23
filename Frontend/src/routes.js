@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
 // Admin Imports
 import MainDashboard from "BackOffice/admin/default";
@@ -6,6 +6,9 @@ import NFTMarketplace from "BackOffice/admin/marketplace";
 import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
 import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
+import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
+
+
 
 
 // Auth Imports
@@ -81,6 +84,15 @@ const routes = [
     icon: <MdLock className="h-6 w-6" />,
     component: <SignIn />,
   },
+
+  {
+    name: "Profil",
+    layout: "/admin",
+    path: `Profil/:username`,
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <SubAdmin_Profil />,
+  },
+ 
   
 ];
 export default routes;
