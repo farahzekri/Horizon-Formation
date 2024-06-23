@@ -6,7 +6,9 @@ const authService = {
     login: async (username, password) => {
         try {
             const response = await axios.post(`${BASE_URL}/user/login`, { username, password });
-            return response.data;
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+            return token;
         } catch (error) {
             throw error.response.data;
         }

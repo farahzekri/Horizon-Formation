@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token,  process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (e) {
@@ -16,7 +16,7 @@ const auth = (req, res, next) => {
     }
 };
 
-const checkPermissions = (requiredPermission) => {
+const checkPermissions = (...requiredPermissions) => {
     return (req, res, next) => {
         const { role, permissions } = req.user;
 
@@ -24,7 +24,7 @@ const checkPermissions = (requiredPermission) => {
             return next();
         }
 
-        if (permissions && permissions.includes(requiredPermission)) {
+        if (permissions && requiredPermissions.some(permission => permissions.includes(permission))) {
             return next();
         }
 

@@ -5,7 +5,7 @@ import MainDashboard from "BackOffice/admin/default";
 import NFTMarketplace from "BackOffice/admin/marketplace";
 import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
-import UserTable from "BackOffice/admin/DashbordTables/UserTable";
+import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
 
 
 // Auth Imports
@@ -22,6 +22,7 @@ import {
 } from "react-icons/md";
 import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
+import StudentList from "./BackOffice/student/StudentList";
 
 const routes = [
   {
@@ -54,25 +55,25 @@ const routes = [
     component: <Profile />,
   },
   {
-    name: "Sub Admins",
-    layout: "/admin",
-    path: "AjouterSub/*",
-    icon: <MdPerson className="h-6 w-6" />,
-    component: <AjouterSub />,
-  },
-  {
     name: "Create Sub Admin",
     layout: "/admin",
     path: "AjouterSub/CreateSubAdmin",
     component: <CreateSubAdmin />,
   },
-    {
-        name: "Table des Utilisateurs",
-        layout: "/admin",
-        path: "TableUtilisateurs",
-        icon: <MdTableChart className="h-6 w-6" />,
-        component: <UserTable />,
-    },
+  {
+    name: "Etudiants",
+    layout: "/admin",
+    path: "Etudiants/*",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <StudentList />,
+  },
+  {
+    name: "Utilisateurs",
+    layout: "/admin",
+    path: "Utilisateurs/*",
+    icon: <MdTableChart className="h-6 w-6" />,
+    component: <UserTable />,
+  },
   {
     name: "Sign In",
     layout: "/auth",

@@ -28,7 +28,6 @@ const register = async (req, res) => {
             gender,
             phone,
             address,
-            status
         });
 
         console.log("New user data:", newUser); // Log the new user data before saving
