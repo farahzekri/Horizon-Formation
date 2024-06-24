@@ -61,7 +61,6 @@ const StudentList = () => {
                 </button>
             </div>
             <CheckTable tableName="Tableau des étudiants" columnsData={columnsData} tableData={students}/>
-            <Outlet/>
         </div>
     );
 };

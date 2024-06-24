@@ -59,7 +59,7 @@ const routes = [
   {
     name: "Etudiants",
     layout: "/admin",
-    path: "Etudiants/*",
+    path: "Etudiants",
     icon: <MdPerson className="h-6 w-6" />,
     component: <StudentList />,
   },

@@ -5,7 +5,6 @@ import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
 import CreateSubAdmin from "../../BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
-import StudentList from "../../BackOffice/student/StudentList";
 import AddStudent from "../../BackOffice/student/AddStudent/AddStudent";
 
 export default function Admin(props) {
@@ -53,23 +52,9 @@ export default function Admin(props) {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
-        if (prop.children) {
-          return (
-              <Route key={key} path={`/${prop.path}`} element={prop.component}>
-                {prop.children.map((child, childKey) => (
-                    <Route
-                        key={childKey}
-                        path={`${child.path}`}
-                        element={child.component}
-                    />
-                ))}
-              </Route>
-          );
-        } else {
-          return (
-              <Route path={`/${prop.path}`} element={prop.component} key={key} />
-          );
-        }
+        return (
+            <Route path={`/${prop.path}`} element={prop.component} key={key} />
+        );
       } else {
         return null;
       }
