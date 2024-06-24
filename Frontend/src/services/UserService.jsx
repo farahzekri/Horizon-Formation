@@ -1,10 +1,9 @@
-const BASE_URL = 'http://localhost:3000';
 
 
 
 export const get_All_Users =async()=>{
     try{
-      const response =await fetch('http://localhost:3000/user/get_All_Users',{
+      const response =await fetch('BASE_URL/user/get_All_Users',{
         method:'GET',
        
       });
@@ -21,7 +20,7 @@ export const get_All_Users =async()=>{
 
 export const Update_Status = async (userId, newStatus) => {
   try {
-    const response = await fetch(`http://localhost:3000/user/Update_Status/${userId}`, {
+    const response = await fetch(`BASE_URL/user/Update_Status/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

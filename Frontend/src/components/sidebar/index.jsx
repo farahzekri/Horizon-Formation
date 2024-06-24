@@ -41,7 +41,7 @@ const Sidebar = ({ open, onClose }) => {
     {
       name: "Profil",
       layout: "/admin",
-      path: `Profil/:username`,
+      path: `Profil`,
       icon: <MdPerson className="h-6 w-6" />,
     },
     {

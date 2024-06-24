@@ -4,17 +4,26 @@ import banner from "assets/img/profile/banner.png";
 import Card from "components/card";
 import userService from '../../../../services/authServices';
 import { useParams } from 'react-router-dom';
+import {jwtDecode} from "jwt-decode";
 
 const Banner = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState(null);
-  const { username } = useParams();
+  const [username, setUsername] = useState(null);
 
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const decodedToken = jwtDecode(token);
+    setUsername(decodedToken.username);
+
     const fetchUserProfile = async () => {
       try {
-        const data = await userService.getUserProfile(username);
+        const data = await userService.getUserProfile(decodedToken.username);
         setUserProfile(data);
       } catch (err) {
         setError(err.message);

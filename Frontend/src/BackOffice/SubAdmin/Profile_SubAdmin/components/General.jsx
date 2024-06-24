@@ -7,13 +7,15 @@ import userService from '../../../../services/authServices';
 import { useParams } from 'react-router-dom';
 import CustomModal from '../../../../components/Modal/modal'
 import TooltipHorizon from '../../../../components/tooltip/index';
+import {jwtDecode} from "jwt-decode";
 
 const General = () => {
-
+  const [username, setUsername] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState(null);
-  const { username } = useParams();
+
+
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => setShowModal(true);
@@ -26,11 +28,9 @@ const General = () => {
   const [gender, setGender] = useState('');
   const [dob, setDob] = useState('');
   const [address, setAddress] = useState({
-    street: '',
-    city: '',
     state: '',
-    zipCode: '',
-    country: ''
+    city: '',
+    zip: '',
   });
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -41,9 +41,19 @@ const General = () => {
 
   // Get Profile
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const decodedToken = jwtDecode(token);
+    setUsername(decodedToken.username); // Update username state
+    console.log(decodedToken); // Log decoded token
+    console.log(username);
+
     const fetchUserProfile = async () => {
       try {
-        const data = await userService.getUserProfile(username);
+        const data = await userService.getUserProfile(decodedToken.username);
         setUserProfile(data);
         setFirstName(data.firstName || '');
         setLastName(data.lastName || '');
@@ -52,11 +62,9 @@ const General = () => {
         setGender(data.gender || '');
         setDob(data.dob ? data.dob.split('T')[0] : '');
         setAddress(data.address || {
-          street: '',
-          city: '',
           state: '',
-          zipCode: '',
-          country: ''
+          city: '',
+          zip: '',
         });
       } catch (err) {
         setError(err.message);
@@ -64,7 +72,7 @@ const General = () => {
     };
 
     fetchUserProfile();
-  }, [username]);
+  }, []);
 
   // Update Profile
   const handleSubmit = async (e) => {
@@ -78,20 +86,18 @@ const General = () => {
         email,
         phone,
         address: {
-          street: address.street,
-          city: address.city,
           state: address.state,
-          zipCode: address.zipCode,
-          country: address.country
+          city: address.city,
+          zip: address.zip,
         }
       };
-  
+
       // Inclure les mots de passe seulement s'ils sont fournis
       if (oldPassword && newPassword) {
         updatedProfile.oldPassword = oldPassword;
         updatedProfile.newPassword = newPassword;
       }
-  
+
       const data = await userService.updateUserProfile(username, updatedProfile);
       setUserProfile(data);
       alert('Profil mis à jour avec succès !');
@@ -100,7 +106,7 @@ const General = () => {
     } catch (error) {
       setError(error.message || 'Une erreur est survenue lors de la mise à jour du profil.');
       console.log('Erreur API:', error.response ? error.response.data : error.message);
-    
+
       if (error.response && error.response.data && error.response.data.message === 'Old password is incorrect') {
         console.log('Affichage de l\'alerte');
         alert('Ancien mot de passe incorrect');
@@ -110,7 +116,7 @@ const General = () => {
     }
   };
 
- 
+
 
 
 
@@ -131,7 +137,7 @@ const General = () => {
         <Card extra={"w-full h-full p-3"}>
         <div className="mt-2 mb-8 w-full">
            <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-white flex justify-between items-center"  >
-        
+
         <span>Mettre à jour le Profil</span>
         <TooltipHorizon
           trigger={
@@ -146,7 +152,7 @@ const General = () => {
        {/* Cards */}
        <form onSubmit={handleSubmit}>
        <div className="grid grid-cols-2 gap-4 px-2">
-      
+
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                <InputField
                   label="Nom"
@@ -158,7 +164,7 @@ const General = () => {
                   onChange={(value) => setLastName(value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
-              
+
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
               <InputField
@@ -229,7 +235,7 @@ const General = () => {
                         </div>
                     </div>
                 </Dropdown>
-                 
+
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
               <InputField
@@ -244,7 +250,7 @@ const General = () => {
               />
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none ">
-            
+
           <label
                     className={`text-sm text-navy-700 dark:text-white
                          ml-1.5 font-medium ml-3 font-bold"
@@ -252,17 +258,7 @@ const General = () => {
                 >
                     Addresse
                 </label>
-             <InputField
-              label="Street"
-              id="street"
-              placeholder="Street"
-              cols="30"
-              rows="4"
-              extra="mb-4"
-              value={address.street}
-              onChange={(value) => setAddress({ ...address, street:value })}
-              className="text-base font-medium text-navy-700 dark:text-white"
-            />
+
             <InputField
               label="Ville"
               id="city"
@@ -288,26 +284,16 @@ const General = () => {
               id="zipCode"
               placeholder="Code Postal"
               extra="mb-4"
-              value={address.zipCode}
-              onChange={(value) => setAddress({ ...address, zipCode:value })}
+              value={address.zip}
+              onChange={(value) => setAddress({ ...address, zip:value })}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
-            <InputField
-              label="Pays"
-              id="country"
-              placeholder="Pays"
-              extra="mb-4"
-              value={address.country}
-              onChange={(value) => setAddress({ ...address, country: value })}
-              className="text-base font-medium text-navy-700 dark:text-white"
-            />
-
           </div>
-          
-          
+
+
         </div>
         <div className="flex justify-between mb-4 mt-2">
-        <button 
+        <button
            type="button"
            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
            onClick={openModal}
@@ -315,13 +301,13 @@ const General = () => {
            Modifier le mot de passe
          </button>
          <div className="px-10">
-         <button 
+         <button
            type="submit"
             className="bg-green-500 text-white px-4 py-2 mx-2 rounded hover:bg-green-600"
           >
             Enregistrer
           </button>
-          <button 
+          <button
             type="button"
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
             onClick={() => setShowUpdateForm(false)}
@@ -330,26 +316,26 @@ const General = () => {
           </button>
 
          </div>
-         
-          
+
+
       </div>
         </form>
-        
-        
+
+
         </div>
         </Card>
     )}
     {/* modifier le mmt de passe */}
 
-    
+
       <CustomModal isOpen={showModal} onClose={closeModal}>
         <Card extra={"w-full h-full p-3"}>
 
         <div className="mt-2 mb-8 w-full">
            <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-white flex justify-between items-center" >
-        
+
         <span>Modifier le mot de passe</span>
-      
+
         </h4>
         </div>
         {/* Cards */}
@@ -366,7 +352,7 @@ const General = () => {
                   onChange={(value) => setOldPassword(value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
-              
+
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                <InputField
@@ -379,18 +365,18 @@ const General = () => {
                   onChange={(value) => setNewPassword(value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
-              
+
           </div>
 
           <div className="flex justify-between mb-2 mt-1">
          <div className="px-2">
-         <button 
+         <button
            type="submit"
             className="bg-green-500 text-white px-4 py-2 mx-2 rounded hover:bg-green-600"
           >
             Enregistrer
           </button>
-          <button 
+          <button
            onClick={closeModal}
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
@@ -398,25 +384,25 @@ const General = () => {
           </button>
 
          </div>
-         
-          
+
+
       </div>
 
        </div>
        </form>
           </Card>
           </CustomModal>
-     
+
 
     {/* affichage des information du profil user */}
-   
+
     {!showUpdateForm && (
       <div>
     <Card extra={"w-full h-full p-3"}>
       {/* Header */}
       <div className="mt-2 mb-8 w-full">
         <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-white flex justify-between items-center" >
-        
+
         <span>Information Generale</span>
         <TooltipHorizon
           trigger={
@@ -427,7 +413,7 @@ const General = () => {
           content="Mise à jour du Profil"
           placement="top"
         />
-        </h4> 
+        </h4>
       </div>
       {/* Cards */}
       <div className="grid grid-cols-2 gap-4 px-2">
@@ -471,19 +457,19 @@ const General = () => {
           <p className="text-base font-medium text-navy-700 dark:text-white">
           {new Date(userProfile.dob).toLocaleDateString()}
           </p>
-        </div> 
+        </div>
         <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
           <p className="text-sm text-gray-600">Adresse</p>
           <p className="text-base font-medium text-navy-700 dark:text-white">
           {userProfile.address.street}, {userProfile.address.city}, {userProfile.address.state}, {userProfile.address.zipCode}, {userProfile.address.country}
           </p>
-        </div> 
+        </div>
     </div>
     </Card>
     </div>
   )}
-  </div>    
-     
+  </div>
+
   );
 };
 

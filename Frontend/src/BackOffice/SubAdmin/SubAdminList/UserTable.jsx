@@ -140,6 +140,7 @@ const UserTable = () => {
       .some((field) => field.includes(searchTerm.toLowerCase()))
   );
 
+  console.log(users)
   return (
       <div className="mt-8">
         <form className="mx-auto max-w-full">

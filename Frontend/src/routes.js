@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // Admin Imports
 import MainDashboard from "BackOffice/admin/default";
@@ -7,9 +7,6 @@ import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
 import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
 import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
-
-
-
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
@@ -24,7 +21,6 @@ import {
   MdTableChart,
 } from "react-icons/md";
 import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
-import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
 
 const routes = [
@@ -88,7 +84,7 @@ const routes = [
   {
     name: "Profil",
     layout: "/admin",
-    path: `Profil/:username`,
+    path: `Profil`,
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },

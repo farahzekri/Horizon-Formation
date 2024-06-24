@@ -19,7 +19,6 @@ const StudentList = () => {
         fetchStudents();
     }, []);
 
-    // Define columnsData based on students information
     const columnsData = [
         {
             Header: 'Nom',

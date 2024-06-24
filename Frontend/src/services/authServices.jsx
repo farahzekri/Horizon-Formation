@@ -27,7 +27,6 @@ const authService = {
             const response = await axios.get(`${BASE_URL}/user/Profil/${username}`);
             return response.data;
         } catch (error) {
-            // Vous pouvez gérer les erreurs ici ou les propager vers le frontend
             throw error.response.data;
         }
     },
