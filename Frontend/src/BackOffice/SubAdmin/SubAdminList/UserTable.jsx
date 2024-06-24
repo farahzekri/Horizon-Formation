@@ -44,9 +44,7 @@ const UserTable = () => {
     },
 
   ];
-  const handleClick = () => {
-    navigate("/admin/Utilisateurs/CreateSubAdmin");
-  };
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -140,7 +138,6 @@ const UserTable = () => {
       .some((field) => field.includes(searchTerm.toLowerCase()))
   );
 
-  console.log(users)
   return (
       <div className="mt-8">
         <form className="mx-auto max-w-full">
@@ -186,8 +183,11 @@ const UserTable = () => {
                 className="bg-white p-5 text-left font-semibold text-gray-900 rtl:text-right dark:bg-gray-800 dark:text-white sm:text-sm md:text-2xl">
               Les Utilisateurs
             </caption>
-            <button onClick={handleClick}
-                className="absolute top-3 right-3 flex items-center justify-center rounded-full bg-green-500 p-1 text-[10px] text-white hover:cursor-pointer sm:p-2 sm:text-xs md:p-3 md:text-[15px]">
+            <button
+                onClick={() => navigate('/admin/Utilisateurs/CreateSubAdmin')}
+                className="absolute top-3 right-3 flex items-center
+                justify-center rounded-full bg-green-500 p-1 text-[10px] text-white hover:cursor-pointer
+                sm:p-2 sm:text-xs md:p-3 md:text-[15px]">
               Ajouter un utilisateur
             </button>
             <thead className="bg-gray-50 text-xs uppercase text-gray-800 dark:bg-gray-700 dark:text-gray-400">

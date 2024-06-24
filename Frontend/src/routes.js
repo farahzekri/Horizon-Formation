@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // Admin Imports
 import MainDashboard from "BackOffice/admin/default";
@@ -21,7 +21,9 @@ import {
   MdTableChart,
 } from "react-icons/md";
 import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
+import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
+import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
 
 const routes = [
   {
@@ -53,12 +55,7 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
   },
-  {
-    name: "Create Sub Admin",
-    layout: "/admin",
-    path: "Utilisateurs/CreateSubAdmin",
-    component: <CreateSubAdmin />,
-  },
+
   {
     name: "Etudiants",
     layout: "/admin",
@@ -67,11 +64,23 @@ const routes = [
     component: <StudentList />,
   },
   {
+    name: "Ajouter Etudiant",
+    layout: "/admin",
+    path: "Etudiants/Ajouter",
+    component: <AddStudent />,
+  },
+  {
     name: "Utilisateurs",
     layout: "/admin",
-    path: "Utilisateurs/*",
+    path: "Utilisateurs",
     icon: <MdTableChart className="h-6 w-6" />,
     component: <UserTable />,
+  },
+  {
+    name: "Create Sub Admin",
+    layout: "/admin",
+    path: "Utilisateurs/CreateSubAdmin",
+    component: <CreateSubAdmin />,
   },
   {
     name: "Sign In",
@@ -88,7 +97,7 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },
- 
-  
+
+
 ];
 export default routes;

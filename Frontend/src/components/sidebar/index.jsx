@@ -47,14 +47,14 @@ const Sidebar = ({ open, onClose }) => {
     {
       name: "Utilisateurs",
       layout: "/admin",
-      path: "Utilisateurs/*",
+      path: "Utilisateurs",
       icon: <MdTableChart className="h-6 w-6" />,
 
     },
     {
       name: "Etudiants",
       layout: "/admin",
-      path: "Etudiants/*",
+      path: "Etudiants",
       icon: <MdGroup className="h-6 w-6" />,
 
     },
