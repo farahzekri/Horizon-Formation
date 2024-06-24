@@ -3,12 +3,14 @@ import { get_All_Users, Update_Status } from "../../../services/UserService";
 import { ViewIcon } from "@chakra-ui/icons";
 import CheckTable from "../../admin/tables/components/CheckTable";
 import ComplexTable from "../../admin/tables/components/ComplexTable";
+import {useNavigate} from "react-router-dom";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -182,7 +184,10 @@ const UserTable = () => {
               Les Utilisateurs
             </caption>
             <button
-                className="absolute top-3 right-3 flex items-center justify-center rounded-full bg-green-500 p-1 text-[10px] text-white hover:cursor-pointer sm:p-2 sm:text-xs md:p-3 md:text-[15px]">
+                onClick={() => navigate('/admin/Utilisateurs/CreateSubAdmin')}
+                className="absolute top-3 right-3 flex items-center
+                justify-center rounded-full bg-green-500 p-1 text-[10px] text-white hover:cursor-pointer
+                sm:p-2 sm:text-xs md:p-3 md:text-[15px]">
               Ajouter un utilisateur
             </button>
             <thead className="bg-gray-50 text-xs uppercase text-gray-800 dark:bg-gray-700 dark:text-gray-400">
