@@ -19,6 +19,7 @@ const logApiUsage = async (req, res, next) => {
       });
       await log.save();
     } else {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     next();

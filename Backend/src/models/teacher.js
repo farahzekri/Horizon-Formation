@@ -19,15 +19,13 @@ const TeacherSchema = new Schema({
     state: { type: String },
     zip: { type: String },
   },
-
-  // Teacher-specific fields
   subjects: [{ type: String }],
   experience: { type: Number }, // in years
   qualifications: [{ type: String }],
   hireDate: { type: Date },
   salary: { type: Number },
   NumberOfHours: { type: Number },
-  // Administrative Metadata
+  payments: [{ date: Date, amount: Number }], // Added for tracking payments
   dateCreated: { type: Date, default: Date.now },
 });
 

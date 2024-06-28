@@ -5,7 +5,7 @@ const connectDB = require("./src/configs/database");
 const bodyParser = require('body-parser');
 const userRoute = require('./src/routes/userRoute');
 const studentRoute = require('./src/routes/studentRoute');
-
+const TeacherRoutes=require('./src/routes/TeacherRoute');
 const app = express();
 const PORT = 3000;
 
@@ -17,7 +17,7 @@ app.use(cors({ origin: 'http://localhost:4000' }));
 app.use(bodyParser.json());
 app.use('/user',userRoute);
 app.use('/student',studentRoute);
-
+app.use("/Teacher", TeacherRoutes);
 app.listen(PORT, (error) =>{
         if(!error)
             console.log("Server is Successfully Running, and App is listening on port "+ PORT)
