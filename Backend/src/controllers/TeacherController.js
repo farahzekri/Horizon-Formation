@@ -13,10 +13,9 @@ const createTeacher = async (req, res) => {
         message: "Forbidden: You do not have access to this resource",
       });
     }
-
     const teacher = new Teacher(req.body);
     await teacher.save();
-    res.status(201).send(teacher);
+    res.status(201);
   } catch (error) {
     console.error("Error creating teacher:", error);
     res.status(500).send(error);
@@ -39,7 +38,7 @@ const editTeacher = async (req, res) => {
     if (!teacher) {
       return res.status(404).send();
     }
-    res.send(teacher);
+    res.status(200);
   } catch (error) {
     console.error("Error editing teacher:", error);
     res.status(500).send(error);
@@ -96,13 +95,12 @@ const deleteTeacherById = async (req, res) => {
     if (!teacher) {
       return res.status(404).send();
     }
-    res.send(teacher);
+    res.status(204);
   } catch (error) {
     console.error("Error deleting teacher by ID:", error);
     res.status(500).send(error);
   }
 };
-
 
 const recordTeacherAvailability = async (req, res) => {
   try {
@@ -119,7 +117,7 @@ const recordTeacherAvailability = async (req, res) => {
       teacher: req.params.id,
     });
     await availability.save();
-    res.status(201).send(availability);
+    res.status(201);
   } catch (error) {
     console.error("Error recording teacher availability:", error);
     res.status(500).send(error);
