@@ -1,8 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000"; // Replace with your backend URL
-const token = localStorage.getItem("token");
-///Ajouter le token dans chaque requête du sub_admin sauf login et register
 const authService = {
   login: async (username, password) => {
     try {
@@ -31,10 +29,6 @@ const authService = {
   getUserProfile: async (username) => {
     try {
       const response = await axios.get(`${BASE_URL}/user/Profil/${username}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
       });
       return response.data;
     } catch (error) {

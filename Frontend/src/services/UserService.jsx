@@ -1,14 +1,8 @@
 const BASE_URL = "http://localhost:3000";
-///Ajouter le token dans chaque requête du sub_admin
 export const get_All_Users = async () => {
   try {
-    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/user/get_All_Users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+       method: "GET",
     });
     if (!response.ok) {
       throw new Error("Failed to fetch users");
@@ -23,13 +17,8 @@ export const get_All_Users = async () => {
 
 export const Update_Status = async (userId, newStatus) => {
   try {
-    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/user/Update_Status/${userId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
       body: JSON.stringify({ newStatus }),
     });
 

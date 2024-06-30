@@ -332,7 +332,6 @@ const CreateSubAdmin = () => {
                                     label="Phone Number"
                                     id="phone"
                                     name="phone"
-                                    
                                 />
                             </div>
                         </div>

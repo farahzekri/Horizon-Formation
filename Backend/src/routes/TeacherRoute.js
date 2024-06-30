@@ -9,8 +9,8 @@ const teacherController = require("../controllers/TeacherController");
 router.post(
   "/CreateTeachers",
   logApiUsage,
-  validateTeacher.validateAvailability,
-  auth,
+  // validateTeacher.validateAvailability,
+  
   teacherController.createTeacher
 );
 router.put(
@@ -53,28 +53,24 @@ router.put(
 router.get(
   "/Teachers/:id/Remuneration",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   teacherController.calculateTeacherRemuneration
 );
 router.post(
   "/Teachers/:id/Payments",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   teacherController.trackTeacherPayments
 );
 router.get(
   "/Teachers/:id/Workload",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   teacherController.printTeacherWorkload
 );
 router.get(
   "/Teachers/Payroll",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   teacherController.generateTeacherPayrollReports
 );
@@ -84,5 +80,11 @@ router.post(
   validateTeacher.validateAvailability,
   auth,
   teacherController.archiveTeacherRecords
+);
+router.get(
+  "/Teachers/Archived",
+  logApiUsage,
+  auth,
+  teacherController.archivedTeachers
 );
 module.exports = router;

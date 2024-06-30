@@ -10,7 +10,8 @@ import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmi
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
-
+//Teacher Imports
+import AddTeacher from "BackOffice/Teacher/Create_Teacher/AddTeacher";
 // Icon Imports
 import {
   MdHome,
@@ -97,6 +98,13 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },
+  {
+    name:"Ajouter Teacher",
+    layout: "/admin",
+    path: "AjouterTeacher",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <AddTeacher />,
+  }
 
 
 ];
