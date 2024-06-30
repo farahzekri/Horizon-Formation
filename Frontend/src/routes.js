@@ -7,6 +7,7 @@ import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
 import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
 import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
+import UpdateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/UpdateSubAdmin";
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
@@ -81,6 +82,12 @@ const routes = [
     layout: "/admin",
     path: "Utilisateurs/CreateSubAdmin",
     component: <CreateSubAdmin />,
+  },
+  {
+    name: "Update Sub Admin",
+    layout: "/admin",
+    path: "Utilisateurs/UpdateSubAdmin/:username",
+    component: <UpdateSubAdmin />,
   },
   {
     name: "Sign In",

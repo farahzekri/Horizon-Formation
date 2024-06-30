@@ -81,6 +81,18 @@ const UserTable = () => {
         </button>
       ),
     },
+    {
+      Header: '',
+      accessor: 'update',
+      Cell: ({ row }) => (
+        <button
+          className="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+          onClick={() => handleUpdateClick(row.original.username)}
+        >
+          Mis à jour
+        </button>
+      ),
+    },
   ];
 
   const handleSearch = (event) => {
@@ -92,6 +104,10 @@ const UserTable = () => {
     setSelectedUser(user);
     setActionType(user.status === "active" ? "deactivate" : "activate");
     setShowConfirmationModal(true);
+  };
+
+  const handleUpdateClick = (username) => {
+    navigate(`/admin/Utilisateurs/UpdateSubAdmin/${username}`);
   };
 
   const handleConfirmAction = async () => {
@@ -206,7 +222,7 @@ const UserTable = () => {
             <thead>
               <tr>
                 {columnsData.map((column, index) => (
-                  <th key={index} className="border-b border-gray-200 pr-28 pb-[10px] text-start dark:!border-navy-700">
+                  <th key={index} className="border-b border-gray-200 pr-[80px] pb-[10px] text-start dark:!border-navy-700">
                     <p className="text-xs tracking-wide text-gray-600">
                       {column.Header}
                     </p>
@@ -244,7 +260,7 @@ const UserTable = () => {
           >
             <MdChevronLeft className="w-6 h-6" />
           </button>
-          <span className="text-sm text-gray-800">
+          <span className="text-sm text-gray-800 dark:text-white">
             Page {currentPage} / {totalPages}
           </span>
           <button
@@ -259,19 +275,19 @@ const UserTable = () => {
 
       {showConfirmationModal && selectedUser && (
         <div className="bg-black fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
-          <div className="w-full max-w-md overflow-hidden rounded-lg bg-white">
+          <div className="w-full max-w-md overflow-hidden rounded-lg bg-white dark:bg-navy-700 dark:text-white">
             <div className="p-8">
               <p className="mb-4 text-lg font-semibold">
                 {actionType === "deactivate"
-                  ? `Are you sure you want to deactivate the account of ${selectedUser.firstName} ${selectedUser.lastName}?`
-                  : `Are you sure you want to activate the account of ${selectedUser.firstName} ${selectedUser.lastName}?`}
+                  ? `Êtes-vous sûr de vouloir désactiver le compte de ${selectedUser.firstName} ${selectedUser.lastName}?`
+                  : `Êtes-vous sûr de vouloir activer le compte de ${selectedUser.firstName} ${selectedUser.lastName}?`}
               </p>
               <div className="flex justify-end">
                 <button
                   className="mr-2 rounded bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
                   onClick={closeModal}
                 >
-                  Cancel
+                  Annuler
                 </button>
                 <button
                   className={`px-4 py-2 ${
@@ -279,7 +295,7 @@ const UserTable = () => {
                   }`}
                   onClick={handleConfirmAction}
                 >
-                  {actionType === "deactivate" ? "Deactivate" : "Activate"}
+                  {actionType === "deactivate" ? "Désactiver" : "Activer"}
                 </button>
               </div>
             </div>
