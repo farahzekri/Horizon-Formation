@@ -6,7 +6,7 @@ import Links from "./components/Links";
 
 
 import routes from "routes.js";
-import {MdBarChart, MdGroup, MdHome, MdLock, MdOutlineShoppingCart, MdPerson, MdTableChart} from "react-icons/md";
+import {MdBarChart, MdGroup, MdHome, MdLock, MdOutlineShoppingCart, MdPerson, MdTableChart,MdClass } from "react-icons/md";
 import AjouterSub from "../../BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import React from "react";
 import UserTable from "../../BackOffice/SubAdmin/SubAdminList/UserTable";
@@ -56,6 +56,13 @@ const Sidebar = ({ open, onClose }) => {
       layout: "/admin",
       path: "Etudiants",
       icon: <MdGroup className="h-6 w-6" />,
+
+    },
+    {
+      name: "Classes",
+      layout: "/admin",
+      path: "Class",
+      icon: <MdClass  className="h-6 w-6" />,
 
     },
     {

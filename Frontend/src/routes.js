@@ -24,6 +24,8 @@ import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
 import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
+import ClassesList from "BackOffice/classes/ClassesList";
+import AjouterClass from "BackOffice/classes/AjouterClass";
 
 const routes = [
   {
@@ -68,6 +70,19 @@ const routes = [
     layout: "/admin",
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
+  },
+  {
+    name: "Classes",
+    layout: "/admin",
+    path: "Class/*",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <ClassesList />,
+  },
+  {
+    name: "Ajouter Classes",
+    layout: "/admin",
+    path: "Class/Ajouter",
+    component: <AjouterClass />,
   },
   {
     name: "Utilisateurs",
