@@ -344,7 +344,16 @@ const CreateSubAdmin = () => {
                                     value={formData.dob}
                                     onChange={(selectedDate) => setFormData({ ...formData, dob: selectedDate })}
                                     error={formErrors.dob}
-                                    state={getInputState(formErrors.dob)}
+                                    state={formErrors.dob ? 'error' : 'success'}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full px-3">
+                                <PhoneNumberInput
+                                    label="Phone Number"
+                                    id="phone"
+                                    name="phone"
                                 />
                             </div>
                         </div>

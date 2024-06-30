@@ -1,14 +1,12 @@
-
-
-export const get_All_Users =async()=>{
-    try{
-      const response =await fetch('http://localhost:3000/user/get_All_Users',{
-        method:'GET',
-       
-      });
-      if(!response.ok){
-        throw new Error('Failed to fetch users');
-      }
+const BASE_URL = "http://localhost:3000";
+export const get_All_Users = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/user/get_All_Users`, {
+       method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch users");
+    }
 
     const data = await response.json();
     return data;
@@ -19,11 +17,8 @@ export const get_All_Users =async()=>{
 
 export const Update_Status = async (userId, newStatus) => {
   try {
-    const response = await fetch(`http://localhost:3000/user/Update_Status/${userId}`, {
-      method: 'PUT',
-      headers: {
-        "Content-Type": "application/json",              
-      },
+    const response = await fetch(`${BASE_URL}/user/Update_Status/${userId}`, {
+      method: "PUT",
       body: JSON.stringify({ newStatus }),
     });
 

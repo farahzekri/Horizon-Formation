@@ -19,6 +19,9 @@ const logApiUsage = async (req, res, next) => {
       });
       await log.save();
     } else {
+      if (isSubAdmin.role == 'admin'){
+        next();
+      }
       return res.status(401).json({ message: "Unauthorized" });
     }
 

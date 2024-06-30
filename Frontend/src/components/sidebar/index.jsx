@@ -58,14 +58,12 @@ const Sidebar = ({ open, onClose }) => {
       layout: "/admin",
       path: "Utilisateurs",
       icon: <MdTableChart className="h-6 w-6" />,
-
     },
     {
       name: "Etudiants",
       layout: "/admin",
       path: "Etudiants",
       icon: <MdGroup className="h-6 w-6" />,
-
     },
    
     {
@@ -99,7 +97,12 @@ const Sidebar = ({ open, onClose }) => {
       path: "sign-in",
       icon: <MdLock className="h-6 w-6" />,
     },
-
+    {
+      name: "Ajouter un Tuteur",
+      layout: "/admin",
+      path: "AjouterTeacher",
+      icon: <MdGroup className="h-6 w-6" />,
+    },
   ];
   return (
     <div
