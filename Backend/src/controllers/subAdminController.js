@@ -50,11 +50,11 @@ const updateUserProfile = async (req, res) => {
         if (gender) user.gender = gender;
         if (phone) user.phone = phone;
         if (address) {
-            user.address.street = address.street || user.address.street;
+           
             user.address.city = address.city || user.address.city;
             user.address.state = address.state || user.address.state;
-            user.address.zipCode = address.zipCode || user.address.zipCode;
-            user.address.country = address.country || user.address.country;
+            user.address.zip = address.zip || user.address.zip;
+           
         }
 
         await user.save();

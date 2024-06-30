@@ -74,7 +74,7 @@ const General = () => {
   }, []);
 
   // Update Profile
-  const handleSubmit = async (e) => {
+  const handleSubmitProfile = async (e) => {
     e.preventDefault();
     try {
       const updatedProfile = {
@@ -91,26 +91,36 @@ const General = () => {
         }
       };
 
-      // Inclure les mots de passe seulement s'ils sont fournis
-      if (oldPassword && newPassword) {
-        updatedProfile.oldPassword = oldPassword;
-        updatedProfile.newPassword = newPassword;
-      }
-
       const data = await userService.updateUserProfile(username, updatedProfile);
       setUserProfile(data);
       alert('Profil mis à jour avec succès !');
       setShowUpdateForm(false);
-      closeModal(); // Ferme le modal si ouvert
     } catch (error) {
       setError(error.message || 'Une erreur est survenue lors de la mise à jour du profil.');
+      alert(error.message || 'Une erreur est survenue lors de la mise à jour du profil.');
+    }
+  };
 
-      if (error.response && error.response.data && error.response.data.message === 'Old password is incorrect') {
-        
-        alert('Ancien mot de passe incorrect');
-      } else {
-        alert('Ancien mot de passe incorrect');
+  //modifier password
+  const handleSubmitPassword = async (e) => {
+    e.preventDefault();
+    try {
+      if (!oldPassword || !newPassword) {
+        alert('Veuillez fournir les deux mots de passe.');
+        return;
       }
+
+      const passwordData = {
+        oldPassword,
+        newPassword,
+      };
+
+      const data = await userService.updateUserProfile(username, passwordData);
+      alert('Mot de passe mis à jour avec succès !');
+      closeModal();
+    } catch (error) {
+      setError(error.message || 'Une erreur est survenue lors de la mise à jour du mot de passe.');
+      alert(error.message || 'Une erreur est survenue lors de la mise à jour du mot de passe.');
     }
   };
 
@@ -148,7 +158,7 @@ const General = () => {
         />
         </h4>
        {/* Cards */}
-       <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmitProfile}>
        <div className="grid grid-cols-2 gap-4 px-2">
 
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
@@ -159,7 +169,7 @@ const General = () => {
                   placeholder="Nom"
                   extra="mb-4"
                   value={lastName}
-                  onChange={(value) => setLastName(value)}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
 
@@ -172,7 +182,7 @@ const General = () => {
                   placeholder="Prenom"
                   extra="mb-4"
                   value={firstName}
-                  onChange={(value) => setFirstName(value)}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
           </div>
@@ -184,7 +194,7 @@ const General = () => {
                 placeholder="entrer votre email"
                 extra="mb-4"
                 value={email}
-                onChange={(value) => setEmail(value)}
+                onChange={(e) => setEmail(e.target.value)}
                 className="text-base font-medium text-navy-700 dark:text-white"
               />
           </div>
@@ -196,45 +206,25 @@ const General = () => {
                 placeholder="Entrer votre numero du telephone"
                 extra="mb-4"
                 value={phone}
-                onChange={(value) => setPhone(value)}
+                onChange={(e) => setPhone(e.target.value)}
                 className="text-base font-medium text-navy-700 dark:text-white"
               />
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-              <label
-                    className={`text-sm text-navy-700 dark:text-white
-                         ml-1.5 font-medium ml-3 font-bold"
-                    }`}
-                >
+                  <label className="text-sm text-navy-700 dark:text-white ml-1.5 font-medium ml-3 font-bold">
                     Genre
-                </label>
-              <Dropdown
-                    button={<button>{gender || 'Genre'}</button>}
-                    classNames="w-48 bg-white rounded-md shadow-lg"
+                  </label>
+                  <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 >
-                    <div className="py-1">
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Female')}
-                        >
-                            Femme
-                        </div>
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Male')}
-                        >
-                            Homme
-                        </div>
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Other')}
-                        >
-                            Autre
-                        </div>
-                    </div>
-                </Dropdown>
+                  <option value="Femelle">Femme</option>
+                  <option value="Mâle">Homme</option>
+                  <option value="Autre">Autre</option>
+                </select>
 
-          </div>
+            </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
               <InputField
                 label="Date De Naissance"
@@ -243,7 +233,7 @@ const General = () => {
                 placeholder="Entrer la date de Naissance"
                 extra="mb-4"
                 value={dob}
-                onChange={(value) => setDob(value)}
+                onChange={(e) => setDob(e.target.value)}
                 className="text-base font-medium text-navy-700 dark:text-white"
               />
           </div>
@@ -263,7 +253,7 @@ const General = () => {
               placeholder="Ville"
               extra="mb-4"
               value={address.city}
-              onChange={(value) => setAddress({ ...address, city:value })}
+              onChange={(e) => setAddress({ ...address, city: e.target.value })}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
             <InputField
@@ -272,7 +262,7 @@ const General = () => {
               placeholder="État"
               extra="mb-4"
               value={address.state}
-              onChange={(value) => setAddress({ ...address, state: value })}
+              onChange={(e) => setAddress({ ...address, state: e.target.value })}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
             </div>
@@ -283,7 +273,7 @@ const General = () => {
               placeholder="Code Postal"
               extra="mb-4"
               value={address.zip}
-              onChange={(value) => setAddress({ ...address, zip:value })}
+              onChange={(e) => setAddress({ ...address, zip: e.target.value })}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
           </div>
@@ -337,7 +327,7 @@ const General = () => {
         </h4>
         </div>
         {/* Cards */}
-       <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmitPassword}>
        <div className="grid grid-cols-2 gap-6 px-4">
            <div className=" justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                <InputField
@@ -347,7 +337,7 @@ const General = () => {
                   placeholder="Entrer Votre Ancien Mot de Passe"
                   extra="mb-4"
                   value={oldPassword}
-                  onChange={(value) => setOldPassword(value)}
+                  onChange={(e) => setOldPassword(e.target.value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
 
@@ -360,7 +350,7 @@ const General = () => {
                   placeholder="Entrer Votre Neveau Mot de Passe"
                   extra="mb-4"
                   value={newPassword}
-                  onChange={(value) => setNewPassword(value)}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
 
@@ -459,7 +449,7 @@ const General = () => {
         <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
           <p className="text-sm text-gray-600">Adresse</p>
           <p className="text-base font-medium text-navy-700 dark:text-white">
-          {userProfile.address.street}, {userProfile.address.city}, {userProfile.address.state}, {userProfile.address.zipCode}, {userProfile.address.country}
+           {userProfile.address.city}, {userProfile.address.state}, {userProfile.address.zip}
           </p>
         </div>
     </div>
