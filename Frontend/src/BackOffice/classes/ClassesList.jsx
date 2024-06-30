@@ -52,7 +52,7 @@ const ClassesList = () => {
             <h1 className="text-2xl font-bold"> Les classes</h1>
             <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                onClick={() => navigate('/admin/Class/Ajouter')}
+                onClick={() => navigate('/admin/Classes/Ajouter')}
             >
                 Ajouter class
             </button>

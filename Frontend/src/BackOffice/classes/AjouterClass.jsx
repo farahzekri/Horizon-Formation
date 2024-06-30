@@ -20,7 +20,6 @@ const AjouterClass = () => {
         formationId: '',
         level: '',
         room: '',
-        dateCreation: ''
     });
 
     useEffect(() => {
@@ -71,7 +70,7 @@ const AjouterClass = () => {
             accessor: (row) => `${row.personalInfo.lastName} ${row.personalInfo.firstName}`,
         },
         {
-            Header: 'Formation',
+            Header: 'Formations',
             accessor: 'enrollmentInfo.formations[0].level', // Assuming the first formation is displayed
         },
 
@@ -100,7 +99,7 @@ const AjouterClass = () => {
                     <button
                         type="submit"
                         className="mb-6 w-36 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-                        onClick={() => navigate('/admin/Class')}
+                        onClick={() => navigate('/admin/Classes')}
                     >
                         Retourn
                     </button>
@@ -155,8 +154,14 @@ const AjouterClass = () => {
                         onChange={handleSearchChange}
                         className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none"
                     />
-                        <div className="max-h-96 overflow-y-auto">
-                        <CheckTable tableName="sélectionne les étudiants de ce classe" columnsData={columnsData}  tableData={filteredStudents} selectedStudents={selectedStudents} handleCheckboxChange={handleCheckboxChange} />
+                        <div className="max-h-96 overflow-y-auto">   
+                            <CheckTable 
+                            tableName="sélectionne les étudiants de ce classe" 
+                            columnsData={columnsData} 
+                            tableData={filteredStudents}
+                            selectedFormations={selectedStudents} 
+                            handleCheckboxChange={handleCheckboxChange} />
+                     
                         </div>
                         </div>
                     </div>

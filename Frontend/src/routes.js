@@ -74,17 +74,11 @@ const routes = [
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
   },
-  {
-    name: "Classes",
-    layout: "/admin",
-    path: "Class/*",
-    icon: <MdPerson className="h-6 w-6" />,
-    component: <ClassesList />,
-  },
+
   {
     name: "Ajouter Classes",
     layout: "/admin",
-    path: "Class/Ajouter",
+    path: "Classes/Ajouter",
     component: <AjouterClass />,
   },
   {
@@ -118,6 +112,7 @@ const routes = [
     layout: "/admin",
     path: "Classes",
     icon: <MdClass className="h-6 w-6" />,
+    component: <ClassesList />,
   },
   {
     name: "Formations",
