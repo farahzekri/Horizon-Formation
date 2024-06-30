@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -11,10 +11,26 @@ import {
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import avatar from "assets/img/avatars/avatar4.png";
+import ConfirmationModal from "../Modal/confirmationModel";
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth/sign-in");
+  };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleLogoutClick = (e) => {
+    e.preventDefault(); // Prevent the default anchor tag behavior
+    openModal(); // Open the logout confirmation modal
+  };
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -211,6 +227,7 @@ const Navbar = (props) => {
                 <a
                   href=" "
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
+                  onClick={handleLogoutClick}
                 >
                   Log Out
                 </a>
@@ -220,6 +237,15 @@ const Navbar = (props) => {
           classNames={"py-2 top-8 -left-[180px] w-max"}
         />
       </div>
+      {isModalOpen && (
+          <ConfirmationModal
+              message="Are you sure you want to log out?"
+              confirmLabel="Log Out"
+              confirmButtonClass="bg-red-500 text-white hover:bg-red-600"
+              onConfirm={handleLogout}
+              onClose={closeModal}
+          />
+      )}
     </nav>
   );
 };

@@ -72,6 +72,25 @@ const login = async (req, res) => {
     }
 };
 
+const TokenVerification = async (req, res) => {
+    const token = req.body.token;
+console.log(token)
+    try {
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        res.status(200).json({ valid: true });
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ valid: false, message: 'Token expired' });
+        }
+        res.status(401).json({ valid: false, message: 'Token invalid' });
+    }
+};
+
 const student = (req, res) => {
     res.status(200).json({ message: 'Student function accessed successfully' });
 };
@@ -131,6 +150,7 @@ const Update_Status = async (req, res) => {
 module.exports = {
     register,
     login,
+    TokenVerification,
     student,
     getUsers,
     get_All_Users,

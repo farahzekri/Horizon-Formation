@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 const userRoute = require('./src/routes/userRoute');
 const studentRoute = require('./src/routes/studentRoute');
 const TeacherRoutes=require('./src/routes/TeacherRoute');
+const formationRoutes = require('./src/routes/formationRoute');
+const courseRoutes = require('./src/routes/courseRoute');
+
 const app = express();
 const PORT = 3000;
 
@@ -18,6 +21,9 @@ app.use(bodyParser.json());
 app.use('/user',userRoute);
 app.use('/student',studentRoute);
 app.use("/Teacher", TeacherRoutes);
+app.use('/course', courseRoutes);
+app.use('/formation', formationRoutes);
+
 app.listen(PORT, (error) =>{
         if(!error)
             console.log("Server is Successfully Running, and App is listening on port "+ PORT)

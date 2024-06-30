@@ -1,12 +1,21 @@
 /* eslint-disable */
 
 import { HiX } from "react-icons/hi";
-import Links from "./components/Links";
+import Links, {SidebarLinks} from "./components/Links";
 
 
 
 import routes from "routes.js";
-import {MdBarChart, MdGroup, MdHome, MdLock, MdOutlineShoppingCart, MdPerson, MdTableChart} from "react-icons/md";
+import {
+  MdBarChart, MdBook, MdClass,
+  MdGroup,
+  MdHome,
+  MdLock,
+  MdOutlineShoppingCart,
+  MdPerson,
+  MdSchool,
+  MdTableChart
+} from "react-icons/md";
 import AjouterSub from "../../BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import React from "react";
 import UserTable from "../../BackOffice/SubAdmin/SubAdminList/UserTable";
@@ -59,6 +68,31 @@ const Sidebar = ({ open, onClose }) => {
 
     },
     {
+      name: "Ressources",
+      layout: "/admin",
+      icon: <MdSchool className="h-6 w-6" />,
+      children: [
+        {
+          name: "Classes",
+          layout: "/admin",
+          path: "Classes",
+          icon: <MdClass className="h-6 w-6" />,
+        },
+        {
+          name: "Formations",
+          layout: "/admin",
+          path: "Formations",
+          icon: <MdSchool className="h-6 w-6" />,
+        },
+        {
+          name: "Matieres",
+          layout: "/admin",
+          path: "Matieres",
+          icon: <MdBook className="h-6 w-6" />,
+        },
+      ],
+    },
+    {
       name: "Sign In",
       layout: "/auth",
       path: "sign-in",
@@ -88,7 +122,7 @@ const Sidebar = ({ open, onClose }) => {
       {/* Nav item */}
 
       <ul className="mb-auto pt-1">
-        <Links routes={sidebarRoutes} />
+        <SidebarLinks  routes={sidebarRoutes} />
       </ul>
 
       {/* Free Horizon Card */}
