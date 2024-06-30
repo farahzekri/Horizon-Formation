@@ -3,9 +3,12 @@ import ComplexTable from "../admin/tables/components/ComplexTable";
 import studentService from '../../services/studentServices';
 import CheckTable from "../admin/tables/components/CheckTable";
 import {Outlet, useNavigate} from "react-router-dom";
+import courseService from "../../services/courseServices";
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
+    const [selectedStudents, setSelectedStudents] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,7 +39,7 @@ const StudentList = () => {
             accessor: 'personalInfo.email',
         },
         {
-            Header: 'Formation',
+            Header: 'Formations',
             accessor: 'enrollmentInfo.formations[0].level', // Assuming the first formation is displayed
         },
         {
@@ -48,7 +51,32 @@ const StudentList = () => {
             accessor: '',
         },
     ];
-
+    const handleCheckboxChange = (studentId) => {
+        setSelectedStudents((prevSelected) =>
+            prevSelected.includes(studentId)
+                ? prevSelected.filter(id => id !== studentId)
+                : [...prevSelected, studentId]
+        );
+    };
+    const handleDeleteSelected = async () => {
+        try {
+            await Promise.all(
+                selectedStudents.map(id => studentService.deleteStudentById(id))
+            );
+            const fetchStudents = async () => {
+                try {
+                    const data = await studentService.getAllStudents();
+                    setStudents(data);
+                    setSelectedStudents([]); // Clear selected formations
+                } catch (error) {
+                    console.error('Error fetching courses:', error);
+                }
+            };
+            fetchStudents();
+        } catch (error) {
+            console.error('Error deleting courses:', error);
+        }
+    };
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
@@ -60,7 +88,13 @@ const StudentList = () => {
                     Ajouter Etudiant
                 </button>
             </div>
-            <CheckTable tableName="Tableau des étudiants" columnsData={columnsData} tableData={students}/>
+            <CheckTable tableName="Tableau des étudiants"
+                        columnsData={columnsData}
+                        tableData={students}
+                        handleCheckboxChange={handleCheckboxChange}
+                        handleDeleteSelected={handleDeleteSelected}
+                        selectedFormations={selectedStudents}
+            />
         </div>
     );
 };

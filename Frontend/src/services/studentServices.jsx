@@ -20,6 +20,7 @@ const studentServices = {
     },
     addStudent: async (studentData) => {
         try {
+            console.log(token)
             const response = await axios.post(`${API_URL}/add`, studentData, {
                 headers: {
                     'x-auth-token': token,
@@ -29,6 +30,14 @@ const studentServices = {
         } catch (error) {
             console.error('Error adding student:', error);
             throw error;
+        }
+    },
+    deleteStudentById: async (id) => {
+        try {
+            const response = await axios.delete(`${API_URL}/deleteStudent/${id}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'An error occurred while deleting the student');
         }
     }
 }

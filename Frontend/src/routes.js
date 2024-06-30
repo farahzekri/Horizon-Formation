@@ -18,12 +18,14 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
-  MdTableChart,
+  MdTableChart, MdSchool, MdClass, MdBook,
 } from "react-icons/md";
 import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
 import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
+import CourseList from "./BackOffice/course/CourseList";
+import FormationList from "./BackOffice/formation/FormationList";
 
 const routes = [
   {
@@ -81,6 +83,26 @@ const routes = [
     layout: "/admin",
     path: "Utilisateurs/CreateSubAdmin",
     component: <CreateSubAdmin />,
+  },
+  {
+    name: "Matieres",
+    layout: "/admin",
+    path: "Matieres",
+    icon: <MdBook className="h-6 w-6" />,
+    component: <CourseList />,
+  },
+  {
+    name: "Classes",
+    layout: "/admin",
+    path: "Classes",
+    icon: <MdClass className="h-6 w-6" />,
+  },
+  {
+    name: "Formations",
+    layout: "/admin",
+    path: "Formations",
+    icon: <MdSchool className="h-6 w-6" />,
+    component: <FormationList />,
   },
   {
     name: "Sign In",

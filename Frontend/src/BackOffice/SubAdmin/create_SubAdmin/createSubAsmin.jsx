@@ -92,7 +92,7 @@ const CreateSubAdmin = () => {
                 zip: formData.zip.toString(),
             },
         };
-console.log(userData)
+        console.log(userData)
         try {
             await authService.register(userData);
             alert('User registered successfully');

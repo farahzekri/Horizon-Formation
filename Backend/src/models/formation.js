@@ -5,10 +5,13 @@ const FormationSchema = new Schema({
     name: { type: String, required: true },
     type: { type: String, required: true },
     description: { type: String },
-    levels: [String], // e.g., 'BTP', 'BTS', 'CAP'
+    level: { type: String, required: true }, // e.g., 'BTP', 'BTS', 'CAP'
     registrationFee: { type: Number, required: true },
     tuitionFee: { type: Number, required: true },
-    courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    courses: [{
+        courseName: { type: String },
+        coefficient: { type: Number}
+    }],
     // Administrative Metadata
     dateCreated: { type: Date, default: Date.now }
 });

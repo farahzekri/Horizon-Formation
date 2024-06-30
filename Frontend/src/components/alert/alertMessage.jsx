@@ -8,9 +8,9 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 
-const AlertMessage = ({ status, variant, description, onClose, isOpen }) => {
+const AlertMessage = ({ status, variant, description, onClose }) => {
     return (
-        <Alert status={status} variant={variant} width="400px" alignItems="center">
+        <Alert status={status} variant={variant} width="full" alignItems="center">
             <AlertIcon />
             <AlertDescription>{description}</AlertDescription>
             <CloseButton

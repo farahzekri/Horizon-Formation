@@ -15,10 +15,10 @@ const formationOp = [
 
 function AddStudent() {
     const navigate = useNavigate();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const [alertState, setAlertState] = useState({
         showAlert: false,
-        alertType: "success", // Default to success
+        alertType: "success",
         alertMessage: "",
     });
 
@@ -44,7 +44,6 @@ function AddStudent() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            // Prepare data in the format expected by the server (matching Student schema)
             const studentData = {
                 personalInfo: {
                     firstName: formData.firstName,
@@ -58,7 +57,6 @@ function AddStudent() {
                     phoneNumber: formData.phoneNumber,
                     email: formData.email,
                 },
-                // You can add more fields like billingInfo, academicRecords, etc., if needed
             };
             console.log(studentData)
             const response = await studentServices.addStudent(studentData);
@@ -69,7 +67,6 @@ function AddStudent() {
                 alertType: "success",
                 alertMessage: "Élève ajouté avec succès!",
             });
-            onOpen();
             setFormData({
                 firstName: "",
                 lastName: "",
@@ -90,16 +87,21 @@ function AddStudent() {
                 alertType: "error",
                 alertMessage: "Erreur lors de l'ajout de l'élève.",
             });
-            onOpen();
+            setTimeout(() => {
+                setAlertState({
+                    ...alertState,
+                    showAlert: false,
+                });
+            }, 3000);
         }
     };
-
     const closeAlert = () => {
         setAlertState({
             ...alertState,
             showAlert: false,
         });
     };
+
     return (
         <Card extra={"w-full h-full p-3"}>
             <form onSubmit={handleSubmit}>
@@ -206,20 +208,20 @@ function AddStudent() {
                         />
                     </div>
                 </div>
+                {alertState.showAlert && (
+                        <AlertMessage
+                            status={alertState.alertType}
+                            variant="left-accent"
+                            description={alertState.alertMessage}
+                            onClose={closeAlert} // Pass close function to AlertMessage
+                        />
+                )}
                 <button
                     type="submit"
                     className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
                 >
                     Ajouter élève
                 </button>
-
-
-                    <AlertMessage
-                        status={alertState.alertType}
-                        variant="left-accent"
-                        description={alertState.alertMessage}
-
-                    />
 
             </form>
         </Card>

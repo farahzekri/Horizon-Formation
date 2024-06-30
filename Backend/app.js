@@ -5,6 +5,8 @@ const connectDB = require("./src/configs/database");
 const bodyParser = require('body-parser');
 const userRoute = require('./src/routes/userRoute');
 const studentRoute = require('./src/routes/studentRoute');
+const formationRoutes = require('./src/routes/formationRoute');
+const courseRoutes = require('./src/routes/courseRoute');
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +19,8 @@ app.use(cors({ origin: 'http://localhost:4000' }));
 app.use(bodyParser.json());
 app.use('/user',userRoute);
 app.use('/student',studentRoute);
+app.use('/course', courseRoutes);
+app.use('/formation', formationRoutes);
 
 app.listen(PORT, (error) =>{
         if(!error)

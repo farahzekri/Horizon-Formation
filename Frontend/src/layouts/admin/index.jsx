@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
 import CreateSubAdmin from "../../BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
-import AddStudent from "../../BackOffice/student/AddStudent/AddStudent";
+
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -13,11 +13,6 @@ export default function Admin(props) {
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () =>
-        window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
-    );
-  }, []);
 
   React.useEffect(() => {
     getActiveRoute(routes);
@@ -62,6 +57,7 @@ export default function Admin(props) {
   };
 
   document.documentElement.dir = "ltr";
+
   return (
       <div className="flex h-full w-full">
         <Sidebar open={open} onClose={() => setOpen(false)} />

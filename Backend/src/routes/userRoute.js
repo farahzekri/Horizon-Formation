@@ -6,6 +6,7 @@ const {auth, checkPermissions} = require("../middlewares/authentication");
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+router.post('/verify-token', userController.TokenVerification);
 router.get('/student', auth, checkPermissions('manage:students'), userController.student);
 router.get('/get_All_Users', userController.get_All_Users);
 router.put('/Update_Status/:userId', userController.Update_Status);

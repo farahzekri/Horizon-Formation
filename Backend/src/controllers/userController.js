@@ -68,11 +68,30 @@ const login = async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ id: user._id, username: user.username,
                 role: user.role, permissions: user.permissions },
-            process.env.JWT_SECRET, { expiresIn: '1h' });
+            process.env.JWT_SECRET, { expiresIn: '9h' });
 
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+const TokenVerification = async (req, res) => {
+    const token = req.body.token;
+console.log(token)
+    try {
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        res.status(200).json({ valid: true });
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ valid: false, message: 'Token expired' });
+        }
+        res.status(401).json({ valid: false, message: 'Token invalid' });
     }
 };
 
@@ -117,6 +136,7 @@ const Update_Status = async (req, res) => {
 module.exports = {
     register,
     login,
+    TokenVerification,
     student,
     get_All_Users,
     Update_Status
