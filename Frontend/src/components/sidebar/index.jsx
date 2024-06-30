@@ -68,6 +68,13 @@ const Sidebar = ({ open, onClose }) => {
 
     },
     {
+      name: "Classes",
+      layout: "/admin",
+      path: "Class",
+      icon: <MdClass  className="h-6 w-6" />,
+
+    },
+    {
       name: "Ressources",
       layout: "/admin",
       icon: <MdSchool className="h-6 w-6" />,
