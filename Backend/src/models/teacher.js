@@ -2,18 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TeacherSchema = new Schema({
-  username: { type: String, required: true, unique: true },
   role: {
     type: String,
     enum: ["Full-Time", "Half-Time"],
-    default: "teacher",
     required: true,
   },
-  firstName: { type: String },
-  lastName: { type: String },
-  dob: { type: Date },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  dob: { type: Date,default: Date.now},
   gender: { type: String, enum: ["Male", "Female"] },
-  phone: { type: String },
+  phone: { type: String, required: true},
   address: {
     city: { type: String },
     state: { type: String },

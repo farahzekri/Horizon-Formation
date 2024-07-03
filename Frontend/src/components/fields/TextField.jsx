@@ -1,8 +1,14 @@
 // Custom components
 import React from "react";
 
-function InputField(props) {
-  const { label, id, extra, placeholder, cols, rows, state, disabled } = props;
+function TextField(props) {
+  const { label,value, id, extra, placeholder, cols, rows, state, disabled, onChange } = props;
+
+    const handleChange = (event) => {
+        if (onChange) {
+            onChange(event);
+        }
+    };
 
   return (
     <div className={`${extra}`}>
@@ -30,10 +36,12 @@ function InputField(props) {
           }`}
           name={id}
           id={id}
+          value={value}
+          onChange={handleChange}
         />
       </div>
     </div>
   );
 }
 
-export default InputField;
+export default TextField;

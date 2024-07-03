@@ -27,6 +27,8 @@ export default function SignIn() {
 
     try {
       const token = await authService.login(username, password);
+      localStorage.setItem('token', token);
+      console.log(token);
       setUsernameState('success');
       setPasswordState('success');
       setTimeout(() => {

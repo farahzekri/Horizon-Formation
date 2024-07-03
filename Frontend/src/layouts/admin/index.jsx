@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
 import CreateSubAdmin from "../../BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
-import StudentList from "../../BackOffice/student/StudentList";
-import AddStudent from "../../BackOffice/student/AddStudent/AddStudent";
+
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -14,11 +13,6 @@ export default function Admin(props) {
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () =>
-        window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
-    );
-  }, []);
 
   React.useEffect(() => {
     getActiveRoute(routes);
@@ -53,23 +47,9 @@ export default function Admin(props) {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
-        if (prop.children) {
-          return (
-              <Route key={key} path={`/${prop.path}`} element={prop.component}>
-                {prop.children.map((child, childKey) => (
-                    <Route
-                        key={childKey}
-                        path={`${child.path}`}
-                        element={child.component}
-                    />
-                ))}
-              </Route>
-          );
-        } else {
-          return (
-              <Route path={`/${prop.path}`} element={prop.component} key={key} />
-          );
-        }
+        return (
+            <Route path={`/${prop.path}`} element={prop.component} key={key} />
+        );
       } else {
         return null;
       }
@@ -77,6 +57,7 @@ export default function Admin(props) {
   };
 
   document.documentElement.dir = "ltr";
+
   return (
       <div className="flex h-full w-full">
         <Sidebar open={open} onClose={() => setOpen(false)} />
