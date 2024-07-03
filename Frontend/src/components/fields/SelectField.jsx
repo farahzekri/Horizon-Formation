@@ -14,10 +14,15 @@ function SelectField(props) {
         options,
     } = props;
 
+    // const handleChange = (event) => {
+    //     const selectedValue = event.target.value; // Ensure event.target is defined
+    //     if (onChange) {
+    //         onChange(selectedValue); // Pass selectedValue to parent component
+    //     }
+    // };
     const handleChange = (event) => {
-        const selectedValue = event.target.value; // Ensure event.target is defined
         if (onChange) {
-            onChange(selectedValue); // Pass selectedValue to parent component
+            onChange(event); // Pass event to parent component
         }
     };
 
