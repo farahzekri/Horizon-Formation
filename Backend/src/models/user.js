@@ -20,7 +20,7 @@ const UserSchema = new Schema({
         zip: { type: String },
     },
 
-    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+    status: { type: String, enum: ['actif', 'inactif'], default: 'actif' },
 
     // Administrative Metadata
     dateCreated: { type: Date, default: Date.now },
