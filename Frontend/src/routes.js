@@ -7,7 +7,6 @@ import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
 import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
 import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
-import UpdateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/UpdateSubAdmin";
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
@@ -30,6 +29,7 @@ import ClassesList from "BackOffice/classes/ClassesList";
 import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
+import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 
 const routes = [
   {
@@ -96,10 +96,10 @@ const routes = [
     component: <CreateSubAdmin />,
   },
   {
-    name: "Update Sub Admin",
+    name: "View Profile Sub Admin",
     layout: "/admin",
-    path: "Utilisateurs/UpdateSubAdmin/:username",
-    component: <UpdateSubAdmin />,
+    path: "Utilisateurs/VoirProfil/:username",
+    component: <VieWProfilSubAdmin />,
   },
   {
     name: "Matieres",

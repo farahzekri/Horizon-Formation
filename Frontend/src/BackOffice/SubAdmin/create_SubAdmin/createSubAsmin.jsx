@@ -25,6 +25,7 @@ const CreateSubAdmin = () => {
         zip: '',
         genre: '',
         dob: '',
+        phone: '',
     });
 
     const genreOptions = [
@@ -124,6 +125,7 @@ const CreateSubAdmin = () => {
                 state: formData.state,
                 zip: formData.zip.toString(),
             },
+            phone: formData.phone,
         };
         
         try {
@@ -332,7 +334,8 @@ const CreateSubAdmin = () => {
                                     label="Phone Number"
                                     id="phone"
                                     name="phone"
-                                    
+                                    value={formData.phone}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="w-full md:w-1/2 px-3">
@@ -345,15 +348,6 @@ const CreateSubAdmin = () => {
                                     onChange={(selectedDate) => setFormData({ ...formData, dob: selectedDate })}
                                     error={formErrors.dob}
                                     state={formErrors.dob ? 'error' : 'success'}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full px-3">
-                                <PhoneNumberInput
-                                    label="Phone Number"
-                                    id="phone"
-                                    name="phone"
                                 />
                             </div>
                         </div>

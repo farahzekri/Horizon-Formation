@@ -94,6 +94,8 @@ console.log(token)
 const student = (req, res) => {
     res.status(200).json({ message: 'Student function accessed successfully' });
 };
+
+
 const getUsers = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -125,27 +127,24 @@ const get_All_Users = async (req , res) => {
 
 const Update_Status = async (req, res) => {
     const { userId } = req.params;
-    const { newStatus } = req.body;
+    const { status } = req.body;
 
     try {
-        // Verify if the user exists
+        // Vérifiez si l'utilisateur existe
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
 
-        // Update the user's status
-        user.status = newStatus;
+        // Mettez à jour le statut de l'utilisateur
+        user.status = status; // Assurez-vous que newStatus est correctement défini ('active' ou 'inactive')
         await user.save();
 
-        res.status(200).json({ message: 'User status updated successfully', user });
+        res.status(200).json({ message: 'Statut de l\'utilisateur mis à jour avec succès', user });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        res.status(500).json({ message: 'Erreur serveur', error });
     }
 };
-
-
-
 
 module.exports = {
     register,
