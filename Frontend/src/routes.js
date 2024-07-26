@@ -29,6 +29,8 @@ import ClassesList from "BackOffice/classes/ClassesList";
 import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
+import DetailClasses from "BackOffice/classes/detailclass";
+import Schedule from "BackOffice/classes/emploi";
 import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
 
@@ -82,12 +84,6 @@ const routes = [
     layout: "/admin",
     path: "Classes/Ajouter",
     component: <AjouterClass />,
-  },
-  {
-    name: "Consulter Etudiant",
-    layout: "/admin",
-    path: "Etudiants/:studentId",
-    component: <ViewStudent />,
   },
   {
     name: "Utilisateurs",

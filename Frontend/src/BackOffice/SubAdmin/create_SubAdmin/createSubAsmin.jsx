@@ -24,6 +24,7 @@ const CreateSubAdmin = () => {
         state: '',
         zip: '',
         genre: '',
+        phone:'',
         dob: '',
         phone: '',
     });
@@ -336,6 +337,7 @@ const CreateSubAdmin = () => {
                                     name="phone"
                                     value={formData.phone}
                                     onChange={handleChange}
+                                    
                                 />
                             </div>
                             <div className="w-full md:w-1/2 px-3">
@@ -351,6 +353,7 @@ const CreateSubAdmin = () => {
                                 />
                             </div>
                         </div>
+                    
                         <div className="flex justify-between">
                             <button
                                 type="button"

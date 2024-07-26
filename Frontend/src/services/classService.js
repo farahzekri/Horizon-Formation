@@ -22,6 +22,16 @@ const classServices = {
             throw error;
         }
     },
+    
+    getclassById: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/classe/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding student:', error);
+            throw error;
+        }
+    },
 
     deleteClass: async (classId) => {
         try {

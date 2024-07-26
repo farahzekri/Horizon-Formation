@@ -28,10 +28,25 @@ const createClass = async (req, res) => {
 
 const getAllClasses = async (req, res) => {
     try {
-        const classes = await Class.find().populate('students.studentId');;
+        const classes = await Class.find().populate('students.studentId');
         res.status(200).json(classes);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching classes', error: err.message });
+    }
+};
+const getclassesById = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const classDetails = await Class.findById(id).populate('formationId').populate('students.studentId');
+
+        if (!classDetails) {
+            return res.status(404).json({ message: 'Classe non trouvée' });
+        }
+
+        res.status(200).json(classDetails);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des détails de la classe:', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la récupération des détails de la classe' });
     }
 };
 const updateClass = async (req, res) => {
@@ -83,5 +98,6 @@ module.exports = {
     createClass,
     getAllClasses,
     updateClass,
-    deleteClass
+    deleteClass,
+    getclassesById
 };
