@@ -147,7 +147,19 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick, handleC
                                                     </div>
                                                 </div>
                                             );
-                                        } else if (cell.column.Header === "Emploi") {
+                                        } else if (cell.column.Header === "Action Etudiant") {
+                                            cellContent = (
+                                                <div className="flex">
+                                                    <button
+                                                        className="bg-green-500 text-white py-1 px-2 rounded-lg
+                                                        hover:bg-green-600"
+                                                        onClick={() => handleViewStudent(row.original._id)}
+                                                    >
+                                                        Voir/Modifier
+                                                    </button>
+                                                </div>
+                                            )
+                                        }else if (cell.column.Header === "Emploi") {
                                             cellContent = (
                                                 <div className="flex items-center gap-2">
                                                     <div className={`rounded-full text-xl`}>

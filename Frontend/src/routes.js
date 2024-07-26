@@ -29,10 +29,10 @@ import ClassesList from "BackOffice/classes/ClassesList";
 import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
-import DetailClasses from "BackOffice/classes/detailclass";
-import Schedule from "BackOffice/classes/emploi";
 import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
+import Schedule from "BackOffice/classes/emploi";
+import DetailClasses from "BackOffice/classes/detailclass";
 
 const routes = [
   {
@@ -86,6 +86,12 @@ const routes = [
     component: <AjouterClass />,
   },
   {
+    name: "Consulter Etudiant",
+    layout: "/admin",
+    path: "Etudiants/:studentId",
+    component: <ViewStudent />,
+  },
+  {
     name: "Utilisateurs",
     layout: "/admin",
     path: "Utilisateurs",
@@ -117,6 +123,24 @@ const routes = [
     path: "Classes",
     icon: <MdClass className="h-6 w-6" />,
     component: <ClassesList />,
+  },
+  {
+    name: "Ajouter Classes",
+    layout: "/admin",
+    path: "Classes/Ajouter",
+    component: <AjouterClass />,
+  },
+  {
+    name: "Detail Classes",
+    layout: "/admin",
+    path: "Classes/Detail/:id",
+    component: <DetailClasses />,
+  },
+  {
+    name: "Emploi Classes",
+    layout: "/admin",
+    path: "Classes/Emploi/:id",
+    component: <Schedule />,
   },
   {
     name: "Formations",

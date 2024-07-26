@@ -46,7 +46,7 @@ const StudentList = () => {
             accessor: 'enrollmentInfo.registrationDate',
         },
         {
-            Header: 'Action',
+            Header: 'Action Etudiant',
             accessor: '',
         },
     ];
