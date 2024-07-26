@@ -12,6 +12,7 @@ const studentServices = {
                     'x-auth-token': token,
                 },
             });
+            console.log('students', response.data)
             return response.data;
         } catch (error) {
             console.error('Error fetching students:', error);
@@ -38,6 +39,25 @@ const studentServices = {
             return response.data;
         } catch (error) {
             throw new Error(error.response.data.message || 'An error occurred while deleting the student');
+        }
+    },
+    getStudentById: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/getById/${id}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'An error occurred while fetching the student');
+        }
+    },
+    editStudent: async (id, studentData) => {
+        console.log('studentId',id)
+
+        try {
+            const response = await axios.put(`${API_URL}/editStudent/${id}`, studentData);
+            return response.data;
+        } catch (error) {
+            console.error('Error editing student:', error);
+            throw error;
         }
     }
 }

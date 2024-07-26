@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import InputField from "../../../components/fields/InputField";
 import Card from "../../../components/card";
 import SelectField from "../../../components/fields/SelectField";
@@ -7,6 +7,7 @@ import studentServices from "../../../services/studentServices";
 import {useNavigate} from "react-router-dom";
 import AlertMessage from "../../../components/alert/alertMessage";
 import {useDisclosure} from "@chakra-ui/react";
+import formationServices from "../../../services/formationServices";
 
 const formationOp = [
     { value: "F1", label: "F1" },
@@ -31,7 +32,25 @@ function AddStudent() {
         state: "",
         phoneNumber: "",
         email: "",
+        formation: "",  // Changed to a single string value
     });
+    const [formations, setFormations] = useState([]);
+    useEffect(() => {
+        const fetchFormations = async () => {
+            try {
+                const response = await formationServices.getAllFormations();
+                const formationOptions = response.map((formation) => ({
+                    value: formation._id, // Assuming the formation ID is '_id'
+                    label: formation.name, // Assuming the formation name is 'name'
+                }));
+                setFormations(formationOptions);
+            } catch (error) {
+                console.error("Error fetching formations:", error);
+            }
+        };
+
+        fetchFormations();
+    }, []);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -57,6 +76,10 @@ function AddStudent() {
                     phoneNumber: formData.phoneNumber,
                     email: formData.email,
                 },
+                enrollmentInfo: {
+                    formationId: formData.formation,
+                    level: '1'
+                }
             };
             console.log(studentData)
             const response = await studentServices.addStudent(studentData);
@@ -76,6 +99,7 @@ function AddStudent() {
                 state: "",
                 phoneNumber: "",
                 email: "",
+                formation: "",
             });
             setTimeout(() => {
                 navigate('/admin/Etudiants');
@@ -105,8 +129,7 @@ function AddStudent() {
     return (
         <Card extra={"w-full h-full p-3"}>
             <form onSubmit={handleSubmit}>
-                <h2 className="text-2xl font-bold mb-4">Ajouter un nouveau élève</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid mt-4 grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="flex flex-col space-y-4">
                         <InputField
                             label="Prénom"
@@ -185,18 +208,21 @@ function AddStudent() {
                             id="email"
                             name="email"
                             type="email"
-                            placeholder="Enter email"
+                            placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
-                            extra="mb-4"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                         />
                         <SelectField
                             label="Formation"
                             id="formation"
                             name="formation"
                             placeholder="Sélectionner la Formation"
-                            options={formationOp}
-
+                            options={formations}
+                            value={formData.formation}
+                            onChange={(selectedValue) =>
+                                setFormData({ ...formData, formation: selectedValue })
+                            }
                         />
                         <SelectField
                             label="Classe"

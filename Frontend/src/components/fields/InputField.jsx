@@ -6,16 +6,21 @@ function InputField(props) {
         id,
         name,
         extra,
-        type,
+        type = "text", // Default type to "text"
         placeholder,
         variant,
         state,
         disabled,
         value,
         onChange,
-        error,
+        error, // Error message for validation
+        required, // Indicate if the field is required
+        minLength, // Minimum length for validation
+        maxLength, // Maximum length for validation
+        pattern // Pattern for validation
     } = props;
 
+    // Handle change event and trigger parent onChange handler
     const handleChange = (event) => {
         if (onChange) {
             onChange(event);
@@ -31,17 +36,21 @@ function InputField(props) {
                 }`}
             >
                 {label}
+                {required && <span className="text-red-500">*</span>} {/* Show asterisk if required */}
             </label>
             <input
                 disabled={disabled}
                 type={type}
                 id={id}
-                name={name} // Added name attribute
+                name={name}
                 placeholder={placeholder}
-                value={value} // Controlled by the value prop
-                onChange={handleChange} // Passes the event to the parent component
+                value={value}
+                onChange={handleChange}
+                minLength={minLength} // Set minimum length
+                maxLength={maxLength} // Set maximum length
+                pattern={pattern} // Set regex pattern for validation
                 className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
-                    disabled === true
+                    disabled
                         ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
                         : state === "error"
                             ? "border-red-500 text-red-500 placeholder:text-red-500 dark:!border-red-400 dark:!text-red-400 dark:placeholder:!text-red-400"

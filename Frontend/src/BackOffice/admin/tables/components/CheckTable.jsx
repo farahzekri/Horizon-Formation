@@ -12,7 +12,7 @@ import {
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import Progress from "components/progress";
 
-const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick,handleCheckboxChange, handleDeleteSelected, selectedFormations }) => {
+const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick,handleCheckboxChange, handleViewStudent, handleDeleteSelected, selectedFormations }) => {
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -115,6 +115,18 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick,handleCh
                                           <Progress width="w-[68px]" value={cell.value}/>
                                       );
 
+                                  } else if (cell.column.Header === "Action") {
+                                      cellContent = (
+                                          <div className="flex">
+                                              <button
+                                                  className="bg-green-500 text-white py-1 px-2 rounded-lg
+                                                  hover:bg-green-600"
+                                                  onClick={() => handleViewStudent(row.original._id)}
+                                              >
+                                                  Voir/Modifier
+                                              </button>
+                                          </div>
+                                      );
                                   } else {
                                       // Default style for headers not explicitly handled
                                       cellContent = (

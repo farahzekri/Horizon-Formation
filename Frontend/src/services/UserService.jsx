@@ -36,9 +36,8 @@ export const Update_Status = async (userId, newStatus) => {
     if (!response.ok) {
       throw new Error("Failed to update user status");
     }
-
     const data = await response.json();
-    return data.user; // Retourne les données utilisateur mises à jour
+    return data.user;
   } catch (error) {
     console.error("Error updating user status:", error.message);
     throw error;

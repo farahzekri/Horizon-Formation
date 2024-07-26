@@ -18,8 +18,15 @@ const addStudent = async (req, res) => {
 
 const getAllStudents = async (req, res) => {
     try {
-        const students = await Student.find();
-
+        const students = await Student.find()
+            .populate({
+                path: 'enrollmentInfo.formationId',
+                select: 'name'
+            })
+            .populate({
+                path: 'enrollmentInfo.classId',
+                select: 'level'
+            });
         res.status(200).json(students);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -41,8 +48,63 @@ const deleteStudentById = async (req, res) => {
         res.status(500).send(error);
     }
 };
+
+const getStudentById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const student = await Student.findById(id).
+        populate({
+            path: 'enrollmentInfo.formationId',
+            select: 'name'
+        }).populate({
+                path: 'enrollmentInfo.classId',
+                select: 'level'
+            });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        res.json(student);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const editStudent = async (req, res) => {
+    const studentId = req.params.id;
+    const updatedData = req.body;
+
+    const formattedData = {
+        personalInfo: {
+            firstName: updatedData.firstName,
+            lastName: updatedData.lastName,
+            dateOfBirth: updatedData.dateOfBirth,
+            address: updatedData.address,
+            phoneNumber: updatedData.phoneNumber,
+            email: updatedData.email
+        }
+    };
+
+    try {
+        const updatedStudent = await Student.findByIdAndUpdate(studentId, formattedData, {
+            new: true,
+            runValidators: true
+        });
+
+        if (!updatedStudent) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        res.status(200).json(updatedStudent);
+    } catch (error) {
+        console.error('Error updating student:', error);  // Log error details for debugging
+        res.status(400).json({ message: 'Failed to update student', error: error.message });
+    }
+};
+
 module.exports = {
     addStudent,
     getAllStudents,
-    deleteStudentById
+    deleteStudentById,
+    getStudentById,
+    editStudent
 };

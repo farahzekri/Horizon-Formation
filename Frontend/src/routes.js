@@ -26,6 +26,7 @@ import StudentList from "./BackOffice/student/StudentList";
 import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
+import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
 
 const routes = [
   {
@@ -70,6 +71,12 @@ const routes = [
     layout: "/admin",
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
+  },
+  {
+    name: "Consulter Etudiant",
+    layout: "/admin",
+    path: "Etudiants/:studentId",
+    component: <ViewStudent />,
   },
   {
     name: "Utilisateurs",
