@@ -4,6 +4,7 @@ import { HiX } from "react-icons/hi";
 import Links, {SidebarLinks} from "./components/Links";
 
 
+
 import routes from "routes.js";
 import {
   MdBarChart, MdBook, MdClass,
@@ -47,19 +48,24 @@ const Sidebar = ({ open, onClose }) => {
       icon: <MdPerson className="h-6 w-6" />,
     },
     {
+      name: "Profil",
+      layout: "/admin",
+      path: `Profil`,
+      icon: <MdPerson className="h-6 w-6" />,
+    },
+    {
       name: "Utilisateurs",
       layout: "/admin",
       path: "Utilisateurs",
       icon: <MdTableChart className="h-6 w-6" />,
-
     },
     {
       name: "Etudiants",
       layout: "/admin",
       path: "Etudiants",
       icon: <MdGroup className="h-6 w-6" />,
-
     },
+   
     {
       name: "Ressources",
       layout: "/admin",
@@ -90,6 +96,12 @@ const Sidebar = ({ open, onClose }) => {
       layout: "/auth",
       path: "sign-in",
       icon: <MdLock className="h-6 w-6" />,
+    },
+    {
+      name: "Ajouter un Tuteur",
+      layout: "/admin",
+      path: "AjouterTeacher",
+      icon: <MdGroup className="h-6 w-6" />,
     },
   ];
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import Checkbox from "components/checkbox"; // Importez le composant Checkbox approprié
 import Card from "components/card"; // Importez le composant Card ou utilisez un autre composant pour la mise en page
 
@@ -30,7 +30,7 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
   };
 
   return (
-    <Card className="my-4 p-4  ml-4 border rounded-lg shadow-md bg-white dark:bg-gray-800">
+    <Card className="my-4 p-4 w-[369px] ml-11   bg-white dark:bg-gray-800">
       <div className="flex items-center mb-4">
         <Checkbox
           name={role.toLowerCase()}
@@ -51,7 +51,9 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('add', e.target.checked)}
           />
           <span>Ajouter</span>
+        
         </div>
+        <p className="text-sm text-gray-500 mt-1 ml-6">Veuillez cocher la case de la fonctionnalité d'ajout pour autoriser ce rôle à ajouter un {role}.</p> 
         <div className="flex items-center mt-2">
           <Checkbox
             name={`edit-${role.toLowerCase()}`}
@@ -61,7 +63,9 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('edit', e.target.checked)}
           />
           <span>Modifier</span>
+         
         </div>
+        <p className="text-sm text-gray-500 mt-1 ml-6">Veuillez cocher la case de la fonctionnalité de Modification pour autoriser ce rôle à Modifier un {role}.</p> 
         <div className="flex items-center mt-2">
           <Checkbox
             name={`delete-${role.toLowerCase()}`}
@@ -71,7 +75,9 @@ export const RoleCheckbox = ({ role, isChecked, setIsChecked, actions, setAction
             onChange={(e) => handleActionChange('delete', e.target.checked)}
           />
           <span>Supprimer</span>
+        
         </div>
+        <p className="text-sm text-gray-500 mt-1 ml-6">Veuillez cocher la case de la fonctionnalité du supprission pour autoriser ce rôle à Supprimer un {role}.</p> 
       </div>
     </Card>
   );

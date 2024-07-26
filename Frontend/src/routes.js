@@ -6,11 +6,12 @@ import NFTMarketplace from "BackOffice/admin/marketplace";
 import Profile from "BackOffice/admin/profile";
 import DataTables from "BackOffice/admin/tables";
 import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
-
+import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
-
+//Teacher Imports
+import AddTeacher from "BackOffice/Teacher/Create_Teacher/AddTeacher";
 // Icon Imports
 import {
   MdHome,
@@ -24,8 +25,14 @@ import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
 import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
+import ClassesList from "BackOffice/classes/ClassesList";
+import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
+import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
+import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
+import Schedule from "BackOffice/classes/emploi";
+import DetailClasses from "BackOffice/classes/detailclass";
 
 const routes = [
   {
@@ -71,6 +78,19 @@ const routes = [
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
   },
+
+  {
+    name: "Ajouter Classes",
+    layout: "/admin",
+    path: "Classes/Ajouter",
+    component: <AjouterClass />,
+  },
+  {
+    name: "Consulter Etudiant",
+    layout: "/admin",
+    path: "Etudiants/:studentId",
+    component: <ViewStudent />,
+  },
   {
     name: "Utilisateurs",
     layout: "/admin",
@@ -85,6 +105,12 @@ const routes = [
     component: <CreateSubAdmin />,
   },
   {
+    name: "View Profile Sub Admin",
+    layout: "/admin",
+    path: "Utilisateurs/VoirProfil/:username",
+    component: <VieWProfilSubAdmin />,
+  },
+  {
     name: "Matieres",
     layout: "/admin",
     path: "Matieres",
@@ -96,6 +122,25 @@ const routes = [
     layout: "/admin",
     path: "Classes",
     icon: <MdClass className="h-6 w-6" />,
+    component: <ClassesList />,
+  },
+  {
+    name: "Ajouter Classes",
+    layout: "/admin",
+    path: "Classes/Ajouter",
+    component: <AjouterClass />,
+  },
+  {
+    name: "Detail Classes",
+    layout: "/admin",
+    path: "Classes/Detail/:id",
+    component: <DetailClasses />,
+  },
+  {
+    name: "Emploi Classes",
+    layout: "/admin",
+    path: "Classes/Emploi/:id",
+    component: <Schedule />,
   },
   {
     name: "Formations",
@@ -111,6 +156,22 @@ const routes = [
     icon: <MdLock className="h-6 w-6" />,
     component: <SignIn />,
   },
-  
+
+  {
+    name: "Profil",
+    layout: "/admin",
+    path: `Profil`,
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <SubAdmin_Profil />,
+  },
+  {
+    name:"Ajouter Teacher",
+    layout: "/admin",
+    path: "AjouterTeacher",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <AddTeacher />,
+  }
+
+
 ];
 export default routes;

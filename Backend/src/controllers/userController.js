@@ -6,12 +6,10 @@ const register = async (req, res) => {
     const { username, password, email, permissions, firstName,
         lastName, dob, gender, phone, address } = req.body;
 
-    console.log("Received registration request:", req.body); // Log the received request body
 
     try {
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
         if (existingUser) {
-            console.log("User already exists:", existingUser); // Log if user already exists
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
@@ -30,11 +28,9 @@ const register = async (req, res) => {
             address,
         });
 
-        console.log("New user data:", newUser); // Log the new user data before saving
 
         await newUser.save();
 
-        console.log("User registered successfully");
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -100,6 +96,26 @@ const student = (req, res) => {
 };
 
 
+const getUsers = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user || user.role !== "sub-admin") {
+      return res
+        .status(403)
+        .json({
+          message: "Forbidden: You do not have access to this resource",
+        });
+    }
+   
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 const get_All_Users = async (req , res) => {
     try {
         const users = await User.find({ role: { $ne: 'admin' } });
@@ -111,33 +127,31 @@ const get_All_Users = async (req , res) => {
 
 const Update_Status = async (req, res) => {
     const { userId } = req.params;
-    const { newStatus } = req.body;
+    const { status } = req.body;
 
     try {
-        // Verify if the user exists
+        // Vérifiez si l'utilisateur existe
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
 
-        // Update the user's status
-        user.status = newStatus;
+        // Mettez à jour le statut de l'utilisateur
+        user.status = status; // Assurez-vous que newStatus est correctement défini ('active' ou 'inactive')
         await user.save();
 
-        res.status(200).json({ message: 'User status updated successfully', user });
+        res.status(200).json({ message: 'Statut de l\'utilisateur mis à jour avec succès', user });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        res.status(500).json({ message: 'Erreur serveur', error });
     }
 };
-
-
-
 
 module.exports = {
     register,
     login,
     TokenVerification,
     student,
+    getUsers,
     get_All_Users,
     Update_Status
 }

@@ -7,7 +7,10 @@ import DateField from "components/fields/DateField";
 import ProgressBar from "./components/progressBar";
 import { RoleCheckbox } from "./components/RolecheckBox";
 import authService from "../../../services/authServices";
-
+import PhoneField from "components/fields/PhoneField";
+import { validateField } from "./components/validateField";
+import PhoneNumberInput from "components/fields/PhoneField";
+import { useNavigate} from "react-router-dom";
 const CreateSubAdmin = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [formData, setFormData] = useState({
@@ -21,7 +24,9 @@ const CreateSubAdmin = () => {
         state: '',
         zip: '',
         genre: '',
+        phone:'',
         dob: '',
+        phone: '',
     });
 
     const genreOptions = [
@@ -31,8 +36,9 @@ const CreateSubAdmin = () => {
     ];
 
     const steps = [
-        "Étape 1: Informations personnelles",
-        "Étape 2: Privilèges",
+        "Étape 1: Acount personnelles",
+        "Étape 2: Informations personnelles",
+        "Étape 3: Privilèges",
     ];
 
     const nextStep = () => {
@@ -56,13 +62,42 @@ const CreateSubAdmin = () => {
         edit: false,
         delete: false,
     });
-
+    const [formErrors, setFormErrors] = useState({
+        username:null,
+        email: null,
+        password: null,
+        confirmPassword: null,
+        firstName: null,
+        lastName: null,
+        city: null,
+        state: null,
+        zip: null,
+        genre: null,
+        dob: null,
+    });
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        const error = validateField(name, value, formData.password);
+        setFormErrors({
+            ...formErrors,
+            [name]: error
+        });
     };
 
     const handleSubmit = async () => {
+        const errors = {};
+        Object.keys(formData).forEach(key => {
+            const error = validateField(key, formData[key], formData.password);
+            if (error) {
+                errors[key] = error;
+            }
+        });
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            return;
+        }
         const permissions = [];
         if (isStudentChecked) permissions.push('manage:student');
         else {
@@ -91,8 +126,9 @@ const CreateSubAdmin = () => {
                 state: formData.state,
                 zip: formData.zip.toString(),
             },
+            phone: formData.phone,
         };
-        console.log(userData)
+        
         try {
             await authService.register(userData);
             alert('User registered successfully');
@@ -100,20 +136,33 @@ const CreateSubAdmin = () => {
             alert(error.message);
         }
     };
-
+    const getInputState = (error) => {
+        if (error === null) return '';  // Pas de couleur au début
+        return error ? 'error' : 'success';
+    };
+    const navigate = useNavigate();
     return (
-        <Card className="mt-20 bg-white flex justify-center items-center p-8 rounded-lg shadow-md">
-            <div className="grid grid-cols-1 gap-8">
-                <div className="col-span-1">
+        <Card className="mt-20 bg-white px-9 flex justify-center items-center p-10 rounded-lg shadow-md">
+            
+            <div className="w-full max-w-full">
+            <button
+                        type="submit"
+                        className="mb-6 w-36 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+                        onClick={() => navigate('/admin/Utilisateurs')}
+                    >
+                        Retourn
+                    </button>
+                <div className="col-span-1 ml-[159px]">
+               
                     <ProgressBar steps={steps} currentStep={currentStep} />
                 </div>
-
+               
                 {currentStep === 0 && (
-                    <form className="w-full max-w-lg">
-                        <h1 className="flex justify-center items-center mb-9">Ajouter un SubAdmin</h1>
+                    <form className="w-full max-w-full ">
+                        <h1 className="flex justify-center items-center mb-9 text-2xl">Ajouter un SubAdmin</h1>
 
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div className="flex flex-wrap -mx-18 mb-6">
+                            <div className="w-full md:w-1/2 px-4 mb-6 md:mb-0">
                                 <InputField
                                     label="Nom d'utilisateur"
                                     type="text"
@@ -122,9 +171,11 @@ const CreateSubAdmin = () => {
                                     placeholder="Nom d'utilisateur"
                                     value={formData.username}
                                     onChange={handleChange}
+                                    error={formErrors.username}
+                                    state={getInputState(formErrors.username)} 
                                 />
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full md:w-1/2 px-4">
                                 <InputField
                                     label="Email"
                                     type="text"
@@ -133,11 +184,13 @@ const CreateSubAdmin = () => {
                                     placeholder="Email"
                                     value={formData.email}
                                     onChange={handleChange}
+                                    error={formErrors.email}
+                                    state={getInputState(formErrors.email)} 
                                 />
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap -mx-3 mb-6">
+                        <div className="flex flex-wrap -mx-18 mb-6">
                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <InputField
                                     label="Mot de passe"
@@ -147,6 +200,8 @@ const CreateSubAdmin = () => {
                                     placeholder="Mot de passe"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    error={formErrors.password}
+                                    state={getInputState(formErrors.password)}
                                 />
                             </div>
                             <div className="w-full md:w-1/2 px-3">
@@ -158,11 +213,35 @@ const CreateSubAdmin = () => {
                                     placeholder="Confirmer Mot de passe"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
+                                    error={formErrors.confirmPassword}
+                                    state={getInputState(formErrors.confirmPassword)}
                                 />
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap -mx-3 mb-6">
+                        <div className="flex justify-between">
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="bg-gray-500 text-white py-2 px-4 rounded" disabled
+                            >
+                                Précédent
+                            </button>
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="bg-blue-500 text-white py-2 px-4 rounded"
+                            >
+                                Suivant
+                            </button>
+                        </div>
+                    </form>
+                )}
+                {currentStep === 1 && (
+                    <form className="w-full max-w-full">
+                        <h1 className="flex justify-center items-center mb-9 text-2xl">Ajouter un SubAdmin</h1>
+
+                        <div className="flex flex-wrap -mx-18 mb-6">
                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <InputField
                                     label="Prénom"
@@ -172,73 +251,12 @@ const CreateSubAdmin = () => {
                                     placeholder="Prénom"
                                     value={formData.firstName}
                                     onChange={handleChange}
+                                    error={formErrors.firstName}
+                                    state={getInputState(formErrors.firstName)}
                                 />
                             </div>
                             <div className="w-full md:w-1/2 px-3">
-                                <InputField
-                                    label="Nom"
-                                    type="text"
-                                    id="lastName"
-                                    name="lastName"
-                                    placeholder="Nom"
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <InputField
-                                    label="Ville"
-                                    type="text"
-                                    id="city"
-                                    name="city"
-                                    placeholder="Ville"
-                                    value={formData.city}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
-                                <InputField
-                                    label="Code postal"
-                                    type="number"
-                                    id="zip"
-                                    name="zip"
-                                    placeholder="Code postal"
-                                    value={formData.zip}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <SelectField
-                                    label="Genre"
-                                    id="genre"
-                                    name="genre"
-                                    placeholder="Sélectionner le genre"
-                                    options={genreOptions}
-                                    value={formData.genre}
-                                    onChange={(selectedValue) => setFormData({ ...formData, genre: selectedValue })}
-                                />
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
-                                <DateField
-                                    label="Date de naissance"
-                                    id="dob"
-                                    name="dob"
-                                    placeholder="Date de naissance"
-                                    value={formData.dob}
-                                    onChange={(selectedDate) => setFormData({ ...formData, dob: selectedDate })}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full px-3">
-                                <SelectField
+                             <SelectField
                                     label="État"
                                     id="state"
                                     name="state"
@@ -246,10 +264,96 @@ const CreateSubAdmin = () => {
                                     options={statesOfTunisia}
                                     value={formData.state}
                                     onChange={(selectedValue) => setFormData({ ...formData, state: selectedValue })}
+                                    error={formErrors.state}
+                                    state={getInputState(formErrors.state)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap -mx-18 mb-6">
+                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <InputField
+                                    label="Nom"
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    placeholder="Nom"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    error={formErrors.lastName}
+                                    state={getInputState(formErrors.lastName)}
+
+                                />
+                              
+                            </div>
+                            <div className="w-full md:w-1/2 px-3">
+                            <InputField
+                                    label="Ville"
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    placeholder="Ville"
+                                    value={formData.city}
+                                    onChange={handleChange}
+                                    error={formErrors.city}
+                                    state={getInputState(formErrors.city)}
+                                />
+                             </div>   
+                        </div>
+                        <div className="flex flex-wrap -mx-18 mb-6">
+                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <SelectField
+                                    label="Genre"
+                                    id="genre"
+                                    name="genre"
+                                    placeholder="Sélectionner le genre"
+                                    options={genreOptions}
+                                    value={formData.genre}
+                                    onChange={(selectedValue) => setFormData({ ...formData, genre: selectedValue })}
+                                    error={formErrors.genre}
+                                    state={getInputState(formErrors.genre)}
+                                />
+                            </div>
+                            <div className="w-full md:w-1/2 px-3">
+                                <InputField
+                                    label="Code postal"
+                                    type="text"
+                                    id="zip"
+                                    name="zip"
+                                    placeholder="Code postal"
+                                    value={formData.zip}
+                                    onChange={handleChange}
+                                    error={formErrors.zip}
+                                    state={getInputState(formErrors.zip)}
+
                                 />
                             </div>
                         </div>
 
+                        <div className="flex flex-wrap -mx-18 mb-6">
+                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <PhoneNumberInput
+                                    label="Phone Number"
+                                    id="phone"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    
+                                />
+                            </div>
+                            <div className="w-full md:w-1/2 px-3">
+                                <DateField
+                                    label="Date De Naissance"
+                                    id="dob"
+                                    name="dob"
+                                    placeholder="Date de naissance"
+                                    value={formData.dob}
+                                    onChange={(selectedDate) => setFormData({ ...formData, dob: selectedDate })}
+                                    error={formErrors.dob}
+                                    state={formErrors.dob ? 'error' : 'success'}
+                                />
+                            </div>
+                        </div>
+                    
                         <div className="flex justify-between">
                             <button
                                 type="button"
@@ -269,16 +373,17 @@ const CreateSubAdmin = () => {
                     </form>
                 )}
 
-                {currentStep === 1 && (
+                {currentStep === 2 && (
                     <div>
                         <h1 className="flex justify-center items-center mb-9">Permissions</h1>
-                        <div className="flex flex-wrap -mx-3 mb-6">
+                        <div className="flex flex-wrap -mx-1 mb-6">
                             <RoleCheckbox
                                 role="Étudiante"
                                 isChecked={isStudentChecked}
                                 setIsChecked={setIsStudentChecked}
                                 actions={studentActions}
                                 setActions={setStudentActions}
+                                
                             />
                             <RoleCheckbox
                                 role="Professeur"
