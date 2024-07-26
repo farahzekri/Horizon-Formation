@@ -10,7 +10,8 @@ import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmi
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
-
+//Teacher Imports
+import AddTeacher from "BackOffice/Teacher/Create_Teacher/AddTeacher";
 // Icon Imports
 import {
   MdHome,
@@ -24,8 +25,11 @@ import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
 import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
+import ClassesList from "BackOffice/classes/ClassesList";
+import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
 import FormationList from "./BackOffice/formation/FormationList";
+import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
 
 const routes = [
@@ -72,6 +76,13 @@ const routes = [
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
   },
+
+  {
+    name: "Ajouter Classes",
+    layout: "/admin",
+    path: "Classes/Ajouter",
+    component: <AjouterClass />,
+  },
   {
     name: "Consulter Etudiant",
     layout: "/admin",
@@ -92,6 +103,12 @@ const routes = [
     component: <CreateSubAdmin />,
   },
   {
+    name: "View Profile Sub Admin",
+    layout: "/admin",
+    path: "Utilisateurs/VoirProfil/:username",
+    component: <VieWProfilSubAdmin />,
+  },
+  {
     name: "Matieres",
     layout: "/admin",
     path: "Matieres",
@@ -103,6 +120,7 @@ const routes = [
     layout: "/admin",
     path: "Classes",
     icon: <MdClass className="h-6 w-6" />,
+    component: <ClassesList />,
   },
   {
     name: "Formations",
@@ -126,6 +144,13 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },
+  {
+    name:"Ajouter Teacher",
+    layout: "/admin",
+    path: "AjouterTeacher",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <AddTeacher />,
+  }
 
 
 ];

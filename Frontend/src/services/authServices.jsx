@@ -31,10 +31,6 @@ const authService = {
   getUserProfile: async (username) => {
     try {
       const response = await axios.get(`${BASE_URL}/user/Profil/${username}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
       });
       return response.data;
     } catch (error) {

@@ -76,7 +76,7 @@ const ComplexTable = (props) => {
                               <div className={`rounded-full text-xl`}>
                                 {cell.value === 'Approved' ||cell.value === 'active' ? (
                                     <MdCheckCircle className="text-green-500" />
-                                ) : cell.value === 'Disable' ? (
+                                ) : cell.value === 'Disable' ||cell.value === 'inactive'? (
                                     <MdCancel className="text-red-500" />
                                 ) : cell.value === 'Error' ? (
                                     <MdOutlineError className="text-orange-500" />
