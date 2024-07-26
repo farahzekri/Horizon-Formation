@@ -8,7 +8,7 @@ const ConfirmationModal = ({
                                confirmButtonClass,
                            }) => {
     return (
-        <div className="fixed top-72 inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
+        <div className="fixed top-72 inset-0 z-50 flex items-center justify-center bg-black ">
             <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 ">
                 <h2 className="text-lg font-semibold mb-4">{message}</h2>
                 <div className="flex justify-end space-x-4">

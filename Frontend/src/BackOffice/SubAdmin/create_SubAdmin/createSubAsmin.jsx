@@ -24,6 +24,7 @@ const CreateSubAdmin = () => {
         state: '',
         zip: '',
         genre: '',
+        phone:'',
         dob: '',
     });
 
@@ -332,6 +333,8 @@ const CreateSubAdmin = () => {
                                     label="Phone Number"
                                     id="phone"
                                     name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
                                     
                                 />
                             </div>
@@ -348,15 +351,7 @@ const CreateSubAdmin = () => {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full px-3">
-                                <PhoneNumberInput
-                                    label="Phone Number"
-                                    id="phone"
-                                    name="phone"
-                                />
-                            </div>
-                        </div>
+                    
                         <div className="flex justify-between">
                             <button
                                 type="button"
