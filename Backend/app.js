@@ -8,6 +8,7 @@ const studentRoute = require('./src/routes/studentRoute');
 const classController =require('./src/routes/classesRoute');const TeacherRoutes=require('./src/routes/TeacherRoute');
 const formationRoutes = require('./src/routes/formationRoute');
 const courseRoutes = require('./src/routes/courseRoute');
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = 3000;
@@ -16,8 +17,13 @@ const PORT = 3000;
 
 connectDB();
 
-app.use(cors({ origin: 'http://localhost:4000' }));
+const corsOptions = {
+  origin: "http://localhost:4000", // Frontend URL
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use('/user',userRoute);
 app.use('/student',studentRoute);
 app.use('/classes',classController);

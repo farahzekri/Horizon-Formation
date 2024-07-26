@@ -1,8 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const subAdminController = require("../controllers/subAdminController");
-const { auth, checkPermissions } = require("../middlewares/authentication");
+const {
+  auth,
+  checkPermissions,
+  checkToken,
+} = require("../middlewares/authentication");
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get(
@@ -11,7 +15,7 @@ router.get(
   checkPermissions("manage:students"),
   userController.student
 );
-router.get("/get_All_Users", userController.get_All_Users);
+router.get("/get_All_Users", checkToken, userController.get_All_Users);
 router.put("/Update_Status/:userId", userController.Update_Status);
 
 router.get("/Profil/:username", subAdminController.getUserProfile);

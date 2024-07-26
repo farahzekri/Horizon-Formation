@@ -1,11 +1,18 @@
 const BASE_URL = "http://localhost:3000";
 
+const token = localStorage.getItem("token");
 
 export const get_All_Users = async () => {
   try {
     const response = await fetch(`${BASE_URL}/user/get_All_Users`, {
-       method: "GET",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`, // assuming 'token' is a variable holding your token
+      },
+      credentials: "include",
     });
+
     if (!response.ok) {
       throw new Error("Failed to fetch users");
     }
@@ -16,6 +23,7 @@ export const get_All_Users = async () => {
     throw new Error("Failed to fetch users");
   }
 };
+
 
 export const Update_Status = async (userId, newStatus) => {
   try {
