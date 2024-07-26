@@ -115,7 +115,7 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick,handleCh
                                           <Progress width="w-[68px]" value={cell.value}/>
                                       );
 
-                                  } else if (cell.column.Header === "Action") {
+                                  } else if (cell.column.Header === "Action Etudiant") {
                                       cellContent = (
                                           <div className="flex">
                                               <button
