@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import courseService from "../../services/courseServices";
 import CheckTable from "../admin/tables/components/CheckTable";
-import FormModal from "../../components/modal/formModal";
 import InputField from "../../components/fields/InputField";
 import TextField from "../../components/fields/TextField";
+import FormModal from "../../components/Modal/formModal";
 
 
 const CourseList = () => {

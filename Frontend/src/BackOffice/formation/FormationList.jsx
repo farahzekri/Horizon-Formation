@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CheckTable from "../admin/tables/components/CheckTable";
-import FormModal from "../../components/modal/formModal";
 import InputField from "../../components/fields/InputField";
 import TextField from "../../components/fields/TextField";
 import formationService from "../../services/formationServices";
@@ -8,6 +7,7 @@ import SelectField from "../../components/fields/SelectField";
 import MultiSelectField from "../../components/fields/MultiSelectField";
 import FormationProgressBar from "./components/FormationProgressBar";
 import courseService from "../../services/courseServices";
+import FormModal from "../../components/Modal/formModal";
 
 const levels = [
     { value: "BTP", label: "BTP" },
