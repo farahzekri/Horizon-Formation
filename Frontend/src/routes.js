@@ -170,7 +170,7 @@ const routes = [
     path: "AjouterTeacher",
     icon: <MdPerson className="h-6 w-6" />,
     component: <AddTeacher />,
-  }
+  },
 
 
 ];

@@ -1,4 +1,6 @@
-const Student = require('../models/Student');
+const Student = require('../models/student');
+const Formation = require('../models/formation');
+const Invoice = require('../models/invoice');
 const Course = require("../models/course");
 
 const addStudent = async (req, res) => {
@@ -30,6 +32,23 @@ const getAllStudents = async (req, res) => {
         res.status(200).json(students);
     } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+};
+
+
+const getStudentById = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const student = await Student.findById(id);
+
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        res.status(200).json(student);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 

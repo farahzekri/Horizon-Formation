@@ -7,6 +7,7 @@ const logApiUsage = require("../middlewares/logApiUsage");
 
 router.post('/add', studentController.addStudent);
 router.get('/all', studentController.getAllStudents);
+router.get('/allInfo/:id', studentController.getStudentById);
 router.delete('/deleteStudent/:id', studentController.deleteStudentById);
 router.get('/getById/:id', studentController.getStudentById);
 router.put('/editStudent/:id', studentController.editStudent);
