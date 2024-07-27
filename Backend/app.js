@@ -7,6 +7,8 @@ const userRoute = require('./src/routes/userRoute');
 const studentRoute = require('./src/routes/studentRoute');
 const classController =require('./src/routes/classesRoute');const TeacherRoutes=require('./src/routes/TeacherRoute');
 const formationRoutes = require('./src/routes/formationRoute');
+const payementRoutes = require('./src/routes/paymentRoute');
+const invoiceRoutes = require('./src/routes/invoiceRoute');
 const courseRoutes = require('./src/routes/courseRoute');
 
 const app = express();
@@ -24,6 +26,8 @@ app.use('/classes',classController);
 app.use("/Teacher", TeacherRoutes);
 app.use('/course', courseRoutes);
 app.use('/formation', formationRoutes);
+app.use('/payment', payementRoutes);
+app.use('/invoice', invoiceRoutes);
 
 app.listen(PORT, (error) =>{
         if(!error)
