@@ -49,6 +49,15 @@ const studentServices = {
             throw new Error(error.response.data.message || 'An error occurred while fetching the student');
         }
     },
+
+    getFormationByStudentId: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/getFormationByStudentId/${id}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'An error occurred while fetching the student');
+        }
+    },
     editStudent: async (id, studentData) => {
         console.log('studentId',id)
 

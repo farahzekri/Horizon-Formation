@@ -1,4 +1,6 @@
-const Student = require('../models/Student');
+const Student = require('../models/student');
+const Formation = require('../models/formation');
+const Invoice = require('../models/invoice');
 const Course = require("../models/course");
 
 const addStudent = async (req, res) => {
@@ -32,6 +34,7 @@ const getAllStudents = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 const deleteStudentById = async (req, res) => {
     const id = req.params.id;
@@ -101,10 +104,42 @@ const editStudent = async (req, res) => {
     }
 };
 
+const getFormationByStudentId = async (req, res) => {
+    try {
+        const studentId = req.params.id;
+
+        // Retrieve the student by ID and populate the formationId field
+        const student = await Student.findById(studentId)
+            .populate({
+                path: 'enrollmentInfo.formationId',
+                select: 'name type description level registrationFee tuitionFee courses'
+            });
+
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Get the formation details from the student object
+        const formation = student.enrollmentInfo.formationId;
+
+        if (!formation) {
+            return res.status(404).json({ message: 'Formation not found for this student' });
+        }
+
+        res.status(200).json(formation);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 module.exports = {
     addStudent,
     getAllStudents,
     deleteStudentById,
     getStudentById,
-    editStudent
+    editStudent,
+    getFormationByStudentId,
+
+    
 };
