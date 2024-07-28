@@ -117,13 +117,7 @@ const BillingInformation = ({ student }) => {
       });
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
 
   return (
     <div className="mb-6 bg-white p-6 shadow-lg">
