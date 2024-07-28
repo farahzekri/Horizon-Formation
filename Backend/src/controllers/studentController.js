@@ -35,7 +35,6 @@ const getAllStudents = async (req, res) => {
     }
 };
 
-
 const deleteStudentById = async (req, res) => {
     const id = req.params.id;
 
@@ -76,16 +75,26 @@ const editStudent = async (req, res) => {
     const studentId = req.params.id;
     const updatedData = req.body;
 
-    const formattedData = {
-        personalInfo: {
-            firstName: updatedData.firstName,
-            lastName: updatedData.lastName,
-            dateOfBirth: updatedData.dateOfBirth,
-            address: updatedData.address,
-            phoneNumber: updatedData.phoneNumber,
-            email: updatedData.email
-        }
-    };
+    const formattedData = {};
+
+    if (updatedData.firstName || updatedData.lastName || updatedData.dateOfBirth || updatedData.address || updatedData.phoneNumber || updatedData.email) {
+        formattedData.personalInfo = {
+            ...(updatedData.firstName && { firstName: updatedData.firstName }),
+            ...(updatedData.lastName && { lastName: updatedData.lastName }),
+            ...(updatedData.dateOfBirth && { dateOfBirth: updatedData.dateOfBirth }),
+            ...(updatedData.address && { address: updatedData.address }),
+            ...(updatedData.phoneNumber && { phoneNumber: updatedData.phoneNumber }),
+            ...(updatedData.email && { email: updatedData.email }),
+        };
+    }
+
+    if (updatedData.registrationDate || updatedData.formationId || updatedData.classId) {
+        formattedData.enrollmentInfo = {
+            ...(updatedData.registrationDate && { registrationDate: updatedData.registrationDate }),
+            ...(updatedData.formationId && { formationId: updatedData.formationId }),
+            ...(updatedData.classId && { classId: updatedData.classId }),
+        };
+    }
 
     try {
         const updatedStudent = await Student.findByIdAndUpdate(studentId, formattedData, {
@@ -103,6 +112,7 @@ const editStudent = async (req, res) => {
         res.status(400).json({ message: 'Failed to update student', error: error.message });
     }
 };
+
 
 const getFormationByStudentId = async (req, res) => {
     try {
@@ -141,5 +151,5 @@ module.exports = {
     editStudent,
     getFormationByStudentId,
 
-    
+
 };

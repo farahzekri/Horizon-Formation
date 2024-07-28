@@ -6,15 +6,16 @@ import { statesOfTunisia } from "../../SubAdmin/create_SubAdmin/stateoftunis";
 import studentServices from "../../../services/studentServices";
 import {useNavigate} from "react-router-dom";
 import AlertMessage from "../../../components/alert/alertMessage";
+import {useDisclosure} from "@chakra-ui/react";
 import formationServices from "../../../services/formationServices";
-import classServices from "../../../services/classService";
+import teacherServices from "../../../services/teacherServices";
 
 const formationOp = [
     { value: "F1", label: "F1" },
     { value: "F2", label: "F2" },
 ];
 
-function AddStudent() {
+function AddTeacher() {
     const navigate = useNavigate();
 
     const [alertState, setAlertState] = useState({
@@ -32,45 +33,7 @@ function AddStudent() {
         state: "",
         phoneNumber: "",
         email: "",
-        formation: "",
-        classe: "",// Changed to a single string value
     });
-    const [formations, setFormations] = useState([]);
-    const [classes, setClasses] = useState([]);
-
-    useEffect(() => {
-        const fetchFormations = async () => {
-            try {
-                const response = await formationServices.getAllFormations();
-                const formationOptions = response.map((formation) => ({
-                    value: formation._id, // Assuming the formation ID is '_id'
-                    label: formation.name, // Assuming the formation name is 'name'
-                }));
-                setFormations(formationOptions);
-            } catch (error) {
-                console.error("Error fetching formations:", error);
-            }
-        };
-
-        fetchFormations();
-    }, []);
-
-    useEffect(() => {
-        const fetchClasses = async () => {
-            try {
-                const response = await classServices.getclass();
-                const classOptions = response.map((classe) => ({
-                    value: classe._id, // Assuming the formation ID is '_id'
-                    label: classe.level, // Assuming the formation name is 'name'
-                }));
-                setClasses(classOptions);
-            } catch (error) {
-                console.error("Error fetching formations:", error);
-            }
-        };
-
-        fetchClasses();
-    }, []);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -83,7 +46,7 @@ function AddStudent() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const studentData = {
+            const teacherData = {
                 personalInfo: {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
@@ -96,19 +59,15 @@ function AddStudent() {
                     phoneNumber: formData.phoneNumber,
                     email: formData.email,
                 },
-                enrollmentInfo: {
-                    formationId: formData.formation,
-                    classId: formData.classe
-                }
             };
-            console.log(studentData)
-            const response = await studentServices.addStudent(studentData);
-            console.log("Student added successfully:", response);
+
+            const response = await teacherServices.addTeacher(teacherData);
+            console.log("teacher added successfully:", response);
 
             setAlertState({
                 showAlert: true,
                 alertType: "success",
-                alertMessage: "Élève ajouté avec succès!",
+                alertMessage: "Formateur ajouté avec succès!",
             });
             setFormData({
                 firstName: "",
@@ -120,17 +79,16 @@ function AddStudent() {
                 phoneNumber: "",
                 email: "",
                 formation: "",
-                classe: ""
             });
             setTimeout(() => {
-                navigate('/admin/Etudiants');
+                navigate('/admin/Formateurs');
             }, 1000);
         } catch (error) {
-            console.error("Error adding student:", error);
+            console.error("Error adding teacher:", error);
             setAlertState({
                 showAlert: true,
                 alertType: "error",
-                alertMessage: "Erreur lors de l'ajout de l'élève.",
+                alertMessage: "Erreur lors de l'ajout du formateur.",
             });
             setTimeout(() => {
                 setAlertState({
@@ -193,15 +151,7 @@ function AddStudent() {
                             onChange={handleChange}
                             extra="mb-4"
                         />
-                        <InputField
-                            label="ZIPCODE"
-                            id="zip"
-                            name="zip"
-                            type="text"
-                            placeholder="Enter ZIP code"
-                            value={formData.zip}
-                            onChange={handleChange}
-                        />
+
                     </div>
                     <div className="flex flex-col space-y-4">
                         <InputField
@@ -234,43 +184,30 @@ function AddStudent() {
                             onChange={handleChange}
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                         />
-                        <SelectField
-                            label="Formation"
-                            id="formation"
-                            name="formation"
-                            placeholder="Sélectionner la Formation"
-                            options={formations}
-                            value={formData.formation}
-                            onChange={(selectedValue) =>
-                                setFormData({ ...formData, formation: selectedValue })
-                            }
-                        />
-                        <SelectField
-                            label="Classe"
-                            id="classe"
-                            name="classe"
-                            placeholder="Sélectionner le Classe"
-                            options={classes}
-                            value={formData.classe}
-                            onChange={(selectedValue) =>
-                                setFormData({ ...formData, classe: selectedValue })
-                            }
+                        <InputField
+                            label="ZIPCODE"
+                            id="zip"
+                            name="zip"
+                            type="text"
+                            placeholder="Enter ZIP code"
+                            value={formData.zip}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
                 {alertState.showAlert && (
-                        <AlertMessage
-                            status={alertState.alertType}
-                            variant="left-accent"
-                            description={alertState.alertMessage}
-                            onClose={closeAlert} // Pass close function to AlertMessage
-                        />
+                    <AlertMessage
+                        status={alertState.alertType}
+                        variant="left-accent"
+                        description={alertState.alertMessage}
+                        onClose={closeAlert} // Pass close function to AlertMessage
+                    />
                 )}
                 <button
                     type="submit"
                     className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
                 >
-                    Ajouter élève
+                    Ajouter formateur
                 </button>
 
             </form>
@@ -278,4 +215,4 @@ function AddStudent() {
     );
 }
 
-export default AddStudent;
+export default AddTeacher;
