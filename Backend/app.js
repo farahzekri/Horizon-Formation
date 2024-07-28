@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use('/user',userRoute);
 app.use('/student',studentRoute);
 app.use('/classes',classController);
-app.use("/Teacher", TeacherRoutes);
+app.use("/teacher", TeacherRoutes);
 app.use('/course', courseRoutes);
 app.use('/formation', formationRoutes);
 app.use('/schedule', scheduleRouts);

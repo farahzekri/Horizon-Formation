@@ -29,25 +29,6 @@ const Sidebar = ({ open, onClose }) => {
       icon: <MdHome className="h-6 w-6" />,
     },
     {
-      name: "NFT Marketplace",
-      layout: "/admin",
-      path: "nft-marketplace",
-      icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-      secondary: true,
-    },
-    {
-      name: "Data Tables",
-      layout: "/admin",
-      icon: <MdBarChart className="h-6 w-6" />,
-      path: "data-tables",
-    },
-    {
-      name: "Profile",
-      layout: "/admin",
-      path: "profile",
-      icon: <MdPerson className="h-6 w-6" />,
-    },
-    {
       name: "Profil",
       layout: "/admin",
       path: `Profil`,
@@ -65,7 +46,12 @@ const Sidebar = ({ open, onClose }) => {
       path: "Etudiants",
       icon: <MdGroup className="h-6 w-6" />,
     },
-   
+    {
+      name: "Formateurs",
+      layout: "/admin",
+      path: "Formateurs",
+      icon: <MdGroup className="h-6 w-6" />,
+    },
     {
       name: "Ressources",
       layout: "/admin",
@@ -91,18 +77,7 @@ const Sidebar = ({ open, onClose }) => {
         },
       ],
     },
-    {
-      name: "Sign In",
-      layout: "/auth",
-      path: "sign-in",
-      icon: <MdLock className="h-6 w-6" />,
-    },
-    {
-      name: "Ajouter un Tuteur",
-      layout: "/admin",
-      path: "AjouterTeacher",
-      icon: <MdGroup className="h-6 w-6" />,
-    },
+
   ];
   return (
     <div

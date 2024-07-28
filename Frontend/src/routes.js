@@ -10,8 +10,6 @@ import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmi
 
 // Auth Imports
 import SignIn from "FrontOffice/auth/SignIn";
-//Teacher Imports
-import AddTeacher from "BackOffice/Teacher/Create_Teacher/AddTeacher";
 // Icon Imports
 import {
   MdHome,
@@ -33,6 +31,9 @@ import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
 import Schedule from "BackOffice/classes/emploi";
 import DetailClasses from "BackOffice/classes/detailclass";
+import TeacherList from "./BackOffice/Teacher/TeacherList";
+import AddTeacher from "./BackOffice/Teacher/AddTeacher/AddTeacher";
+import ViewTeacher from "./BackOffice/Teacher/ViewTeacher/ViewTeacher";
 
 const routes = [
   {
@@ -78,19 +79,34 @@ const routes = [
     path: "Etudiants/Ajouter",
     component: <AddStudent />,
   },
-
-  {
-    name: "Ajouter Classes",
-    layout: "/admin",
-    path: "Classes/Ajouter",
-    component: <AjouterClass />,
-  },
   {
     name: "Consulter Etudiant",
     layout: "/admin",
     path: "Etudiants/:studentId",
     component: <ViewStudent />,
   },
+
+
+  {
+    name: "Formateurs",
+    layout: "/admin",
+    path: "Formateurs",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <TeacherList />,
+  },
+  {
+    name: "Ajouter Formateur",
+    layout: "/admin",
+    path: "Formateurs/Ajouter",
+    component: <AddTeacher />,
+  },
+  {
+    name: "Consulter Formateur",
+    layout: "/admin",
+    path: "Formateurs/:teacherId",
+    component: <ViewTeacher />,
+  },
+
   {
     name: "Utilisateurs",
     layout: "/admin",
@@ -164,13 +180,6 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },
-  {
-    name:"Ajouter Teacher",
-    layout: "/admin",
-    path: "AjouterTeacher",
-    icon: <MdPerson className="h-6 w-6" />,
-    component: <AddTeacher />,
-  }
 
 
 ];
