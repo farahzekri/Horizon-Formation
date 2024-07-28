@@ -1,12 +1,8 @@
-// Import necessary modules and dependencies
 const Teacher = require("../models/teacher");
 const Availability = require("../models/Availability");
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
 
 const createTeacher = async (req, res) => {
   try {
-
     const teacher = new Teacher(req.body);
     await teacher.save();
     res.status(201);

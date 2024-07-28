@@ -9,7 +9,7 @@ const studentServices = {
         try {
             const response = await axios.get(`${API_URL}/all`, {
                 headers: {
-                    'x-auth-token': token,
+                    Authorization: token,
                 },
             });
             return response.data;
@@ -23,7 +23,7 @@ const studentServices = {
             console.log(token)
             const response = await axios.post(`${API_URL}/add`, studentData, {
                 headers: {
-                    'x-auth-token': token,
+                    Authorization: token,
                 },
             });
             return response.data;

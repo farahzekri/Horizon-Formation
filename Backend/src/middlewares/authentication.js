@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
-  const token = req.header("x-auth-token");
+  const token = req.header("Authorization");
 
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
@@ -36,9 +36,9 @@ const checkPermissions = (...requiredPermissions) => {
 };
 
 const checkToken = (req, res, next) => {
-  console.log("Checking token");
   try {
     const token = req.header("Authorization");
+
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
@@ -50,11 +50,9 @@ const checkToken = (req, res, next) => {
       console.log("Token is valid");
       next(); // Proceed to the next middleware or route handler
     } catch (err) {
-      console.log("error");
       if (err.name === "TokenExpiredError") {
         const refreshToken = req.cookies.refreshToken;
-        console.log(refreshToken);
-        if (!refreshToken) {
+        if (!refreshToken || refreshToken === "undefined") {
           return res.status(401).json({ message: "No refresh token provided" });
         }
 
@@ -74,7 +72,7 @@ const checkToken = (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
           );
-          res.setHeader("x-auth-token", newAccessToken);
+          res.setHeader("Authorization", newAccessToken);
           req.user = decodedRefreshToken; // Attach the decoded refresh token to the request object
           next(); // Proceed to the next middleware or route handler
         } catch (err) {

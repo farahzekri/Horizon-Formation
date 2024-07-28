@@ -1,11 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const classController = require('../controllers/classesController');
+const classController = require("../controllers/classesController");
+const { checkToken } = require("../middlewares/authentication");
+const logApiUsage = require("../middlewares/logApiUsage");
 
-
-
-router.post('/creation', classController.createClass);
-router.get('/AllClasses', classController.getAllClasses);
-router.put('/Updateclasses', classController.updateClass);
-router.delete('/delete/:id', classController.deleteClass);
+router.post("/creation", checkToken, logApiUsage, classController.createClass);
+router.get(
+  "/AllClasses",
+  checkToken,
+  logApiUsage,
+  classController.getAllClasses
+);
+router.put(
+  "/Updateclasses",
+  checkToken,
+  logApiUsage,
+  classController.updateClass
+);
+router.delete(
+  "/delete/:id",
+  checkToken,
+  logApiUsage,
+  classController.deleteClass
+);
 module.exports = router;

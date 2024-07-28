@@ -76,7 +76,7 @@ const AddTeacher = () => {
           body: JSON.stringify(teacher),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         }
       );
