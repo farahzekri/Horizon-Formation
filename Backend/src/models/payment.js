@@ -17,14 +17,13 @@ const PaymentSchema = new Schema({
     amount: { type: Number, required: true },
     method: { 
         type: String, 
-        enum: ['Check', 'Cash', 'Bank Transfer'], 
+        enum: ['Check', 'Cash', 'virement bancaire'], 
         required: true 
     },
     receipt: { 
         type: {
             receiptNumber: { type: String, unique: true },
             dateIssued: { type: Date, default: null },
-            issuer: { type: String, default: null },
             paymentDetails: {
                 amount: { type: Number, default: null },
                 method: { type: String, default: null }
@@ -35,25 +34,23 @@ const PaymentSchema = new Schema({
     dateCreated: { type: Date, default: Date.now }
 });
 
-// Méthode d'instance pour générer et remplir automatiquement le numéro de reçu, le montant et la méthode
+
 PaymentSchema.methods.initializeReceipt = async function () {
     await loadNanoid();
     this.receipt = {
-        receiptNumber: nanoid(), // Générer un numéro de reçu unique
+        receiptNumber: nanoid(), 
         dateIssued: null,
-        issuer: null,
         paymentDetails: {
-            amount: this.amount, // Montant du paiement
-            method: this.method  // Méthode de paiement
+            amount: this.amount, 
+            method: this.method  
         }
     };
 };
 
-// Méthode d'instance pour mettre à jour les détails du reçu ultérieurement
-PaymentSchema.methods.updateReceiptDetails = function (issuer) {
+
+PaymentSchema.methods.updateReceiptDetails = function () {
     if (this.receipt) {
-        this.receipt.dateIssued = new Date(); // Date d'émission actuelle
-        this.receipt.issuer = issuer;          // Émetteur du reçu
+        this.receipt.dateIssued = new Date(); 
     } else {
         console.error('Receipt does not exist to update.');
     }
