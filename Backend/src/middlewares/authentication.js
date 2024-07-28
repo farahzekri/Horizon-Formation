@@ -46,9 +46,9 @@ const checkToken = (req, res, next) => {
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // Attach the decoded token to the request object
-      console.log("Token is valid");
-      next(); // Proceed to the next middleware or route handler
+      req.user = decoded;
+      // console.log("Token is valid");
+      next();
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         const refreshToken = req.cookies.refreshToken;
@@ -61,7 +61,7 @@ const checkToken = (req, res, next) => {
             refreshToken,
             process.env.JWT_SECRET
           );
-          // Generate a new access token
+
           const newAccessToken = jwt.sign(
             {
               id: decodedRefreshToken.id,
@@ -73,8 +73,8 @@ const checkToken = (req, res, next) => {
             { expiresIn: "1h" }
           );
           res.setHeader("Authorization", newAccessToken);
-          req.user = decodedRefreshToken; // Attach the decoded refresh token to the request object
-          next(); // Proceed to the next middleware or route handler
+          req.user = decodedRefreshToken;
+          next();
         } catch (err) {
           return res.status(401).json({ message: "Invalid refresh token" });
         }

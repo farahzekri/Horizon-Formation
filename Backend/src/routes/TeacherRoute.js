@@ -3,13 +3,11 @@ const router = express.Router();
 const { auth } = require("../middlewares/authentication");
 const logApiUsage = require("../middlewares/logApiUsage");
 const {checkToken }= require("../middlewares/authentication");
-const validateTeacher = require("../middlewares/ValidationTeacherMiddleware");
 const teacherController = require("../controllers/TeacherController");
 
 router.post(
   "/CreateTeachers",
   logApiUsage,
-  // validateTeacher.validateAvailability,
   checkToken,
   teacherController.createTeacher
 );
@@ -44,7 +42,6 @@ router.delete(
 router.post(
   "/Teachers/:id/Availability",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   checkToken,
   teacherController.recordTeacherAvailability
@@ -87,7 +84,6 @@ router.get(
 router.post(
   "/Teachers/:id/Archive",
   logApiUsage,
-  validateTeacher.validateAvailability,
   auth,
   checkToken,
   teacherController.archiveTeacherRecords

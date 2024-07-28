@@ -12,7 +12,7 @@ const authService = {
           username,
           password,
         },
-        { withCredentials: true } 
+        { withCredentials: true }
       );
       const { token } = response.data;
       localStorage.setItem("token", token);
@@ -34,10 +34,11 @@ const authService = {
   //Affiche Profil
   getUserProfile: async (username) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/user/Profil/${username}`,
-        {}
-      );
+      const response = await axios.get(`${BASE_URL}/user/Profil/${username}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -48,7 +49,12 @@ const authService = {
     try {
       const response = await axios.put(
         `${BASE_URL}/user/updateProfil/${username}`,
-        userData
+        userData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       return response.data;
     } catch (error) {
