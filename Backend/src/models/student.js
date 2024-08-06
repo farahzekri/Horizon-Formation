@@ -16,13 +16,8 @@ const StudentSchema = new Schema({
     },
     enrollmentInfo: {
         registrationDate: { type: Date, default: Date.now },
-        formations: [
-            {
-                formationId: { type: Schema.Types.ObjectId, ref: 'Formation' },
-                level: { type: String },
-                classId: { type: Schema.Types.ObjectId, ref: 'Class' }
-            }
-        ]
+        formationId: { type: Schema.Types.ObjectId, ref: 'Formation' },
+        classId: { type: Schema.Types.ObjectId, ref: 'Class' }
     },
     billingInfo: {
         invoices: [

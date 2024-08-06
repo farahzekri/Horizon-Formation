@@ -126,7 +126,6 @@ const FormationList = () => {
         if (currentStep === 0) {
             nextStep();
         } else {
-            console.log(formData);
             try {
                 await formationService.addFormation(formData);
                 setFormData({

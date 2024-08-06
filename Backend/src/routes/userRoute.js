@@ -11,17 +11,22 @@ const logApiUsage = require("../middlewares/logApiUsage");
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
+router.get("/logout", userController.LogOut);
+router.get("/refresh-token", userController.refreshToken);
 router.get(
   "/student",
+  checkToken,
   auth,
-  checkToken,logApiUsage,
+  logApiUsage,
   checkPermissions("manage:students"),
   userController.student
 );
-router.get("/get_All_Users",
-   checkToken,
+router.get(
+  "/get_All_Users",
+  checkToken,
   logApiUsage,
-   userController.get_All_Users);
+  userController.get_All_Users
+);
 router.put(
   "/Update_Status/:userId",
   checkToken,

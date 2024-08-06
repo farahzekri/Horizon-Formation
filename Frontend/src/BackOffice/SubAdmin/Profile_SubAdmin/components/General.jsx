@@ -2,12 +2,20 @@ import Card from "components/card";
 import React, { useState, useEffect } from 'react';
 import { MdModeEditOutline,MdCreditCard } from "react-icons/md";
 import InputField from '../../../../components/fields/InputField';
-import Dropdown from '../../../../components/dropdown/index';
 import userService from '../../../../services/authServices';
-import { useParams } from 'react-router-dom';
-import CustomModal from '../../../../components/Modal/modal'
+import { statesOfTunisia } from "../../../SubAdmin/create_SubAdmin/stateoftunis";
+import CustomModal from '../../../../components/Modal/modal';
+import SelectField from "../../../../components/fields/SelectField";
 import TooltipHorizon from '../../../../components/tooltip/index';
+import PhoneNumberInput from "components/fields/PhoneField";
+import { validateField } from "./validateField";
 import {jwtDecode} from "jwt-decode";
+
+const genderOp = [
+  { value: "Femelle", label: "Femelle" },
+  { value: "Mâle", label: "Mâle" },
+  { value: "Autre", label: "Autre" },
+];
 
 const General = () => {
   const [username, setUsername] = useState(null);
@@ -38,6 +46,11 @@ const General = () => {
   const handleEditClick = () => {
     setShowUpdateForm(!showUpdateForm);
   };
+
+  //control de saisie 
+  const [errors, setErrors] = useState({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  
 
   // Get Profile
   useEffect(() => {
@@ -73,9 +86,43 @@ const General = () => {
     fetchUserProfile();
   }, []);
 
-  // Update Profile
-  const handleSubmit = async (e) => {
+  // Update Profile;
+  const handleSubmitProfile = async (e) => {
     e.preventDefault();
+
+        // Validation des champs
+        const lastNameError = validateField('lastName', lastName);
+        const firstNameError = validateField('firstName', firstName);
+        const emailError = validateField('email', email);
+        const phoneError = validateField('phone', phone);
+        const genderError = validateField('gender', gender);
+        const dobError = validateField('dob', dob);
+        const cityError = validateField('city', address.city);
+        const stateError = validateField('state', address.state);
+        const zipError = validateField('zip', address.zip);
+
+        // Mettre à jour l'état des erreurs
+        setErrors({
+            lastName: lastNameError,
+            firstName: firstNameError,
+            email: emailError,
+            phone: phoneError,
+            gender: genderError,
+            dob: dobError,
+            city: cityError,
+            state: stateError,
+            zip: zipError
+        });
+
+        // Vérifier s'il y a des erreurs
+        if (
+            lastNameError || firstNameError || emailError || phoneError ||
+            genderError || dobError || cityError || stateError || zipError
+        ) {
+            // Il y a des erreurs, ne soumettez pas le formulaire
+            alert('Il y a des erreurs dans le formulaire.');
+            return;
+        }
     try {
       const updatedProfile = {
         firstName,
@@ -91,26 +138,62 @@ const General = () => {
         }
       };
 
-      // Inclure les mots de passe seulement s'ils sont fournis
-      if (oldPassword && newPassword) {
-        updatedProfile.oldPassword = oldPassword;
-        updatedProfile.newPassword = newPassword;
-      }
-
       const data = await userService.updateUserProfile(username, updatedProfile);
       setUserProfile(data);
       alert('Profil mis à jour avec succès !');
       setShowUpdateForm(false);
-      closeModal(); // Ferme le modal si ouvert
     } catch (error) {
       setError(error.message || 'Une erreur est survenue lors de la mise à jour du profil.');
+      alert(error.message || 'Une erreur est survenue lors de la mise à jour du profil.');
+    }
+  };
+   // Fonction pour obtenir l'état du champ
+   const getInputState = (fieldName) => {
+    if (!formSubmitted) return ''; // Au début, pas encore soumis, pas de bordure colorée
+    if (errors[fieldName]) return 'error'; // S'il y a une erreur, bordure rouge
+    return 'success'; // Valide, bordure verte
+  };
 
-      if (error.response && error.response.data && error.response.data.message === 'Old password is incorrect') {
+  //modifier password
+  const handleSubmitPassword = async (e) => {
+    e.preventDefault();
+     // Validation des champs
+     const oldPasswordError = validateField('oldPassword', oldPassword);
+     const newPasswordError = validateField('newPassword', newPassword);
+  
+
+     // Mettre à jour l'état des erreurs
+     setErrors({
+      oldPassword: oldPasswordError,
+      newPassword: newPasswordError,
+     });
+
+     // Vérifier s'il y a des erreurs
+     if (
+      oldPasswordError || newPasswordError 
         
-        alert('Ancien mot de passe incorrect');
-      } else {
-        alert('Ancien mot de passe incorrect');
+     ) {
+         // Il y a des erreurs, ne soumettez pas le formulaire
+         alert('Il y a des erreurs dans le formulaire.');
+         return;
+     }
+    try {
+      if (!oldPassword || !newPassword) {
+        alert('Veuillez fournir les deux mots de passe.');
+        return;
       }
+
+      const passwordData = {
+        oldPassword,
+        newPassword,
+      };
+
+      const data = await userService.updateUserProfile(username, passwordData);
+      alert('Mot de passe mis à jour avec succès !');
+      closeModal();
+    } catch (error) {
+      setError(error.message || 'Une erreur est survenue lors de la mise à jour du mot de passe.');
+      alert(error.message || 'Une erreur est survenue lors de la mise à jour du mot de passe.');
     }
   };
 
@@ -118,9 +201,9 @@ const General = () => {
 
 
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   if (!userProfile) {
     return <div>Loading...</div>;
@@ -148,21 +231,24 @@ const General = () => {
         />
         </h4>
        {/* Cards */}
-       <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmitProfile}>
        <div className="grid grid-cols-2 gap-4 px-2">
 
-          <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-               <InputField
-                  label="Nom"
-                  id="lastName"
-                  type="text"
-                  placeholder="Nom"
-                  extra="mb-4"
-                  value={lastName}
-                  onChange={(value) => setLastName(value)}
-                  className="text-base font-medium text-navy-700 dark:text-white"
-                />
-
+          <div className={`flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none`}>
+          <InputField
+              label="Nom"
+              id="lastName"
+              type="text"
+              placeholder="Nom"
+              extra="mb-4"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              error={errors.lastName}
+              state={getInputState('lastName')}
+              className={`text-base font-medium text-navy-700 dark:text-white ${
+                getInputState('lastName') === 'error' ? 'border-red-500' : ''
+              }`}
+            />
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
               <InputField
@@ -172,7 +258,9 @@ const General = () => {
                   placeholder="Prenom"
                   extra="mb-4"
                   value={firstName}
-                  onChange={(value) => setFirstName(value)}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  error={errors.firstName}
+                  state={getInputState(errors.firstName)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
           </div>
@@ -184,57 +272,36 @@ const General = () => {
                 placeholder="entrer votre email"
                 extra="mb-4"
                 value={email}
-                onChange={(value) => setEmail(value)}
+                onChange={(e) => setEmail(e.target.value)}
+                error={errors.email}
+                state={getInputState(errors.email)}
                 className="text-base font-medium text-navy-700 dark:text-white"
               />
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-              <InputField
+              <PhoneNumberInput
                 label="Telephone"
                 id="phone"
-                type="text"
-                placeholder="Entrer votre numero du telephone"
-                extra="mb-4"
+                name="phone"
                 value={phone}
                 onChange={(value) => setPhone(value)}
-                className="text-base font-medium text-navy-700 dark:text-white"
+                error={errors.phone}
+                state={getInputState(errors.phone)}
               />
           </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-              <label
-                    className={`text-sm text-navy-700 dark:text-white
-                         ml-1.5 font-medium ml-3 font-bold"
-                    }`}
-                >
-                    Genre
-                </label>
-              <Dropdown
-                    button={<button>{gender || 'Genre'}</button>}
-                    classNames="w-48 bg-white rounded-md shadow-lg"
-                >
-                    <div className="py-1">
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Female')}
-                        >
-                            Femme
-                        </div>
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Male')}
-                        >
-                            Homme
-                        </div>
-                        <div
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            onClick={() => setGender('Other')}
-                        >
-                            Autre
-                        </div>
-                    </div>
-                </Dropdown>
-
-          </div>
+                   <SelectField
+                       label="Genre"
+                       id="gender"
+                       name="gender"
+                       placeholder="Sélectionner le genre"
+                       options={genderOp}
+                       value={gender}
+                       onChange={(e) => setGender(e.target.value)}
+                       error={errors.gender}
+                       state={getInputState(errors.gender)}
+                    />
+            </div>
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
               <InputField
                 label="Date De Naissance"
@@ -243,7 +310,9 @@ const General = () => {
                 placeholder="Entrer la date de Naissance"
                 extra="mb-4"
                 value={dob}
-                onChange={(value) => setDob(value)}
+                onChange={(e) => setDob(e.target.value)}
+                error={errors.dob}
+                state={getInputState(errors.dob)}
                 className="text-base font-medium text-navy-700 dark:text-white"
               />
           </div>
@@ -257,24 +326,31 @@ const General = () => {
                     Addresse
                 </label>
 
-            <InputField
+            
+             <SelectField
+                label="État"
+                id="state"
+                name="state"
+               placeholder="Sélectionner l'état"
+               options={statesOfTunisia}
+              value={address.state}
+              onChange={(e) => setAddress({ ...address, state: e.target.value })}
+              error={errors.state}
+              state={getInputState(errors.state)}
+                />
+
+          <InputField
               label="Ville"
               id="city"
               placeholder="Ville"
               extra="mb-4"
               value={address.city}
-              onChange={(value) => setAddress({ ...address, city:value })}
+              onChange={(e) => setAddress({ ...address, city: e.target.value })}
+              error={errors.city}
+              state={getInputState(errors.city)}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
-            <InputField
-              label="État"
-              id="state"
-              placeholder="État"
-              extra="mb-4"
-              value={address.state}
-              onChange={(value) => setAddress({ ...address, state: value })}
-              className="text-base font-medium text-navy-700 dark:text-white"
-            />
+            
             </div>
             <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none ">
             <InputField
@@ -283,7 +359,9 @@ const General = () => {
               placeholder="Code Postal"
               extra="mb-4"
               value={address.zip}
-              onChange={(value) => setAddress({ ...address, zip:value })}
+              onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+              error={errors.zip}
+              state={getInputState(errors.zip)}
               className="text-base font-medium text-navy-700 dark:text-white"
             />
           </div>
@@ -337,7 +415,7 @@ const General = () => {
         </h4>
         </div>
         {/* Cards */}
-       <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmitPassword}>
        <div className="grid grid-cols-2 gap-6 px-4">
            <div className=" justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                <InputField
@@ -347,7 +425,9 @@ const General = () => {
                   placeholder="Entrer Votre Ancien Mot de Passe"
                   extra="mb-4"
                   value={oldPassword}
-                  onChange={(value) => setOldPassword(value)}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  error={errors.oldPassword}
+                  state={getInputState(errors.oldPassword)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
 
@@ -360,7 +440,9 @@ const General = () => {
                   placeholder="Entrer Votre Neveau Mot de Passe"
                   extra="mb-4"
                   value={newPassword}
-                  onChange={(value) => setNewPassword(value)}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  error={errors.newPassword}
+                  state={getInputState(errors.newPassword)}
                   className="text-base font-medium text-navy-700 dark:text-white"
                 />
 
@@ -459,7 +541,7 @@ const General = () => {
         <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
           <p className="text-sm text-gray-600">Adresse</p>
           <p className="text-base font-medium text-navy-700 dark:text-white">
-          {userProfile.address.street}, {userProfile.address.city}, {userProfile.address.state}, {userProfile.address.zipCode}, {userProfile.address.country}
+            {userProfile.address.state} , {userProfile.address.city}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  , {userProfile.address.zip}
           </p>
         </div>
     </div>

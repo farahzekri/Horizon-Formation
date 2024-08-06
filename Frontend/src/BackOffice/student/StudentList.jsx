@@ -34,19 +34,19 @@ const StudentList = () => {
             accessor: 'personalInfo.phoneNumber',
         },
         {
-            Header: 'Email',
-            accessor: 'personalInfo.email',
+            Header: 'Class',
+            accessor: 'enrollmentInfo.classId.level',
         },
         {
             Header: 'Formations',
-            accessor: 'enrollmentInfo.formations[0].level', // Assuming the first formation is displayed
+            accessor: 'enrollmentInfo.formationId.name', // Assuming the first formation is displayed
         },
         {
             Header: 'Date de registration',
             accessor: 'enrollmentInfo.registrationDate',
         },
         {
-            Header: 'Action',
+            Header: 'Action Etudiant',
             accessor: '',
         },
     ];
@@ -76,22 +76,21 @@ const StudentList = () => {
             console.error('Error deleting courses:', error);
         }
     };
+
+    const handleViewStudent = (studentId) => {
+        navigate(`/admin/Etudiants/${studentId}`);
+    };
+
+
     return (
         <div>
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Tableau des étudiants</h1>
-                <button
-                    className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                    onClick={() => navigate('/admin/Etudiants/Ajouter')}
-                >
-                    Ajouter Etudiant
-                </button>
-            </div>
             <CheckTable tableName="Tableau des étudiants"
                         columnsData={columnsData}
                         tableData={students}
+                        onAjouterClick={() => navigate('/admin/Etudiants/Ajouter')}
                         handleCheckboxChange={handleCheckboxChange}
                         handleDeleteSelected={handleDeleteSelected}
+                        handleViewStudent={handleViewStudent}
                         selectedFormations={selectedStudents}
             />
         </div>

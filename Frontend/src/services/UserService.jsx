@@ -1,23 +1,19 @@
+import axios from "axios";
+import setupInterceptors from "./setupInterceptors";
+
 const BASE_URL = "http://localhost:3000";
 
-const token = localStorage.getItem("token");
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+const exceptionRoutes = [];
+setupInterceptors(axiosInstance, exceptionRoutes);
 
 export const get_All_Users = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/user/get_All_Users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token, // assuming 'token' is a variable holding your token
-      },
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch users");
-    }
-
-    const data = await response.json();
+    const response = await axiosInstance.get("/user/get_All_Users");
+    const data = await response.data;
     return data;
   } catch (error) {
     throw new Error("Failed to fetch users");
@@ -26,21 +22,9 @@ export const get_All_Users = async () => {
 
 export const Update_Status = async (userId, newStatus) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/user/Update_Status/${userId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token, // assuming 'token' is a variable holding your token
-        },
-        body: JSON.stringify({ status: newStatus }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to update user status");
-    }
+    const response = await axiosInstance.put(`/user/Update_Status/${userId}`, {
+      status: newStatus,
+    });
 
     // Assuming your API returns updated user data after successful update
     const updatedUserData = await response.json();
@@ -52,19 +36,7 @@ export const Update_Status = async (userId, newStatus) => {
 
 export const get_User_By_Username = async (username) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/user/Profil/${username}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token, // assuming 'token' is a variable holding your token
-        },
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
-    }
+    const response = await axiosInstance.get(`/user/Profil/${username}`);
 
     const data = await response.json();
     return data;
@@ -75,24 +47,13 @@ export const get_User_By_Username = async (username) => {
 
 export const Update_User_By_Username = async (username, userData) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/user/updateProfil/${username}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token, // assuming 'token' is a variable holding your token
-        },
-        body: JSON.stringify({ userData }),
-      }
+    const response = await axiosInstance.put(
+      `/user/updateProfil/${username}`,
+      userData
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to update user status");
-    }
-
     const data = await response.json();
-    return data.user; // Retourne les données utilisateur mises à jour
+    return data.user;
   } catch (error) {
     console.error("Error updating user status:", error.message);
     throw error;
@@ -101,21 +62,10 @@ export const Update_User_By_Username = async (username, userData) => {
 
 export const Update_User_By_Username_sarra = async (username, userData) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/user/updateProfil/${username}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token, // assuming 'token' is a variable holding your token
-        },
-        body: JSON.stringify(userData),
-      }
+    const response = await axiosInstance.put(
+      `/user/updateProfil/${username}`,
+      userData
     );
-
-    if (!response.ok) {
-      throw new Error("Failed to update user profile");
-    }
 
     return await response.json();
   } catch (error) {

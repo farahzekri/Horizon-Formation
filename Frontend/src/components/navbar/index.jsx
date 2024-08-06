@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -10,6 +10,7 @@ import {
   IoMdNotificationsOutline,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
+import authService from "services/authServices";
 import avatar from "assets/img/avatars/avatar4.png";
 import ConfirmationModal from "../Modal/confirmationModel";
 
@@ -19,11 +20,14 @@ const Navbar = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/auth/sign-in");
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate("/auth/sign-in");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -164,7 +168,7 @@ const Navbar = (props) => {
               <a
                 target="blank"
                 href="https://horizon-ui.com/?ref=live-free-tailwind-react"
-                className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700 dark:text-white dark:hover:text-white"
+                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-black hover:text-navy-700 dark:text-white dark:hover:text-white"
               >
                 Try Horizon Free
               </a>
@@ -226,7 +230,7 @@ const Navbar = (props) => {
                 </a>
                 <a
                   href=" "
-                  className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
+                  className="mt-3 text-sm font-medium text-red-500 transition duration-150 ease-out hover:text-red-500 hover:ease-in"
                   onClick={handleLogoutClick}
                 >
                   Log Out
@@ -238,13 +242,13 @@ const Navbar = (props) => {
         />
       </div>
       {isModalOpen && (
-          <ConfirmationModal
-              message="Are you sure you want to log out?"
-              confirmLabel="Log Out"
-              confirmButtonClass="bg-red-500 text-white hover:bg-red-600"
-              onConfirm={handleLogout}
-              onClose={closeModal}
-          />
+        <ConfirmationModal
+          message="Are you sure you want to log out?"
+          confirmLabel="Log Out"
+          confirmButtonClass="bg-red-500 text-white hover:bg-red-600"
+          onConfirm={handleLogout}
+          onClose={closeModal}
+        />
       )}
     </nav>
   );

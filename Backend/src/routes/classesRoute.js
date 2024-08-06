@@ -24,3 +24,4 @@ router.delete(
   classController.deleteClass
 );
 module.exports = router;
+

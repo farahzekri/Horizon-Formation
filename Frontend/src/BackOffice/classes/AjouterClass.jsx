@@ -2,6 +2,7 @@ import Card from "components/card";
 import InputField from "components/fields/InputField";
 import { useEffect, useState } from "react";
 import studentService from '../../services/studentServices';
+import formationService from '../../services/formationServices';
 import Checkbox from "components/checkbox";
 import DateField from "components/fields/DateField";
 import classServices from "services/classService";
@@ -9,13 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { Niveauclasse, SalleClasses } from "./valeurselect";
 import SelectField from "components/fields/SelectField";
 import SelectandInputField from "components/fields/selectandinputfield";
-import CheckTable from "../admin/tables/components/CheckTable";
+import CheckTable from "./components/checktable";
 import StudentList from "BackOffice/student/StudentList";
 const AjouterClass = () => {
     const [students, setStudents] = useState([]);
     const [selectedStudents, setSelectedStudents] = useState([]);
 
-
+    const [formations, setFormations] = useState([]);
     const [formData, setFormData] = useState({
         formationId: '',
         level: '',
@@ -26,7 +27,6 @@ const AjouterClass = () => {
         const fetchStudents = async () => {
             try {
                 const data = await studentService.getAllStudents();
-                console.log('Students data:', data);
                 setStudents(data);
             } catch (error) {
                 console.error('Error fetching students:', error);
@@ -34,6 +34,18 @@ const AjouterClass = () => {
         };
 
         fetchStudents();
+    }, []);
+    useEffect(() => {
+        const fetchFormations = async () => {
+            try {
+                const data = await formationService.getAllFormations();
+                setFormations(data);
+            } catch (error) {
+                console.error('Error fetching formations:', error);
+            }
+        };
+
+        fetchFormations();
     }, []);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -66,6 +78,16 @@ const AjouterClass = () => {
     const navigate = useNavigate();
     const columnsData = [
         {
+            Header: 'Sélectionner',
+            accessor: 'checkbox',
+            Cell: ({ row }) => (
+                <Checkbox
+                    checked={selectedStudents.includes(row.original._id)}
+                    onChange={() => handleCheckboxChange(row.original._id)}
+                />
+            ),
+        },
+        {
             Header: 'Nom',
             accessor: (row) => `${row.personalInfo.lastName} ${row.personalInfo.firstName}`,
         },
@@ -73,7 +95,6 @@ const AjouterClass = () => {
             Header: 'Formations',
             accessor: 'enrollmentInfo.formations[0].level', // Assuming the first formation is displayed
         },
-
     ];
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredStudents, setFilteredStudents] = useState(students);
@@ -106,13 +127,17 @@ const AjouterClass = () => {
                     <h1 className="flex justify-center items-center mb-9 text-2xl">Ajouter une Classe</h1>
                     <div className="flex flex-wrap -mx-18 mb-6">
                         <div className="w-full md:w-1/2 px-4 mb-6 md:mb-0">
-                            <InputField
+                            <SelectField
                                 label="Formation"
                                 type="text"
                                 name="formationId"
-                                placeholder="Formation ID"
+                                placeholder="Formation "
                                 value={formData.formationId}
-                                onChange={handleInputChange}
+                                onChange={(value) => handleInputChange({ target: { name: 'formationId', value } })}
+                                options={formations.map((formation) => ({
+                                    value: formation._id, // Utilisez l'ID ou un autre identifiant unique
+                                    label: formation.name,
+                                }))}
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-4">
@@ -156,10 +181,9 @@ const AjouterClass = () => {
                     />
                         <div className="max-h-96 overflow-y-auto">   
                             <CheckTable 
-                            tableName="sélectionne les étudiants de ce classe" 
                             columnsData={columnsData} 
                             tableData={filteredStudents}
-                            selectedFormations={selectedStudents} 
+                            selected={selectedStudents} 
                             handleCheckboxChange={handleCheckboxChange} />
                      
                         </div>

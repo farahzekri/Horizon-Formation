@@ -1,98 +1,44 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const { auth } = require("../middlewares/authentication");
 const logApiUsage = require("../middlewares/logApiUsage");
-const {checkToken }= require("../middlewares/authentication");
-const teacherController = require("../controllers/TeacherController");
+const { checkToken } = require("../middlewares/authentication");
 
-router.post(
-  "/CreateTeachers",
-  logApiUsage,
+const teacherController = require('../controllers/TeacherController');
+
+// Create a new teacher
+router.post("/add", checkToken ,logApiUsage, teacherController.createTeacher);
+
+// Get all teachers
+router.get(
+  "/getAll",
   checkToken,
-  teacherController.createTeacher
+  logApiUsage,
+  teacherController.getAllTeachers
 );
+
+// Get a teacher by ID
+router.get(
+  "/getById/:id",
+  checkToken,
+  logApiUsage,
+  teacherController.getTeacherById
+);
+
+// Update a teacher
 router.put(
-  "/EditTeachers/:id",
-  logApiUsage,
-  auth,
+  "/update/:id",
   checkToken,
-  teacherController.editTeacher
-);
-router.get(
-  "/ViewTeachers/:id",
   logApiUsage,
-  auth,
-  checkToken,
-  teacherController.viewTeacherById
+  teacherController.updateTeacher
 );
-router.get(
-  "/ViewAllTeachers",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.viewAllTeachers
-);
+
+// Delete a teacher
 router.delete(
-  "/DeleteTeacher/:id",
-  logApiUsage,
-  auth,
+  "/delete/:id",
   checkToken,
-  teacherController.deleteTeacherById
-);
-router.post(
-  "/Teachers/:id/Availability",
   logApiUsage,
-  auth,
-  checkToken,
-  teacherController.recordTeacherAvailability
+  teacherController.deleteTeacher
 );
-router.put(
-  "/Teachers/:id/Compensation",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.defineTeacherCompensation
-);
-router.get(
-  "/Teachers/:id/Remuneration",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.calculateTeacherRemuneration
-);
-router.post(
-  "/Teachers/:id/Payments",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.trackTeacherPayments
-);
-router.get(
-  "/Teachers/:id/Workload",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.printTeacherWorkload
-);
-router.get(
-  "/Teachers/Payroll",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.generateTeacherPayrollReports
-);
-router.post(
-  "/Teachers/:id/Archive",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.archiveTeacherRecords
-);
-router.get(
-  "/Teachers/Archived",
-  logApiUsage,
-  auth,
-  checkToken,
-  teacherController.archivedTeachers
-);
+
 module.exports = router;

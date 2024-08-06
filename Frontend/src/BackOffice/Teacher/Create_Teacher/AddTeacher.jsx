@@ -307,3 +307,4 @@ const AddTeacher = () => {
 };
 
 export default AddTeacher;
+

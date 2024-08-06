@@ -20,6 +20,11 @@ function SelectField(props) {
             onChange(selectedValue); // Pass selectedValue to parent component
         }
     };
+    // const handleChange = (event) => {
+    //     if (onChange) {
+    //         onChange(event); // Pass event to parent component
+    //     }
+    // };
 
 
     return (

@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 const register = async (req, res) => {
   const {
     username,
@@ -71,14 +70,50 @@ const login = async (req, res) => {
     const { token, refreshToken } = generateTokens(user);
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      secure: true,
       sameSite: "Strict",
-      secure: false,
     });
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+const LogOut = async (req, res) => {
+  res.cookie("refreshToken", "", {
+    maxAge: 0,
+  });
+  res.status(200).json({ message: "User logged out" });
+};
+
+const refreshToken = (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken || refreshToken === "undefined") {
+    return res.status(401).json({ message: "No refresh token provided" });
+  }
+
+  try {
+    const decodedRefreshToken = jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET
+    );
+
+    const newAccessToken = jwt.sign(
+      {
+        id: decodedRefreshToken.id,
+        username: decodedRefreshToken.username,
+        role: decodedRefreshToken.role,
+        permissions: decodedRefreshToken.permissions,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "12h" }
+    );
+    res.json({ token: newAccessToken });
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+};
+
 
 const TokenVerification = async (req, res) => {
   const token = req.body.token;
@@ -162,6 +197,8 @@ module.exports = {
   getUsers,
   get_All_Users,
   Update_Status,
+  LogOut,
+  refreshToken,
 };
 const generateTokens = (user) => {
   const token = jwt.sign(
@@ -172,7 +209,7 @@ const generateTokens = (user) => {
       permissions: user.permissions,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "12h" }
   );
   const refreshToken = jwt.sign(
     {
@@ -182,7 +219,7 @@ const generateTokens = (user) => {
       permissions: user.permissions,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "4h" }
+    { expiresIn: "24h" }
   );
   return { token, refreshToken };
 };

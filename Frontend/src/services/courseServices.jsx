@@ -1,90 +1,78 @@
 import axios from "axios";
+import setupInterceptors from "./setupInterceptors";
 
-const BASE_URL = "http://localhost:3000"; // Replace with your backend URL
-const token = localStorage.getItem("token");
+const BASE_URL = "http://localhost:3000";
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+// Define exception routes if there are any
+const exceptionRoutes = [];
+setupInterceptors(axiosInstance, exceptionRoutes);
+
 const courseService = {
   addCourse: async (courseData) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/course/addCourse`,
-        courseData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+      const response = await axiosInstance.post(
+        "/course/addCourse",
+        courseData
       );
       return response.data;
     } catch (error) {
       throw new Error(
-        error.response.data.message ||
+        error.response?.data?.message ||
           "An error occurred while adding the course"
       );
     }
   },
+
   getAllCourses: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/course/getAllCourses`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axiosInstance.get("/course/getAllCourses");
       return response.data;
     } catch (error) {
       throw new Error(
-        error.response.data.message ||
+        error.response?.data?.message ||
           "An error occurred while fetching courses"
       );
     }
   },
+
   updateCourseById: async (id, updates) => {
     try {
-      const response = await axios.patch(
-        `${BASE_URL}/course/updateCourse/${id}`,
-        updates,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+      const response = await axiosInstance.patch(
+        `/course/updateCourse/${id}`,
+        updates
       );
       return response.data;
     } catch (error) {
       throw new Error(
-        error.response.data.message ||
+        error.response?.data?.message ||
           "An error occurred while updating the course"
       );
     }
   },
+
   getCourseById: async (id) => {
     try {
-      const response = await axios.get(`${BASE_URL}/course/getCourse/${id}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axiosInstance.get(`/course/getCourse/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(
-        error.response.data.message ||
+        error.response?.data?.message ||
           "An error occurred while fetching the course"
       );
     }
   },
+
   deleteCourseById: async (id) => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/course/deleteCourse/${id}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await axiosInstance.delete(`/course/deleteCourse/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(
-        error.response.data.message ||
+        error.response?.data?.message ||
           "An error occurred while deleting the course"
       );
     }

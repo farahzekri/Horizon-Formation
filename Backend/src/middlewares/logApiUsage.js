@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 
 // Middleware to log API usage
 const logApiUsage = async (req, res, next) => {
-  const token = req.header("Authorization");
+  const token = req.headers["authorization"];
+  // console.log("Token from the logger:", token);
 
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
