@@ -157,8 +157,34 @@ const updateInvoice = async (req, res) => {
 };
 
 
+const updateInvoiceStatus = async (req, res) => {
+    try {
+        const { invoiceId } = req.params; 
+        const { status } = req.body; 
+
+        
+        const invoice = await Invoice.findById(invoiceId);
+
+        if (!invoice) {
+            return res.status(404).json({ message: 'Invoice not found' });
+        }
+
+        
+        invoice.status = status;
+        await invoice.save();
+
+        res.status(200).json(invoice);
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour du statut de la facture:", error);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
 module.exports = { 
     addInvoice ,
     getInvoiceByStudentId ,
     updateInvoice,
+    updateInvoiceStatus
 };

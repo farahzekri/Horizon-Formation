@@ -7,7 +7,7 @@ const invoiceController = require('../controllers/invoiceController');
 router.post('/add', invoiceController.addInvoice);
 router.get('/getInvoiceById/:studentId', invoiceController.getInvoiceByStudentId);
 router.put('/updateInvoice/:studentId', invoiceController.updateInvoice);
-
+router.put('/updateInvoiceStatus/:id', invoiceController.updateInvoiceStatus);
 
 
 module.exports = router;
