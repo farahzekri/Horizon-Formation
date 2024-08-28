@@ -9,5 +9,7 @@ router.get('/AllClasses', classController.getAllClasses);
 router.put('/Updateclasses/:id', classController.updateClass);
 router.delete('/delete/:id', classController.deleteClass);
 router.get('/classe/:id',classController.getclassesById);
+router.put('/updateclassdetails/:id',classController.updateClassDetails);
+router.put('/updateClassStudents/:id',classController.updateClassStudents);
 module.exports = router;
 

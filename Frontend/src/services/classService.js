@@ -42,12 +42,22 @@ const classServices = {
             throw error;
         }
     },
-    updateClass: async (classId, updatedData) => {
+    updateClassDetails: async (classId, updatedData) => {
         try {
-            const response = await axios.put(`${API_URL}/Updateclasses/${classId}`, updatedData);
+            const response = await axios.put(`${API_URL}/updateclassdetails/${classId}`, updatedData);
             return response.data;
         } catch (error) {
-            console.error('Error updating class:', error);
+            console.error('Error updating class details:', error);
+            throw error;
+        }
+    },
+
+    updateClassStudents: async (classId, students) => {
+        try {
+            const response = await axios.put(`${API_URL}/updateClassStudents/${classId}`, { students });
+            return response.data;
+        } catch (error) {
+            console.error('Error updating class students:', error);
             throw error;
         }
     }
