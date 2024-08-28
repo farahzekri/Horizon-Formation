@@ -23,7 +23,22 @@ router.delete(
   logApiUsage,
   classController.deleteClass
 );
-router.put('/updateclassdetails/:id',classController.updateClassDetails);
-router.put('/updateClassStudents/:id',classController.updateClassStudents);
+router.put(
+  "/updateclassdetails/:id",
+  checkToken,
+  logApiUsage,
+  classController.updateClassDetails
+);
+router.put(
+  "/updateClassStudents/:id",
+  checkToken,
+  logApiUsage,
+  classController.updateClassStudents
+);
+router.get(
+  "/classe/:id",
+  checkToken,
+  logApiUsage,
+  classController.getclassesById
+);
 module.exports = router;
-
