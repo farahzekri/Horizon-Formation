@@ -101,9 +101,7 @@ function AddStudent() {
                     classId: formData.classe
                 }
             };
-            console.log(studentData)
             const response = await studentServices.addStudent(studentData);
-            console.log("Student added successfully:", response);
 
             setAlertState({
                 showAlert: true,

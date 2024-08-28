@@ -27,7 +27,6 @@ const AjouterClass = () => {
         const fetchStudents = async () => {
             try {
                 const data = await studentService.getAllStudents();
-                console.log('Students data:', data);
                 setStudents(data);
             } catch (error) {
                 console.error('Error fetching students:', error);
@@ -40,7 +39,6 @@ const AjouterClass = () => {
         const fetchFormations = async () => {
             try {
                 const data = await formationService.getAllFormations();
-                console.log('Formations data:', data);
                 setFormations(data);
             } catch (error) {
                 console.error('Error fetching formations:', error);

@@ -137,9 +137,7 @@ const General = () => {
     }
   
     try {
-      console.log("Données de formulaire avant mise à jour :", formData);
       const updatedProfile = await Update_User_By_Username_sarra(username, formData);
-      console.log("Profil mis à jour :", updatedProfile);
       setUserProfile(updatedProfile);
       setShowUpdateForm(false);
       alert("Profil mis à jour avec succès !");

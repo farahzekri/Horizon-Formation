@@ -62,7 +62,6 @@ function AddTeacher() {
             };
 
             const response = await teacherServices.addTeacher(teacherData);
-            console.log("teacher added successfully:", response);
 
             setAlertState({
                 showAlert: true,

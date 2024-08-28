@@ -28,7 +28,6 @@ const ClassesList = () => {
         const fetchFormations = async () => {
             try {
                 const data = await formationService.getAllFormations();
-                console.log('Formations data:', data);
                 setFormations(data);
             } catch (error) {
                 console.error('Error fetching formations:', error);

@@ -12,8 +12,7 @@ const ColumnsTable = ({ columnsData, tableData }) => {
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
 
-    console.log('Columns Data:', columns);
-    console.log('Table Data:', data);
+    
 
     const tableInstance = useTable(
         {

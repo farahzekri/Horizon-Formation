@@ -12,7 +12,7 @@ const addInvoice = async (req, res) => {
        if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        console.log("student info :" , student)
+        // console.log("student info :" , student)
 
         // Retrieve formation details
         const formations = student.enrollmentInfo.formationId;
@@ -20,7 +20,7 @@ const addInvoice = async (req, res) => {
             return res.status(404).json({ message: 'No formations found for the student' });
         }
 
-        console.log("formations informations :" , formations)
+        // console.log("formations informations :" , formations)
 
         // Détails de la formation
         const amount = (formations.tuitionFee || 0) + (formations.registrationFee || 0);
@@ -31,7 +31,7 @@ const addInvoice = async (req, res) => {
             amount: amount
         }];
 
-        console.log("formation Details:" , formationDetails)
+        // console.log("formation Details:" , formationDetails)
 
         // Calculez le montant total
         const totalAmount = formationDetails.reduce((sum, formation) => sum + formation.amount, 0);

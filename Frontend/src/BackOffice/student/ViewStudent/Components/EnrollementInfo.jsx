@@ -64,10 +64,8 @@ const EnrollmentInformation = ({ student, onSave }) => {
         }));
     };
     const handleSaveClick = async () => {
-        console.log('id', student._id);
         try {
             const response = await studentServices.editStudent(student._id, formData);
-            console.log('Response:', response);  // Check the response for successful updates
             onSave(formData);
             setIsEditing(false);
         } catch (error) {
