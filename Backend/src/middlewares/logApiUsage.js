@@ -20,7 +20,7 @@ const logApiUsage = async (req, res, next) => {
         .json({ message: "Invalid token, authorization denied" });
     }
 
-    if (user.role === "sub-admin") {
+    if (user.role === "admin") {
       const log = new Log({
         userId: user._id,
         endpoint: req.originalUrl,
@@ -36,9 +36,7 @@ const logApiUsage = async (req, res, next) => {
       next();
     }
 
-    if (user.role === "admin") {
-      return next();
-    }
+    
 
     // return res.status(401).json({ message: "Unauthorized" });
   } catch (error) {
