@@ -149,7 +149,7 @@ const getUsers = async (req, res) => {
       });
     }
 
-    const users = await User.find();
+    const users = await User.find({ _id: { $ne: userId } });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

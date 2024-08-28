@@ -11,7 +11,6 @@ const setupInterceptors = (axiosInstance, exceptionRoutes) => {
   // Request Interceptor
   axiosInstance.interceptors.request.use(
     function (config) {
-      // Check if the request URL is in the exception routes
       if (!exceptionRoutes.includes(config.url)) {
         config.headers["authorization"] = token;
       } else {
@@ -45,7 +44,6 @@ const setupInterceptors = (axiosInstance, exceptionRoutes) => {
           } catch (refreshError) {
             console.log("Refresh token failed:", refreshError);
             await authService.logout();
-            window.location.href = "/auth/sign-in";
 
             return Promise.reject(refreshError);
           }

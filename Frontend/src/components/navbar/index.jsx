@@ -23,7 +23,6 @@ const Navbar = (props) => {
   const handleLogout = async () => {
     try {
       await authService.logout();
-      navigate("/auth/sign-in");
     } catch (error) {
       console.error("Logout failed", error);
     }

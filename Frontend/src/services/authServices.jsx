@@ -34,6 +34,7 @@ const authService = {
     try {
       await axiosInstance.get("/user/logout");
       localStorage.removeItem("token");
+      window.location.href = "/auth/sign-in";
     } catch (error) {
       throw error.response.data;
     }

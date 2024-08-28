@@ -1,24 +1,23 @@
 import React from "react";
-
-// Admin Imports
-import MainDashboard from "BackOffice/admin/default";
-import NFTMarketplace from "BackOffice/admin/marketplace";
-import Profile from "BackOffice/admin/profile";
-import DataTables from "BackOffice/admin/tables";
-import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
-import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
-
-// Auth Imports
-import SignIn from "FrontOffice/auth/SignIn";
-// Icon Imports
 import {
   MdHome,
   MdOutlineShoppingCart,
   MdBarChart,
   MdPerson,
   MdLock,
-  MdTableChart, MdSchool, MdClass, MdBook,
+  MdTableChart,
+  MdSchool,
+  MdClass,
+  MdBook,
 } from "react-icons/md";
+
+import MainDashboard from "BackOffice/admin/default";
+import NFTMarketplace from "BackOffice/admin/marketplace";
+import Profile from "BackOffice/admin/profile";
+import DataTables from "BackOffice/admin/tables";
+import UserTable from "./BackOffice/SubAdmin/SubAdminList/UserTable";
+import SubAdmin_Profil from "../src/BackOffice/SubAdmin/Profile_SubAdmin/subAdmin_Profile";
+import SignIn from "FrontOffice/auth/SignIn";
 import CreateSubAdmin from "BackOffice/SubAdmin/create_SubAdmin/createSubAsmin";
 import AjouterSub from "./BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import StudentList from "./BackOffice/student/StudentList";
@@ -65,7 +64,6 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
   },
-
   {
     name: "Etudiants",
     layout: "/admin",
@@ -85,8 +83,6 @@ const routes = [
     path: "Etudiants/:studentId",
     component: <ViewStudent />,
   },
-
-
   {
     name: "Formateurs",
     layout: "/admin",
@@ -106,7 +102,6 @@ const routes = [
     path: "Formateurs/:teacherId",
     component: <ViewTeacher />,
   },
-
   {
     name: "Utilisateurs",
     layout: "/admin",
@@ -172,15 +167,13 @@ const routes = [
     icon: <MdLock className="h-6 w-6" />,
     component: <SignIn />,
   },
-
   {
     name: "Profil",
     layout: "/admin",
-    path: `Profil`,
+    path: "Profil",
     icon: <MdPerson className="h-6 w-6" />,
     component: <SubAdmin_Profil />,
   },
-
-
 ];
+
 export default routes;
