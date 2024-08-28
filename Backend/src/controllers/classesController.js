@@ -78,6 +78,55 @@ const updateClass = async (req, res) => {
         res.status(500).json({ message: 'Error updating class', error: err.message });
     }
 };
+const updateClassDetails = async (req, res) => {
+    const { id } = req.params;
+    const { formationId, level, room } = req.body;
+
+    if (!formationId || !level || !room) {
+        return res.status(400).json({ message: 'Formation ID, level, and room are required' });
+    }
+
+    try {
+        const updatedClass = await Class.findByIdAndUpdate(
+            id,
+            { formationId, level, room },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedClass) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+
+        res.status(200).json(updatedClass);
+    } catch (err) {
+        res.status(500).json({ message: 'Error updating class details', error: err.message });
+    }
+};
+const updateClassStudents = async (req, res) => {
+    const { id } = req.params;
+    const { students } = req.body;
+
+    if (!students) {
+        return res.status(400).json({ message: 'Students are required' });
+    }
+
+    try {
+        const updatedClass = await Class.findByIdAndUpdate(
+            id,
+            { students: students.map(studentId => ({ studentId })) },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedClass) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+
+        res.status(200).json(updatedClass);
+    } catch (err) {
+        res.status(500).json({ message: 'Error updating class students', error: err.message });
+    }
+};
+
 const deleteClass = async (req, res) => {
     const { id } = req.params;
 
@@ -99,5 +148,7 @@ module.exports = {
     getAllClasses,
     updateClass,
     deleteClass,
-    getclassesById
+    getclassesById,
+    updateClassDetails,
+    updateClassStudents,
 };

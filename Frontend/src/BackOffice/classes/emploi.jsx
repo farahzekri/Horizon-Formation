@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ScheduleForm from './scheduleforme'; // Component for the add/edit form
+import ScheduleForm from './components/scheduleforme';
+import   ScheduleFormTime from'./components/ScheduleFormTime';
 import scheduleService from 'services/scheduleservice';
 
 const Schedule = () => {
@@ -11,13 +12,16 @@ const Schedule = () => {
             { day: 'Mardi', times: [] },
             { day: 'Mercredi', times: [] },
             { day: 'Jeudi', times: [] },
-            { day: 'Vendredi', times: [] }
+            { day: 'Vendredi', times: [] },
+            { day: 'Samedi', times: [] }
         ],
         times: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
         schedule: {}
     });
-    const [showModal, setShowModal] = useState(false);
-    const [selectedTimeSlot, setSelectedTimeSlot] = useState({ day: '', time: '' });
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState({ day: '', time: '', timeEnd: '' });
+    const [currentTimeSlot, setCurrentTimeSlot] = useState({ day: '', time: '', timeEnd: '' });
+    const [editingCell, setEditingCell] = useState(null);
 
     useEffect(() => {
         const fetchSchedule = async () => {
@@ -40,24 +44,25 @@ const Schedule = () => {
 
     const handleTimeSlotClick = (day, time) => {
         setSelectedTimeSlot({ day, time });
-        setShowModal(true);
+        setEditingCell({ day, time });
     };
 
-    const handleModalClose = () => {
-        setShowModal(false);
-        setSelectedTimeSlot({ day: '', time: '' });
+    const handleTimeRangeSave = (timeEnd) => {
+        setCurrentTimeSlot({ ...selectedTimeSlot, timeEnd });
+        setEditingCell(null); // Ferme le formulaire
+        setShowDetailsModal(true); // Affiche le modal des détails
     };
 
-    const handleSave = async (day, timeSlot, { timeStart, timeEnd, formationName }) => {
+    const handleDetailsSave = async (formationName, teacherName) => {
         let updatedDays = [...schedule.days];
 
         updatedDays = updatedDays.map(d => {
-            if (d.day === day) {
+            if (d.day === currentTimeSlot.day) {
                 return {
                     ...d,
                     times: [
                         ...d.times,
-                        { timeStart, timeEnd, formationName }
+                        { timeStart: currentTimeSlot.time, timeEnd: currentTimeSlot.timeEnd, formationName, teacherName }
                     ]
                 };
             }
@@ -67,19 +72,31 @@ const Schedule = () => {
         try {
             const newSchedule = await scheduleService.addSchedule(id, updatedDays);
             setSchedule(newSchedule);
-            handleModalClose();
+            setShowDetailsModal(false);
         } catch (error) {
             console.error('Error saving schedule:', error);
         }
     };
 
     const getCellContent = (day, time) => {
+        const isEditing = editingCell && editingCell.day === day.day && editingCell.time === time;
+
+        if (isEditing) {
+            return (
+                <ScheduleFormTime
+                    timeStart={time}
+                    onSave={handleTimeRangeSave}
+                    onClose={() => setEditingCell(null)}
+                />
+            );
+        }
+
         const timeSlot = day.times.find(slot => slot.timeStart === time);
         if (timeSlot) {
             const timeStartIndex = schedule.times.indexOf(timeSlot.timeStart);
             const timeEndIndex = schedule.times.indexOf(timeSlot.timeEnd);
             const colspan = timeEndIndex - timeStartIndex;
-            return { content: timeSlot.formationName, colspan };
+            return { content: `${timeSlot.formationName} (${timeSlot.teacherName})`, colspan };
         }
         return { content: '', colspan: 1 };
     };
@@ -141,12 +158,11 @@ const Schedule = () => {
                     </div>
                 )}
 
-                {showModal && (
+                {showDetailsModal && (
                     <ScheduleForm
-                        classId={id}
-                        timeSlot={selectedTimeSlot}
-                        onSave={handleSave}
-                        onClose={handleModalClose}
+                        timeSlot={currentTimeSlot}
+                        onSave={handleDetailsSave}
+                        onClose={() => setShowDetailsModal(false)}
                     />
                 )}
             </div>
