@@ -9,9 +9,9 @@ const {
 } = require("../middlewares/authentication");
 const logApiUsage = require("../middlewares/logApiUsage");
 
-router.post("/register", userController.register);
+router.post("/register", checkToken, logApiUsage, userController.register);
 router.post("/login", userController.login);
-router.get("/logout", userController.LogOut);
+router.get("/logout", checkToken, logApiUsage, userController.LogOut);
 router.get("/refresh-token", userController.refreshToken);
 router.get(
   "/student",
@@ -52,4 +52,5 @@ router.put(
   logApiUsage,
   subAdminController.UpdatePassword
 );
+router.get("/checkRole", checkToken, logApiUsage, subAdminController.CheckRole);
 module.exports = router;

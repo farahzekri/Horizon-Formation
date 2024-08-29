@@ -2,6 +2,11 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const register = async (req, res) => {
+  let token = req.headers.authorization;
+  let decoded = jwt.verify(token, process.env.JWT_SECRET);
+  if (decoded.role === "sub-admin") {
+    return res.status(403).json({ message: "Only The Admin Can Add a User" });
+  }
   const {
     username,
     password,

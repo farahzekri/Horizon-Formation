@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 });
 
 // Define the exception routes
-const exceptionRoutes = ["/user/login", "/user/logout", "/user/register"];
+const exceptionRoutes = ["/user/login"];
 
 // Set up interceptors
 setupInterceptors(axiosInstance, exceptionRoutes);
@@ -42,7 +42,7 @@ const authService = {
   register: async (userData) => {
     try {
       const response = await axiosInstance.post("/user/register", userData);
-      return response.data;
+      return response.data.message;
     } catch (error) {
       throw new Error(
         error.response.data.message || "An error occurred during registration"

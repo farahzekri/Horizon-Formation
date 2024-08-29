@@ -1,5 +1,7 @@
+const { decode } = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 //fonction pour afficher le profil user
 const getUserProfile = async (req, res) => {
@@ -92,8 +94,23 @@ const UpdatePassword = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+const CheckRole = async (req, res) => {
+  let token = req.headers.authorization;
+  try {
+    let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role === "admin") {
+      return res.status(200).json({ message: true });
+    }
+    return res.status(403).json({ message: false });
+  }
+  catch (error) {
+    console.error("Error checking token:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
 module.exports = {
   getUserProfile,
   updateUserProfile,
   UpdatePassword,
+  CheckRole
 };

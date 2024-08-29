@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { get_All_Users, Update_Status } from "../../../services/UserService";
+import {
+  get_All_Users,
+  Update_Status,
+  Check_Role,
+} from "../../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
@@ -17,6 +21,7 @@ const UserTable = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [actionType, setActionType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasPermission, setHasPermission] = useState(false);
   const usersPerPage = 5;
   const navigate = useNavigate();
 
@@ -210,15 +215,30 @@ const UserTable = () => {
       setCurrentPage(currentPage + 1);
     }
   };
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const response = await Check_Role();
+        setHasPermission(response);
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
 
+    checkPermissions();
+  }, []);
   return (
     <div className="mt-8">
-      <button
-        onClick={() => navigate("/admin/Utilisateurs/CreateSubAdmin")}
-        className="mt-4 mb-2 flex items-center justify-center rounded-full bg-green-500 p-3 text-white hover:cursor-pointer"
-      >
-        Ajouter un utilisateur
-      </button>
+      {hasPermission ? (
+        <button
+          onClick={() => navigate("/admin/Utilisateurs/CreateSubAdmin")}
+          className="mt-4 mb-2 flex items-center justify-center rounded-full bg-green-500 p-3 text-white hover:cursor-pointer"
+        >
+          Ajouter un utilisateur
+        </button>
+      ) : (
+        <p></p>
+      )}
       <form className="mx-auto mb-2 max-w-full">
         <label
           htmlFor="default-search"
@@ -329,7 +349,7 @@ const UserTable = () => {
       </div>
 
       {showConfirmationModal && (
-        <div className="bg-black fixed inset-0 z-50 flex items-center justify-center bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="rounded-lg bg-white p-4 shadow-lg">
             <p className="mb-4">
               {`Êtes-vous sûr de vouloir ${

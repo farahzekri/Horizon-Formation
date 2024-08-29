@@ -77,9 +77,18 @@ export const Update_Password_By_Username = async (username, newPassword) => {
       { password: newPassword }
     );
     if (response.status === 200) {
-      return  await response.data.message;
+      return await response.data.message;
     }
   } catch (error) {
     throw new Error("Error updating user password: " + error.message);
   }
 };
+export const Check_Role = async () => {
+  try {
+    const response = await axiosInstance.get("/user/checkRole");
+    return response.data.message; 
+  } catch (error) {
+    throw new Error("Error checking user role: " + error.message);
+  }
+};
+
