@@ -46,4 +46,10 @@ router.put(
   logApiUsage,
   subAdminController.updateUserProfile
 );
+router.put(
+  "/updatePassword/:username",
+  checkToken,
+  logApiUsage,
+  subAdminController.UpdatePassword
+);
 module.exports = router;

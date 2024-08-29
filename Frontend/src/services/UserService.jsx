@@ -37,11 +37,9 @@ export const Update_Status = async (userId, newStatus) => {
 export const get_User_By_Username = async (username) => {
   try {
     const response = await axiosInstance.get(`/user/Profil/${username}`);
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
-    throw new Error("Failed to fetch user");
+    throw new Error("Failed to fetch user", error.message);
   }
 };
 
@@ -70,5 +68,18 @@ export const Update_User_By_Username_sarra = async (username, userData) => {
     return await response.json();
   } catch (error) {
     throw new Error("Error updating user profile: " + error.message);
+  }
+};
+export const Update_Password_By_Username = async (username, newPassword) => {
+  try {
+    const response = await axiosInstance.put(
+      `/user/updatePassword/${username}`,
+      { password: newPassword }
+    );
+    if (response.status === 200) {
+      return  await response.data.message;
+    }
+  } catch (error) {
+    throw new Error("Error updating user password: " + error.message);
   }
 };
