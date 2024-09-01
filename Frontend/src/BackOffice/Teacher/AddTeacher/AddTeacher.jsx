@@ -60,7 +60,7 @@ function AddTeacher() {
                     email: formData.email,
                 },
             };
-
+console.log('teacher', teacherData)
             const response = await teacherServices.addTeacher(teacherData);
             console.log("teacher added successfully:", response);
 

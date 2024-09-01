@@ -3,14 +3,18 @@ const Salary = require('../models/salary');
 
 // Create a new teacher
 const createTeacher = async (req, res) => {
+  console.log('body', req.body);
   try {
     const teacher = new Teacher(req.body);
     await teacher.save();
     res.status(201).json(teacher);
   } catch (error) {
+    console.error('Error creating teacher:', error);
+    if (error.errors) {
+      console.error('Validation errors:', error.errors);
+    }
     res.status(400).json({ error: error.message });
-  }
-};
+  }}
 
 // Get all teachers
 const getAllTeachers = async (req, res) => {
