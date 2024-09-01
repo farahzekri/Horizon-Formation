@@ -58,7 +58,6 @@ const CourseList = () => {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
             try {
                 await courseService.addCourse(formData);
                 setFormData({

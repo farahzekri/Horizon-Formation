@@ -1,7 +1,9 @@
-const Teacher = require('../models/teacher');
 const Salary = require('../models/salary');
 
 // Create a new teacher
+const Teacher = require("../models/teacher");
+const Availability = require("../models/Availability");
+
 const createTeacher = async (req, res) => {
   console.log('body', req.body);
   try {

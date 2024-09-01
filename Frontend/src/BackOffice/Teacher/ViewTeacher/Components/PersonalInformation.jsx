@@ -40,10 +40,8 @@ const PersonalInformation = ({ teacher, onSave }) => {
         };
 
         const handleSaveClick = async () => {
-                console.log('id', teacher._id);
                 try {
                         const response = await teacherServices.editTeacher(teacher._id, formData);
-                        console.log('Response:', response);  // Check the response for successful updates
                         onSave(formData);
                         setIsEditing(false);
                 } catch (error) {

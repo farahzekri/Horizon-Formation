@@ -121,7 +121,6 @@ const General = () => {
         ) {
             // Il y a des erreurs, ne soumettez pas le formulaire
             alert('Il y a des erreurs dans le formulaire.');
-            console.log('Il y a des erreurs dans le formulaire.');
             return;
         }
     try {
@@ -176,7 +175,6 @@ const General = () => {
      ) {
          // Il y a des erreurs, ne soumettez pas le formulaire
          alert('Il y a des erreurs dans le formulaire.');
-         console.log('Il y a des erreurs dans le formulaire.');
          return;
      }
     try {

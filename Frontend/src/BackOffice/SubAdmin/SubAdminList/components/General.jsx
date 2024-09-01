@@ -7,6 +7,7 @@ import PhoneNumberInput from "../../../../components/fields/PhoneField";
 import {
   Update_User_By_Username_sarra,
   get_User_By_Username,
+  Update_Password_By_Username,
 } from "../../../../services/UserService";
 import { statesOfTunisia } from "../../../SubAdmin/create_SubAdmin/stateoftunis";
 import TooltipHorizon from "../../../../components/tooltip/index";
@@ -137,9 +138,7 @@ const General = () => {
     }
   
     try {
-      console.log("Données de formulaire avant mise à jour :", formData);
       const updatedProfile = await Update_User_By_Username_sarra(username, formData);
-      console.log("Profil mis à jour :", updatedProfile);
       setUserProfile(updatedProfile);
       setShowUpdateForm(false);
       alert("Profil mis à jour avec succès !");
@@ -177,7 +176,56 @@ const General = () => {
     }));
   };
 
-  
+  const [formDataPasword, setFormDataPassword] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const [errorsPassword, setErrorsPassword] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const handleInputChangePassword = (e) => {
+    const { name, value } = e.target;
+    setFormDataPassword((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const validatePasswords = () => {
+    const { password, confirmPassword } = formDataPasword;
+    const newErrors = { password: "", confirmPassword: "" };
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrorsPassword(newErrors);
+
+    return !newErrors.confirmPassword;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validatePasswords()) {
+      const newPassword = formDataPasword.password;
+      const username = userProfile.username;
+
+      try {
+        const responseMessage = await Update_Password_By_Username(
+          username,
+          newPassword
+        );
+        setMessage(responseMessage);
+      } catch (error) {
+        setMessage("Failed to update password. Please try again.");
+      }
+    }
+  };
+
   if (!userProfile) {
     return <div>Loading...</div>;
   }
@@ -340,6 +388,41 @@ const General = () => {
                     state={getInputState("zip")}
                     className="text-base font-medium text-navy-700 dark:text-white"
                   />
+                </div>
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <InputField
+                    label="Mot De Passe"
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Mot De Passe"
+                    extra="mb-4"
+                    value={formDataPasword.password}
+                    onChange={handleInputChangePassword}
+                    error={errorsPassword.password}
+                    state={getInputState("password")}
+                    className="text-base font-medium text-navy-700 dark:text-white"
+                  />
+                  <InputField
+                    label="Confirmez le Mot De Passe"
+                    id="confirmPassword"
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirmez le Mot De Passe"
+                    extra="mb-4"
+                    value={formDataPasword.confirmPassword}
+                    onChange={handleInputChangePassword}
+                    error={errorsPassword.confirmPassword}
+                    state={getInputState("confirmPassword")}
+                    className="text-base font-medium text-navy-700 dark:text-white"
+                  />
+                  <button
+                    onClick={handleSubmit}
+                    className="mt-4 rounded bg-blue-500 p-2 text-white"
+                  >
+                    Update Password
+                  </button>
+                  {message && <p className="mt-4 text-green-500">{message}</p>}
                 </div>
               </div>
 

@@ -47,6 +47,12 @@ const Sidebar = ({ open, onClose }) => {
       icon: <MdGroup className="h-6 w-6" />,
     },
     {
+      name: "Factures",
+      layout: "/admin",
+      path: "Factures",
+      icon: <MdBook className="h-6 w-6" />,
+    },
+    {
       name: "Formateurs",
       layout: "/admin",
       path: "Formateurs",

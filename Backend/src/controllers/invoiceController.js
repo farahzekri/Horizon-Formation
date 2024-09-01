@@ -12,7 +12,7 @@ const addInvoice = async (req, res) => {
        if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        console.log("student info :" , student)
+        // console.log("student info :" , student)
 
         // Retrieve formation details
         const formations = student.enrollmentInfo.formationId;
@@ -20,7 +20,7 @@ const addInvoice = async (req, res) => {
             return res.status(404).json({ message: 'No formations found for the student' });
         }
 
-        console.log("formations informations :" , formations)
+        // console.log("formations informations :" , formations)
 
         // Détails de la formation
         const amount = (formations.tuitionFee || 0) + (formations.registrationFee || 0);
@@ -31,7 +31,7 @@ const addInvoice = async (req, res) => {
             amount: amount
         }];
 
-        console.log("formation Details:" , formationDetails)
+        // console.log("formation Details:" , formationDetails)
 
         // Calculez le montant total
         const totalAmount = formationDetails.reduce((sum, formation) => sum + formation.amount, 0);
@@ -157,8 +157,34 @@ const updateInvoice = async (req, res) => {
 };
 
 
+const updateInvoiceStatus = async (req, res) => {
+    try {
+        const { invoiceId } = req.params; 
+        const { status } = req.body; 
+
+        
+        const invoice = await Invoice.findById(invoiceId);
+
+        if (!invoice) {
+            return res.status(404).json({ message: 'Invoice not found' });
+        }
+
+        
+        invoice.status = status;
+        await invoice.save();
+
+        res.status(200).json(invoice);
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour du statut de la facture:", error);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
 module.exports = { 
     addInvoice ,
     getInvoiceByStudentId ,
     updateInvoice,
+    updateInvoiceStatus
 };

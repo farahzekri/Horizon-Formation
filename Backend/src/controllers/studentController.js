@@ -9,7 +9,7 @@ const addStudent = async (req, res) => {
         const studentData = req.body;
 
         const newStudent = new Student(studentData);
-        console.log(newStudent)
+        // console.log(newStudent)
         await newStudent.save();
 
         res.status(201).json(newStudent);
@@ -117,7 +117,7 @@ const editStudent = async (req, res) => {
 const getFormationByStudentId = async (req, res) => {
     try {
         const studentId = req.params.id;
-console.log('id', studentId)
+// console.log('id', studentId)
         // Retrieve the student by ID and populate the formationId field
         const student = await Student.findById(studentId)
             .populate({

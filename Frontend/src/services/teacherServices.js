@@ -1,73 +1,76 @@
-import axios from 'axios';
+import axios from "axios";
+import setupInterceptors from "./setupInterceptors";
 
-const API_URL = 'http://localhost:3000/teacher';
-const token = localStorage.getItem('token');
+const BASE_URL = "http://localhost:3000/teacher";
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+// Define exception routes if there are any
+const exceptionRoutes = [];
+setupInterceptors(axiosInstance, exceptionRoutes);
 
 const teacherServices = {
-    getAllTeachers: async () => {
-        try {
-            const response = await axios.get(`${API_URL}/getAll`, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-            console.log('teachers', response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching teachers:', error);
-            throw error;
-        }
-    },
-    addTeacher: async (teacherData) => {
-        try {
-            const response = await axios.post(`${API_URL}/add`, teacherData, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error adding teacher:', error);
-            throw error;
-        }
-    },
-    deleteTeacherById: async (id) => {
-        try {
-            const response = await axios.delete(`${API_URL}/delete/${id}`, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response.data.message || 'An error occurred while deleting the teacher');
-        }
-    },
-    getTeacherById: async (id) => {
-        try {
-            const response = await axios.get(`${API_URL}/getById/${id}`, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response.data.message || 'An error occurred while fetching the teacher');
-        }
-    },
-    editTeacher: async (id, teacherData) => {
-        try {
-            const response = await axios.put(`${API_URL}/update/${id}`, teacherData, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error editing teacher:', error);
-            throw error;
-        }
+  getAllTeachers: async () => {
+    try {
+      const response = await axiosInstance.get("/getAll");
+     
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while fetching teachers"
+      );
     }
-}
+  },
+  addTeacher: async (teacherData) => {
+    try {
+      const response = await axiosInstance.post("/add", teacherData);
+      return response.data;
+    } catch (error) {
+      console.error("Error adding teacher:", error);
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while adding the teacher"
+      );
+    }
+  },
+  deleteTeacherById: async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/delete/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while deleting the teacher"
+      );
+    }
+  },
+  getTeacherById: async (id) => {
+    try {
+      const response = await axiosInstance.get(`/getById/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while fetching the teacher"
+      );
+    }
+  },
+  editTeacher: async (id, teacherData) => {
+    try {
+      const response = await axiosInstance.put(`/update/${id}`, teacherData);
+      return response.data;
+    } catch (error) {
+      console.error("Error editing teacher:", error);
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while editing the teacher"
+      );
+    }
+  },
+};
 
 export default teacherServices;
