@@ -11,7 +11,7 @@ const logApiUsage = require("../middlewares/logApiUsage");
 
 router.post("/register", checkToken, logApiUsage, userController.register);
 router.post("/login", userController.login);
-router.get("/logout", checkToken, logApiUsage, userController.LogOut);
+router.get("/logout", userController.LogOut);
 router.get("/refresh-token", userController.refreshToken);
 router.get(
   "/student",

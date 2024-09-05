@@ -88,6 +88,7 @@ const LogOut = async (req, res) => {
   res.cookie("refreshToken", "", {
     maxAge: 0,
   });
+  console.log("User logged out");
   res.status(200).json({ message: "User logged out" });
 };
 
@@ -102,7 +103,7 @@ const refreshToken = (req, res) => {
       refreshToken,
       process.env.JWT_SECRET
     );
-
+    // console.log("decodedRefreshToken", decodedRefreshToken);
     const newAccessToken = jwt.sign(
       {
         id: decodedRefreshToken.id,
@@ -113,12 +114,12 @@ const refreshToken = (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "12h" }
     );
+    // console.log("newAccessToken");
     res.json({ token: newAccessToken });
   } catch (err) {
     return res.status(401).json({ message: "Invalid refresh token" });
   }
 };
-
 
 const TokenVerification = async (req, res) => {
   const token = req.body.token;
