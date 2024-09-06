@@ -9,11 +9,7 @@ import AlertMessage from "../../../components/alert/alertMessage";
 import {useDisclosure} from "@chakra-ui/react";
 import formationServices from "../../../services/formationServices";
 import teacherServices from "../../../services/teacherServices";
-
-const formationOp = [
-    { value: "F1", label: "F1" },
-    { value: "F2", label: "F2" },
-];
+import { toast } from 'react-toastify';
 
 function AddTeacher() {
     const navigate = useNavigate();
@@ -33,7 +29,25 @@ function AddTeacher() {
         state: "",
         phoneNumber: "",
         email: "",
+        formation: "",
     });
+    const [formations, setFormations] = useState([]);
+    useEffect(() => {
+        const fetchFormations = async () => {
+            try {
+                const response = await formationServices.getAllFormations();
+                const formationOptions = response.map((formation) => ({
+                    value: formation._id, // Assuming the formation ID is '_id'
+                    label: formation.name, // Assuming the formation name is 'name'
+                }));
+                setFormations(formationOptions);
+            } catch (error) {
+                console.error("Error fetching formations:", error);
+            }
+        };
+
+        fetchFormations();
+    }, []);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -59,15 +73,15 @@ function AddTeacher() {
                     phoneNumber: formData.phoneNumber,
                     email: formData.email,
                 },
+                employmentInfo: {
+                    formation: formData.formation
+                }
             };
-console.log('teacher', teacherData)
-            const response = await teacherServices.addTeacher(teacherData);
+            console.log('teacher', teacherData);
+            await teacherServices.addTeacher(teacherData);
 
-            setAlertState({
-                showAlert: true,
-                alertType: "success",
-                alertMessage: "Formateur ajouté avec succès!",
-            });
+            toast.success("Formateur ajouté avec succès!");
+
             setFormData({
                 firstName: "",
                 lastName: "",
@@ -79,30 +93,16 @@ console.log('teacher', teacherData)
                 email: "",
                 formation: "",
             });
+
             setTimeout(() => {
                 navigate('/admin/Formateurs');
             }, 1000);
         } catch (error) {
             console.error("Error adding teacher:", error);
-            setAlertState({
-                showAlert: true,
-                alertType: "error",
-                alertMessage: "Erreur lors de l'ajout du formateur.",
-            });
-            setTimeout(() => {
-                setAlertState({
-                    ...alertState,
-                    showAlert: false,
-                });
-            }, 3000);
+            toast.error("Erreur lors de l'ajout du formateur.");
         }
     };
-    const closeAlert = () => {
-        setAlertState({
-            ...alertState,
-            showAlert: false,
-        });
-    };
+
 
     return (
         <Card extra={"w-full h-full p-3"}>
@@ -150,7 +150,17 @@ console.log('teacher', teacherData)
                             onChange={handleChange}
                             extra="mb-4"
                         />
-
+                        <SelectField
+                            label="Formation"
+                            id="formation"
+                            name="formation"
+                            placeholder="Sélectionner la Formation"
+                            options={formations}
+                            value={formData.formation}
+                            onChange={(selectedValue) =>
+                                setFormData({ ...formData, formation: selectedValue })
+                            }
+                        />
                     </div>
                     <div className="flex flex-col space-y-4">
                         <InputField
@@ -193,15 +203,9 @@ console.log('teacher', teacherData)
                             onChange={handleChange}
                         />
                     </div>
+
                 </div>
-                {alertState.showAlert && (
-                    <AlertMessage
-                        status={alertState.alertType}
-                        variant="left-accent"
-                        description={alertState.alertMessage}
-                        onClose={closeAlert} // Pass close function to AlertMessage
-                    />
-                )}
+
                 <button
                     type="submit"
                     className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
@@ -210,6 +214,7 @@ console.log('teacher', teacherData)
                 </button>
 
             </form>
+
         </Card>
     );
 }

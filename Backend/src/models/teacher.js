@@ -16,8 +16,7 @@ const TeacherSchema = new Schema({
   },
   employmentInfo: {
     hireDate: { type: Date, default: Date.now },
-    departmentId: { type: Schema.Types.ObjectId, ref: 'Department' },
-    position: { type: String },
+    formation: { type: Schema.Types.ObjectId, ref: 'Formation' },
   },
   salaryInfo: {
     salaries: [
@@ -25,14 +24,9 @@ const TeacherSchema = new Schema({
         salaryId: { type: Schema.Types.ObjectId, ref: 'Salary' }
       }
     ],
-
+    hourlyRate: { type: Number},
+    workHours: { type: Number },
   },
-  workHours: [
-    {
-      date: { type: Date, required: true },
-      hours: { type: Number, required: true }
-    }
-  ],
   academicRecords: {
     courses: [
       {
@@ -51,7 +45,8 @@ const TeacherSchema = new Schema({
     }
   ],
   // Administrative Metadata
-  dateCreated: { type: Date, default: Date.now }
+  dateCreated: { type: Date, default: Date.now },
+
 });
 
 module.exports = mongoose.model('Teacher', TeacherSchema);
