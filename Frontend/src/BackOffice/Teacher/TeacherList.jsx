@@ -34,11 +34,11 @@ const TeacherList = () => {
             accessor: 'personalInfo.phoneNumber',
         },
         {
-            Header: 'Departement',
-            accessor: 'employmentInfo.departmentId',
+            Header: 'Filière',
+            accessor: 'employmentInfo.formation.name',
         },
         {
-            Header: 'Date de registration',
+            Header: 'Date d\'embauche',
             accessor: 'employmentInfo.hireDate',
         },
         {

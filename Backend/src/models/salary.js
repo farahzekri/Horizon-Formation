@@ -8,7 +8,7 @@ const SalarySchema = new Schema({
     amount: { type: Number },
     method: { type: String, enum: ['Bank Transfer', 'Check', 'Cash', 'Other'], required: true },
     paymentDate: { type: Date },
-    month: { type: String, required: true },
+    month: { type: Date, required: true },
     paid: { type: Boolean, default: false },
     // Additional fields as necessary
     dateCreated: { type: Date, default: Date.now }

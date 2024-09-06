@@ -23,7 +23,7 @@ const StudentList = () => {
 
         fetchStudents();
     }, []);
-
+console.log('students', students)
     const columnsData = [
         {
             Header: 'Nom',

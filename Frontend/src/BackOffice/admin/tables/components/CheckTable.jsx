@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import React, { useMemo } from "react";
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
@@ -86,8 +87,8 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick, handleC
                                                     </p>
                                                 </div>
                                             );
-                                        } else if (cell.column.Header === "DATE" || cell.column.Header === "Date de registration" || cell.column.Header === "Date de Creation") {
-                                            const formattedDate = format(new Date(cell.value), "dd.LLL.yyyy");
+                                        } else if (cell.column.Header === "DATE" || cell.column.Header === "Date de registration" || cell.column.Header === "Date de Creation" || cell.column.Header === "Date d\'embauche") {
+                                            const formattedDate = format(new Date(cell.value), "dd.LLL.yyyy", {locale: fr});
                                             cellContent = (
                                                 <p className="text-sm font-bold text-navy-700 dark:text-white">
                                                     {formattedDate}

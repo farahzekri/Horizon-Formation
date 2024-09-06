@@ -41,4 +41,23 @@ router.delete(
   teacherController.deleteTeacher
 );
 
+router.post(
+    '/salaries/create',
+    teacherController.createSalariesForYear);
+
+router.post(
+    '/salaries/add',
+    teacherController.addTeacherSalary);
+
+router.put(
+    '/salaries/update',
+    teacherController.updateSalaries);
+
+router.delete(
+    '/salaries/delete/:teacherId/:salaryId',
+    teacherController.deleteSalary);
+
+router.get(
+    '/salariesByYear/:teacherId',
+    teacherController.getSalariesByYear);
 module.exports = router;
