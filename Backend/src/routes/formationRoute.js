@@ -44,5 +44,11 @@ router.delete(
   logApiUsage,
   formationController.deleteFormationById
 );
+router.get(
+  "/getcourses/:id/courses",
+  checkToken,
+  logApiUsage,
+  formationController.getcourses
+);
 
 module.exports = router;

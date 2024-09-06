@@ -86,6 +86,18 @@ const studentServices = {
       );
     }
   },
+  getUnassignedStudents: async () => {
+    try {
+      const response = await axiosInstance.get("/getUnassignedStudent");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while fetching students"
+      );
+    }
+  },
 };
 
 export default studentServices;

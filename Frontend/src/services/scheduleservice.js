@@ -12,21 +12,21 @@ const exceptionRoutes = [];
 setupInterceptors(axiosInstance, exceptionRoutes);
 
 const scheduleService = {
-  addSchedule: async (classId, days) => {
+  addSchedule : async (id, updatedDays) => {
     try {
-      const response = await axiosInstance.post("/create", { classId, days });
-      return response.data;
+        const response = await axiosInstance.post(`http://localhost:3000/schedule/create`, {
+            classId: id,
+            days: updatedDays,
+        });
+        return response.data;
     } catch (error) {
-      console.error("Error adding schedule:", error);
-      throw new Error(
-        error.response?.data?.message ||
-          "An error occurred while adding the schedule"
-      );
+        console.error("Error adding schedule:", error);
+        throw new Error('An error occurred while adding the schedule');
     }
-  },
+},
   getScheduleByClassId: async (classId) => {
     try {
-      const response = await axiosInstance.get(`/${classId}`);
+      const response = await axiosInstance.get(`/getschedulebyclassid/${classId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching schedule:", error);
@@ -36,6 +36,24 @@ const scheduleService = {
       );
     }
   },
+  getAvailableRooms: async (day, start, end) => {
+    try {
+        const response = await axiosInstance.get(`/getAvailableRooms`, {
+            params: {
+                day,
+                start,
+                end
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching available rooms:", error);
+        throw new Error(
+            error.response?.data?.message ||
+            "An error occurred while fetching available rooms"
+        );
+    }
+}
 };
 
 export default scheduleService;

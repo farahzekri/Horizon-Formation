@@ -48,5 +48,10 @@ router.get(
   logApiUsage,
   studentController.getFormationByStudentId
 );
-
+router.get(
+  "/getUnassignedStudent",
+  checkToken,
+  logApiUsage,
+  studentController.getUnassignedStudents
+);
 module.exports = router;

@@ -71,24 +71,7 @@ const ClassInfo = ({ isEditing, formData,setFormData, classDetails, formations,h
                     </div>
                 </div>
             </div>
-            <div className="flex flex-wrap -mx-18 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <div className="text-sm text-navy-700 dark:text-white ml-3 font-bold">
-                        Salle: {isEditing ? (
-                            <SelectandInputField
-                                id="room"
-                                name="room"
-                                placeholder="Salle"
-                                options={SalleClasses}
-                                value={formData.room}
-                                onChange={(selectedValue) => setFormData({ ...formData, room: selectedValue })}
-                            />
-                        ) : (
-                            <p>{classDetails.room}</p>
-                        )}
-                    </div>
-                </div>
-            </div>
+            
         </div>
     );
 };

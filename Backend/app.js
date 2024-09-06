@@ -13,7 +13,8 @@ const formationRoutes = require("./src/routes/formationRoute");
 const payementRoutes = require('./src/routes/paymentRoute');
 const invoiceRoutes = require('./src/routes/invoiceRoute');
 const courseRoutes = require("./src/routes/courseRoute");
-const scheduleRouts=require('./src/routes/scheduleRouter')
+const scheduleRouts=require('./src/routes/scheduleRouter');
+const salleRouts=require('./src/routes/salleRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -40,6 +41,7 @@ app.use("/teacher", TeacherRoutes);
 app.use('/course', courseRoutes);
 app.use('/formation', formationRoutes);
 app.use('/schedule', scheduleRouts);
+app.use('/salle', salleRouts);
 app.use('/payment', payementRoutes);
 app.use('/invoice', invoiceRoutes);
 

@@ -142,6 +142,16 @@ const getFormationByStudentId = async (req, res) => {
     }
 };
 
+const getUnassignedStudents = async (req, res) => {
+    try {
+      
+        const unassignedStudents = await Student.find({ 'enrollmentInfo.classId': { $exists: false } });
+
+        res.status(200).json(unassignedStudents);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching unassigned students', error: err.message });
+    }
+}
 
 module.exports = {
     addStudent,
@@ -150,6 +160,7 @@ module.exports = {
     getStudentById,
     editStudent,
     getFormationByStudentId,
+    getUnassignedStudents,
 
 
 };

@@ -25,6 +25,7 @@ import AddStudent from "./BackOffice/student/AddStudent/AddStudent";
 import ClassesList from "BackOffice/classes/ClassesList";
 import AjouterClass from "BackOffice/classes/AjouterClass";
 import CourseList from "./BackOffice/course/CourseList";
+import SalleList from "BackOffice/salle/SalleListe";
 import FormationList from "./BackOffice/formation/FormationList";
 import VieWProfilSubAdmin from "BackOffice/SubAdmin/SubAdminList/ViewSubAdmin";
 import ViewStudent from "./BackOffice/student/ViewStudent/ViewStudent";
@@ -127,6 +128,13 @@ const routes = [
     path: "Matieres",
     icon: <MdBook className="h-6 w-6" />,
     component: <CourseList />,
+  },
+  {
+    name: "Salle",
+    layout: "/admin",
+    path: "Salle",
+    icon: <MdBook className="h-6 w-6" />,
+    component: <SalleList />,
   },
   {
     name: "Classes",

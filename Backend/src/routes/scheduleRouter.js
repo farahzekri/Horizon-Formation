@@ -6,15 +6,14 @@ const logApiUsage = require("../middlewares/logApiUsage");
 
 router.post(
   "/create",
-  checkToken,
-  logApiUsage,
+  
   scheduleController.createOrUpdateSchedule
 );
 router.get("/get", checkToken, logApiUsage, scheduleController.getAllSchedules);
 router.get(
-  "/:classId",
-  checkToken,
-  logApiUsage,
+  "/getschedulebyclassid/:classId",
+  // checkToken,
+  // logApiUsage,
   scheduleController.getScheduleByClassId
 );
 router.put(
@@ -29,5 +28,10 @@ router.delete(
   logApiUsage,
   scheduleController.deleteSchedule
 );
-
+router.get(
+  "/getAvailableRooms",
+   checkToken,
+   logApiUsage,
+  scheduleController.getAvailableRooms
+);
 module.exports = router;

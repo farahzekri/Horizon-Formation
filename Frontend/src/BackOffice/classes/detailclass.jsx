@@ -17,7 +17,6 @@ const DetailClasses = () => {
     const [formData, setFormData] = useState({
         formationId: '',
         level: '',
-        room: '',
     });
     const [activeTab, setActiveTab] = useState('classInfo');
     const [isEditing, setIsEditing] = useState(false);
@@ -44,7 +43,6 @@ const DetailClasses = () => {
                 setFormData({
                     formationId: response.formationId?._id || '',
                     level: response.level || '',
-                    room: response.room || '',
                 });
                 const selectedIds = response.students.map(student => student.studentId._id);
                 setSelectedStudents(selectedIds);
@@ -78,7 +76,6 @@ const DetailClasses = () => {
         setFormData({
             formationId: classDetails.formationId?._id || '',
             level: classDetails.level || '',
-            room: classDetails.room || '',
         });
     };
 
@@ -87,7 +84,6 @@ const DetailClasses = () => {
             await classServices.updateClassDetails(id, {
                 formationId: formData.formationId,
                 level: formData.level,
-                room: formData.room
             });
             setIsEditing(false);
             const updatedClassDetails = await classServices.getclassById(id);
