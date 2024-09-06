@@ -75,6 +75,17 @@ const formationService = {
       );
     }
   },
+  getcourses: async (id) => {
+    try {
+      const response = await axiosInstance.get(`/formation/getcourses/${id}/courses`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message ||
+          "An error occurred while fetching the formation"
+      );
+    }
+  },
 };
 
 export default formationService;

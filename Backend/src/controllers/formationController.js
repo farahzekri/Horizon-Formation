@@ -1,5 +1,5 @@
 const Formation = require('../models/formation');
-
+const Class =require('../models/class')
 // Add a new formation
 const addFormation = async (req, res) => {
     try {
@@ -72,11 +72,31 @@ const deleteFormationById = async (req, res) => {
         res.status(500).send(error);
     }
 };
+const getcourses =async(req,res)=>{
+    try {
+        const classId = req.params.id;
+        const classData = await Class.findById(classId).select('formationId');
+        if (!classData) {
+            return res.status(404).json({ message: 'Classe non trouvée' });
+        }
+
+        const formation = await Formation.findById(classData.formationId).select('courses');
+        if (!formation) {
+            return res.status(404).json({ message: 'Formation non trouvée' });
+        }
+
+        res.json(formation.courses);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des cours:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
 
 module.exports = {
     addFormation,
     getAllFormations,
     updateFormationById,
     getFormationById,
-    deleteFormationById
+    deleteFormationById,
+    getcourses,
 };

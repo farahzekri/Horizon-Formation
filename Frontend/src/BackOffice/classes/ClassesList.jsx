@@ -46,10 +46,7 @@ const ClassesList = () => {
              Header: 'Niveau', 
              accessor: 'level' 
         },
-        { 
-            Header: 'Salle', 
-            accessor: 'room'
-        },
+       
         { 
             Header: 'Formations', 
             accessor: (row) => getFormationNameById(row.formationId),
@@ -62,10 +59,7 @@ const ClassesList = () => {
             Header: 'Action',
             accessor: 'action',
           },
-          {
-            Header: 'Emploi',
-            accessor: 'emploi',
-          },
+        
     ];
     
     const [selectedClasses, setSelectedClasses] = useState([]);

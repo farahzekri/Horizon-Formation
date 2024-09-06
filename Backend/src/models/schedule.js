@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
+const teacher = require('./teacher');
 const Schema = mongoose.Schema;
-
-const timeSlotSchema = new Schema({
-    timeStart: String,
-    timeEnd: String,
-    formationName: String,
-});
-
-const daySchema = new Schema({
-    day: String,
-    times: [timeSlotSchema],
-});
 
 const scheduleSchema = new Schema({
     classId: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
-    days: [daySchema],
+    days: [{
+        day: String,
+        times: [{
+            start: String,  // ou Date, selon votre besoin
+            end: String ,    // ou Date, selon votre besoin
+            room: { type: Schema.Types.ObjectId, ref: 'Salle' },  
+            course: { type: Schema.Types.ObjectId, ref: 'Course' },
+            teacher:{type: Schema.Types.ObjectId, ref: 'Teacher' }
+        }]
+    }]
 });
 
 const Schedule = mongoose.model('Schedule', scheduleSchema);

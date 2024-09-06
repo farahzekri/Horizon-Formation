@@ -4,7 +4,7 @@ const classController = require("../controllers/classesController");
 const { checkToken } = require("../middlewares/authentication");
 const logApiUsage = require("../middlewares/logApiUsage");
 
-router.post("/creation", checkToken, logApiUsage, classController.createClass);
+router.post("/creation", checkToken,logApiUsage ,classController.createClass);
 router.get(
   "/AllClasses",
   checkToken,
