@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ScheduleForm from './components/scheduleforme';
-import   ScheduleFormTime from'./components/ScheduleFormTime';
 import scheduleService from 'services/scheduleservice';
+import salleService from 'services/salleService';
+import { FaChalkboardTeacher, FaSchool } from 'react-icons/fa'; // Import icons
 
 const Schedule = () => {
     const { id } = useParams();
@@ -15,63 +16,63 @@ const Schedule = () => {
             { day: 'Vendredi', times: [] },
             { day: 'Samedi', times: [] }
         ],
-        times: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
-        schedule: {}
+        times: ['08:00 - 09:30', '10:00 - 11:30', '12:00 - 13:30', '14:00 - 15:30', '16:00 - 17:30'],
     });
+    const [availableRooms, setAvailableRooms] = useState([]);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
-    const [selectedTimeSlot, setSelectedTimeSlot] = useState({ day: '', time: '', timeEnd: '' });
-    const [currentTimeSlot, setCurrentTimeSlot] = useState({ day: '', time: '', timeEnd: '' });
-    const [editingCell, setEditingCell] = useState(null);
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState({ day: '', time: '' });
 
     useEffect(() => {
-        const fetchSchedule = async () => {
+        const fetchScheduleAndRooms = async () => {
             try {
                 const fetchedSchedule = await scheduleService.getScheduleByClassId(id);
                 if (fetchedSchedule) {
-                    setSchedule({
+                    setSchedule(prevSchedule => ({
+                        ...prevSchedule,
                         days: fetchedSchedule.days,
-                        times: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
-                        schedule: fetchedSchedule.schedule || {}
-                    });
+                    }));
                 }
+
+                const rooms = await salleService.getAllsalles();
+                setAvailableRooms(rooms);
             } catch (error) {
-                console.error('Error fetching schedule:', error);
+                console.error('Error fetching schedule or rooms:', error);
             }
         };
 
-        fetchSchedule();
+        fetchScheduleAndRooms();
     }, [id]);
 
     const handleTimeSlotClick = (day, time) => {
         setSelectedTimeSlot({ day, time });
-        setEditingCell({ day, time });
+        setShowDetailsModal(true);
     };
 
-    const handleTimeRangeSave = (timeEnd) => {
-        setCurrentTimeSlot({ ...selectedTimeSlot, timeEnd });
-        setEditingCell(null); // Ferme le formulaire
-        setShowDetailsModal(true); // Affiche le modal des détails
-    };
-
-    const handleDetailsSave = async (formationName, teacherName) => {
-        let updatedDays = [...schedule.days];
-
-        updatedDays = updatedDays.map(d => {
-            if (d.day === currentTimeSlot.day) {
-                return {
-                    ...d,
-                    times: [
-                        ...d.times,
-                        { timeStart: currentTimeSlot.time, timeEnd: currentTimeSlot.timeEnd, formationName, teacherName }
-                    ]
-                };
+    const handleDetailsSave = async (scheduleData) => {
+        const updatedDays = schedule.days.map(d => {
+            if (d.day === scheduleData.day) {
+                const existingSlotIndex = d.times.findIndex(slot => 
+                    slot.start === scheduleData.times[0].start && 
+                    slot.end === scheduleData.times[0].end
+                );
+    
+                if (existingSlotIndex > -1) {
+                    // Update existing time slot
+                    d.times[existingSlotIndex] = scheduleData.times[0];
+                } else {
+                    // Add new time slot
+                    d.times.push(scheduleData.times[0]);
+                }
             }
             return d;
         });
-
+    
         try {
             const newSchedule = await scheduleService.addSchedule(id, updatedDays);
-            setSchedule(newSchedule);
+            setSchedule(prevSchedule => ({
+                ...prevSchedule,
+                days: newSchedule.days,
+            }));
             setShowDetailsModal(false);
         } catch (error) {
             console.error('Error saving schedule:', error);
@@ -79,56 +80,59 @@ const Schedule = () => {
     };
 
     const getCellContent = (day, time) => {
-        const isEditing = editingCell && editingCell.day === day.day && editingCell.time === time;
+        const timeSlot = day.times.find(slot => `${slot.start} - ${slot.end}` === time);
 
-        if (isEditing) {
-            return (
-                <ScheduleFormTime
-                    timeStart={time}
-                    onSave={handleTimeRangeSave}
-                    onClose={() => setEditingCell(null)}
-                />
-            );
-        }
-
-        const timeSlot = day.times.find(slot => slot.timeStart === time);
         if (timeSlot) {
-            const timeStartIndex = schedule.times.indexOf(timeSlot.timeStart);
-            const timeEndIndex = schedule.times.indexOf(timeSlot.timeEnd);
-            const colspan = timeEndIndex - timeStartIndex;
-            return { content: `${timeSlot.formationName} (${timeSlot.teacherName})`, colspan };
+            return {
+                content: (
+                    <div className="flex items-center space-x-2">
+                        <FaChalkboardTeacher className="text-blue-500" />
+                        <span className="text-green-500">{timeSlot.course.name}</span>
+                        <span>avec</span>
+                        <span className="text-green-500">{timeSlot.teacher}</span>
+                        <FaSchool className="text-red-500 ml-2" />
+                        <span>en {timeSlot.room.nameSalle}</span>
+                    </div>
+                ),
+                colspan: 1
+            };
         }
+
         return { content: '', colspan: 1 };
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
-                <h1 className="text-2xl font-bold mb-4 text-center">Emploi du temps</h1>
-                {schedule && schedule.days && schedule.times ? (
+                <h1 className="text-3xl font-bold mb-4 text-center text-black">Emploi du Temps</h1>
+                {schedule && schedule.days ? (
                     <table className="min-w-full divide-y divide-gray-200 border rounded-lg">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-indigo-100">
                             <tr>
-                                <th className="px-4 py-2 text-left">Jour</th>
+                                <th className="px-4 py-2 text-left text-black">Jour</th>
                                 {schedule.times.map((time, index) => (
-                                    <th key={index} className="px-4 py-2 text-left">{time}</th>
+                                    <th key={index} className="px-4 py-2 text-left text-black">{time}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {schedule.days.map((day, index) => (
                                 <tr key={index} className="border-t">
-                                    <td className="px-4 py-2 font-medium">{day.day}</td>
+                                    <td className="px-4 py-2 font-medium text-black bg-gray-50">{day.day}</td>
                                     {schedule.times.map((time, timeIndex) => {
                                         const { content, colspan } = getCellContent(day, time);
                                         return (
                                             <td
                                                 key={timeIndex}
-                                                className="px-4 py-2 border text-center cursor-pointer hover:bg-gray-100"
+                                                className="px-4 py-2 border-r cursor-pointer hover:bg-indigo-50 transition duration-200"
                                                 colSpan={colspan}
                                                 onClick={() => handleTimeSlotClick(day.day, time)}
                                             >
-                                                {content}
+                                                {content || (
+                                                    <div className="text-gray-400">
+                                                        <span>Libre</span>
+                                                    </div>
+                                                )}
                                             </td>
                                         );
                                     })}
@@ -138,29 +142,30 @@ const Schedule = () => {
                     </table>
                 ) : (
                     <div className="text-center">
-                        <p>Aucun emploi du temps disponible</p>
+                        <p className="text-gray-500">Aucun emploi du temps disponible.</p>
                         <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
-                            onClick={() => setSchedule({
+                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                            onClick={() => setSchedule(prevSchedule => ({
+                                ...prevSchedule,
                                 days: [
                                     { day: 'Lundi', times: [] },
                                     { day: 'Mardi', times: [] },
                                     { day: 'Mercredi', times: [] },
                                     { day: 'Jeudi', times: [] },
-                                    { day: 'Vendredi', times: [] }
-                                ],
-                                times: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
-                                schedule: {}
-                            })}
+                                    { day: 'Vendredi', times: [] },
+                                    { day: 'Samedi', times: [] }
+                                ]
+                            }))}
                         >
-                            Ajouter un emploi du temps
+                            Ajouter un emploi
                         </button>
                     </div>
                 )}
-
                 {showDetailsModal && (
                     <ScheduleForm
-                        timeSlot={currentTimeSlot}
+                        classId={id}
+                        timeSlot={selectedTimeSlot}
+                        availableRooms={availableRooms}
                         onSave={handleDetailsSave}
                         onClose={() => setShowDetailsModal(false)}
                     />
@@ -169,4 +174,5 @@ const Schedule = () => {
         </div>
     );
 };
+
 export default Schedule;

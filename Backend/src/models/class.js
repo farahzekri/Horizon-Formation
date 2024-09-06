@@ -9,7 +9,6 @@ const StudentSchema = new Schema({
 const ClassSchema = new Schema({
     formationId: { type: Schema.Types.ObjectId, ref: 'Formation'},
     level: { type: String, required: true },
-    room: { type: String, required: true },
     students: [StudentSchema],
     dateCreated: { type: Date, default: Date.now }
 });

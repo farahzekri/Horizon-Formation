@@ -78,8 +78,8 @@ const AssignedStudents = ({ isEditing, allStudents, selectedStudents, classDetai
                     tableData={classDetails.students.map(student => ({
                         ...student.studentId,
                         personalInfo: {
-                            ...student.studentId.personalInfo,
-                            dateOfBirth: new Date(student.studentId.personalInfo.dateOfBirth).toLocaleDateString('fr-FR'),
+                            ...student.studentId?.personalInfo,
+                            dateOfBirth: new Date(student.studentId?.personalInfo?.dateOfBirth).toLocaleDateString('fr-FR'),
                         },
                     }))}
                 />

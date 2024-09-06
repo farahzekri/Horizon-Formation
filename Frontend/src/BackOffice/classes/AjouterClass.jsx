@@ -20,13 +20,13 @@ const AjouterClass = () => {
     const [formData, setFormData] = useState({
         formationId: '',
         level: '',
-        room: '',
+       
     });
 
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const data = await studentService.getAllStudents();
+                const data = await studentService.getUnassignedStudents();
                 setStudents(data);
             } catch (error) {
                 console.error('Error fetching students:', error);
@@ -65,11 +65,12 @@ const AjouterClass = () => {
             ...formData,
             students: formattedStudents
         };
-
+        console.log("Submitting class data:", classData)
         try {
-            await classServices.addclass(classData);
+            await classServices.addClass(classData);
             alert('Class added successfully!');
         } catch (error) {
+            console.error('Error adding class:', error.response || error.message);
             alert('Error adding class.');
 
 
@@ -153,22 +154,7 @@ const AjouterClass = () => {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-wrap -mx-18 mb-6">
-                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <SelectandInputField
-                                label="Salle"
-                                id="room"
-                                name="room"
-                                placeholder="Salle"
-                                options={SalleClasses}
-                                value={formData.room}
-                                onChange={(selectedValue) => setFormData({ ...formData, room: selectedValue })}
-
-                            />
-                        </div>
-
-
-                    </div>
+                  
                     <div className="flex flex-wrap -mx-18 mb-6">
 
                         <div className="w-full px-3">

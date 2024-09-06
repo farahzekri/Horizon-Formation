@@ -9,10 +9,6 @@ import AlertMessage from "../../../components/alert/alertMessage";
 import formationServices from "../../../services/formationServices";
 import classServices from "../../../services/classService";
 
-const formationOp = [
-    { value: "F1", label: "F1" },
-    { value: "F2", label: "F2" },
-];
 
 function AddStudent() {
     const navigate = useNavigate();
@@ -33,10 +29,8 @@ function AddStudent() {
         phoneNumber: "",
         email: "",
         formation: "",
-        classe: "",// Changed to a single string value
     });
     const [formations, setFormations] = useState([]);
-    const [classes, setClasses] = useState([]);
 
     useEffect(() => {
         const fetchFormations = async () => {
@@ -55,22 +49,7 @@ function AddStudent() {
         fetchFormations();
     }, []);
 
-    useEffect(() => {
-        const fetchClasses = async () => {
-            try {
-                const response = await classServices.getclass();
-                const classOptions = response.map((classe) => ({
-                    value: classe._id, // Assuming the formation ID is '_id'
-                    label: classe.level, // Assuming the formation name is 'name'
-                }));
-                setClasses(classOptions);
-            } catch (error) {
-                console.error("Error fetching formations:", error);
-            }
-        };
 
-        fetchClasses();
-    }, []);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -98,7 +77,6 @@ function AddStudent() {
                 },
                 enrollmentInfo: {
                     formationId: formData.formation,
-                    classId: formData.classe
                 }
             };
             const response = await studentServices.addStudent(studentData);
@@ -118,7 +96,6 @@ function AddStudent() {
                 phoneNumber: "",
                 email: "",
                 formation: "",
-                classe: ""
             });
             setTimeout(() => {
                 navigate('/admin/Etudiants');
@@ -243,17 +220,7 @@ function AddStudent() {
                                 setFormData({ ...formData, formation: selectedValue })
                             }
                         />
-                        <SelectField
-                            label="Classe"
-                            id="classe"
-                            name="classe"
-                            placeholder="Sélectionner le Classe"
-                            options={classes}
-                            value={formData.classe}
-                            onChange={(selectedValue) =>
-                                setFormData({ ...formData, classe: selectedValue })
-                            }
-                        />
+
                     </div>
                 </div>
                 {alertState.showAlert && (

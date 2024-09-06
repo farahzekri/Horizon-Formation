@@ -88,9 +88,14 @@ const authService = {
         { withCredentials: true }
       );
       const { token } = response.data;
+      if (!token) {
+        await authService.logout();
+      }
       return token;
     } catch (error) {
-      throw new Error("Unable to refresh token");
+     console.error("Unable to refresh token:", error);
+     await authService.logout(); 
+     return null;
     }
   },
 };

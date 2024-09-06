@@ -14,7 +14,7 @@ const setupInterceptors = (axiosInstance, exceptionRoutes) => {
       if (!exceptionRoutes.includes(config.url)) {
         config.headers["authorization"] = token;
       } else {
-        console.log("Request Interceptor Bypassed:", config);
+        // console.log("Request Interceptor Bypassed:", config);
       }
       return config;
     },
@@ -33,12 +33,17 @@ const setupInterceptors = (axiosInstance, exceptionRoutes) => {
       if (!exceptionRoutes.includes(originalRequest.url) && error.response) {
         if (error.response.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
+          console.log("ERROR 401", error.response.data.message);
           console.log("Unauthorized, refreshing token...");
 
           try {
             const newToken = await authService.refreshToken();
-            await localStorage.setItem("token", newToken);
-            window.location.reload();
+            if (!newToken) {
+              await authService.logout();
+              return Promise.reject(error);
+            }
+           localStorage.setItem("token", newToken);
+            // window.location.reload();
             originalRequest.headers["authorization"] = newToken;
             return axiosInstance(originalRequest);
           } catch (refreshError) {

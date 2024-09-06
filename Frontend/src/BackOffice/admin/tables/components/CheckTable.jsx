@@ -74,7 +74,7 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick, handleC
                                 <tr {...row.getRowProps()} key={index}>
                                     {row.cells.map((cell, index) => {
                                         let cellContent;
-                                        if (cell.column.Header === "Nom" || cell.column.Header === "Matière" || cell.column.Header === "Formation" || cell.column.Header === "Niveau") {
+                                        if (cell.column.Header === "Nom" || cell.column.Header === "Matière" || cell.column.Header === "Salle" || cell.column.Header === "Formation" || cell.column.Header === "Niveau") {
                                             cellContent = (
                                                 <div className="flex items-center gap-2">
                                                     <Checkbox
@@ -171,34 +171,7 @@ const CheckTable = ({ tableName, columnsData, tableData, onAjouterClick, handleC
                                                     </button>
                                                 </div>
                                             )
-                                        }else if (cell.column.Header === "Emploi") {
-                                            cellContent = (
-                                                <div className="flex items-center gap-2">
-                                                    <div className={`rounded-full text-xl`}>
-                                                        <button
-                                                            className="flex cursor-pointer items-center gap-2 transition-transform hover:scale-110 hover:text-brand-300"
-                                                            title="Détails"
-                                                            onClick={() => handleEmploi(row.original._id)}
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none"
-                                                                viewBox="0 0 24 24"
-                                                                strokeWidth="1.5"
-                                                                stroke="currentColor"
-                                                                className="h-5 w-5"
-                                                            >
-                                                                <path
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                    d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zm-2-8H7v2h10V11zm0 4H7v2h10v-2z"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        } else {
+                                        }else {
                                             // Default style for headers not explicitly handled
                                             cellContent = (
                                                 <p className="text-sm font-bold text-navy-700 dark:text-white">

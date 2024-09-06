@@ -14,7 +14,8 @@ import {
   MdOutlineShoppingCart,
   MdPerson,
   MdSchool,
-  MdTableChart
+  MdTableChart,
+  MdMeetingRoom
 } from "react-icons/md";
 import AjouterSub from "../../BackOffice/SubAdmin/create_SubAdmin/ajouterSubAdmin";
 import React from "react";
@@ -80,6 +81,12 @@ const Sidebar = ({ open, onClose }) => {
           layout: "/admin",
           path: "Matieres",
           icon: <MdBook className="h-6 w-6" />,
+        },
+        {
+          name: "Salle",
+          layout: "/admin",
+          path: "Salle",
+          icon: <MdMeetingRoom className="h-6 w-6" />,
         },
       ],
     },
